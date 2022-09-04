@@ -9,11 +9,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { MaterialModule } from './material/material.module';
 import { HttpClientModule } from '@angular/common/http';
+import { SignInComponent } from './pages/sign-in/sign-in.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CustomerCheckInComponent
+    CustomerCheckInComponent,
+    SignInComponent
   ],
   imports: [
     BrowserModule,
