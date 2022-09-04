@@ -1,0 +1,27 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" #formDirective="ngForm">
+    <!-- Name -->
+    <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" required>
+    </mat-form-field>
+
+    <!-- Phone -->
+    <mat-form-field appearance="fill">
+        <mat-label>Phone</mat-label>
+        <input #phoneInput mask="(000) 000-0000" matInput placeholder="(xxx) xxx-xxxx"
+            formControlName="phone" required>
+    </mat-form-field>
+
+    <!-- Birthday -->
+    <mat-form-field appearance="fill">
+        <mat-label>Birthday</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="birthday">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Action Buttons -->
+    <button mat-raised-button [disabled]="!form.valid">Submit</button>
+    <button mat-raised-button (click)="resetForm()">Reset</button>
+</form>
