@@ -13,8 +13,8 @@ export class BacMauBusinessService {
 
   constructor(private httpClient: HttpClient) { }
 
-  saveCustomerInfo(customerInfo: CustomerInfo): Promise<void> {
+  saveCustomerInfo(customerInfo: CustomerInfo) {
     console.debug('Saving customer info');
-    return firstValueFrom(this.httpClient.post<void>(`${this.baseUrl}/customer-info`, customerInfo));
+    return firstValueFrom(this.httpClient.post(`${this.baseUrl}/customer-info`, customerInfo));
   }
 }
