@@ -1,0 +1,6 @@
+export enum AuthEventType {
+  SIGNED_UP = 'SIGNED_UP',
+  SIGNED_IN = 'SIGNED_IN',
+  SIGNED_OUT = 'SIGNED_OUT',
+  ATTRIBUTE_UPDATED = 'ATTRIBUTE_UPDATED',
+}

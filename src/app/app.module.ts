@@ -10,12 +10,16 @@ import { NgxMaskModule } from 'ngx-mask';
 import { MaterialModule } from './material/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SignInComponent } from './pages/sign-in/sign-in.component';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { UsernamePipe } from './username.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     CustomerCheckInComponent,
-    SignInComponent
+    SignInComponent,
+    NavBarComponent,
+    UsernamePipe
   ],
   imports: [
     BrowserModule,

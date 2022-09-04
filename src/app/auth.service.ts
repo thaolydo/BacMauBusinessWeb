@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserSession } from 'amazon-cognito-identity-js';
+import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AuthEventType } from './model/auth-event-types.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +10,8 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
 
   private userPool: CognitoUserPool;
+
+  private eventSubject: Subject<AuthEventType> = new Subject();
 
   constructor() {
     this.userPool = new CognitoUserPool({
@@ -29,6 +33,7 @@ export class AuthService {
       }), {
         onSuccess: (session) => {
           console.log(`Successfull signed in with username '${username}' and session '${session}'`);
+          this.eventSubject.next(AuthEventType.SIGNED_IN);
           resolve(user);
         },
         onFailure: (err) => {
@@ -55,6 +60,7 @@ export class AuthService {
 
       curUser.signOut(() => {
         console.log('Sign out successfully');
+        this.eventSubject.next(AuthEventType.SIGNED_OUT);
         resolve('success');
       });
     });
@@ -79,5 +85,9 @@ export class AuthService {
         resolve(curUser);
       });
     });
+  }
+
+  getAuthEventUpdates() {
+    return this.eventSubject.asObservable();
   }
 }

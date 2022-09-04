@@ -1,0 +1,11 @@
+<mat-toolbar color="primary">
+    <!-- Business name -->
+    <span>{{curUser | username}}</span>
+
+    <!-- Sign in -->
+    <button mat-raised-button *ngIf="!curUser" routerLink="/sign-in">Sign In</button>
+
+    <!-- Log out -->
+    <button mat-raised-button *ngIf="curUser" (click)="onLogout()">Logout</button>
+
+</mat-toolbar>
