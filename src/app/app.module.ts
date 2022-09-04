@@ -13,6 +13,7 @@ import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { UsernamePipe } from './username.pipe';
 import { CustomersComponent } from './pages/customers/customers.component';
+import { SendSmsComponent } from './pages/send-sms/send-sms.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { CustomersComponent } from './pages/customers/customers.component';
     SignInComponent,
     NavBarComponent,
     UsernamePipe,
-    CustomersComponent
+    CustomersComponent,
+    SendSmsComponent
   ],
   imports: [
     BrowserModule,

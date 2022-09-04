@@ -66,20 +66,23 @@ export class AuthService {
     });
   }
 
-  getCurUser(): Promise<CognitoUser> {
+  getCurUser(): Promise<CognitoUser | undefined> {
     const curUser = this.userPool.getCurrentUser();
     return new Promise((resolve, reject) => {
       if (!curUser) {
-        reject('getCurUser(): User not logged in');
+        console.log('getCurUser(): User not logged in');
+        resolve(undefined);
         return;
       }
       curUser.getSession((err: any, session: CognitoUserSession) => {
         if (err) {
-          reject(err);
+          console.log('getSession() error');
+          resolve(undefined);
           return;
         }
         if (!session.isValid()) {
-          reject('Invalid session');
+          console.log('Invalid session');
+          resolve(undefined);
           return;
         }
         resolve(curUser);
