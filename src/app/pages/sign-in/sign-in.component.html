@@ -1,1 +1,16 @@
-<p>sign-in works!</p>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- Username -->
+    <mat-form-field appearance="fill">
+        <mat-label>Username</mat-label>
+        <input matInput type="text" required formControlName="username" autofocus>
+    </mat-form-field>
+
+    <!-- Password -->
+    <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" required formControlName="password">
+    </mat-form-field>
+
+    <!-- Action Buttons -->
+    <button mat-raised-button color="primary" [disabled]="!form.valid">Sign In</button>
+</form>

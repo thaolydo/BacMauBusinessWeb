@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { UsernamePipe } from './username.pipe';
+import { CustomersComponent } from './pages/customers/customers.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { UsernamePipe } from './username.pipe';
     CustomerCheckInComponent,
     SignInComponent,
     NavBarComponent,
-    UsernamePipe
+    UsernamePipe,
+    CustomersComponent
   ],
   imports: [
     BrowserModule,

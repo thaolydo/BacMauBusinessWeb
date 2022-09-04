@@ -38,7 +38,7 @@ export class NavBarComponent implements OnInit {
       console.log('nav-bar onInit: User not logged in');
 
       // TODO: Remove this line below
-      this.curUser = {} as CognitoUser;
+      // this.curUser = {} as CognitoUser;
     }
   }
 
