@@ -12,13 +12,20 @@
             formControlName="phone" required>
     </mat-form-field>
 
-    <!-- Birthday -->
-    <mat-form-field appearance="fill">
-        <mat-label>Birthday</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="birthday">
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
+    <!-- Birth Month -->
+    <mat-form-field class="birth-month-field" appearance="fill">
+        <mat-select formControlName="birthMonth" (selectionChange)="onMonthSelected()">
+            <mat-option class="birth-month-option" [value]="monthName" *ngFor="let monthName of monthNames">{{monthName}}</mat-option>
+        </mat-select>
+        <mat-hint>Month</mat-hint>
+    </mat-form-field>
+
+    <!-- Birth Day -->
+    <mat-form-field class="birth-day-field" appearance="fill">
+        <mat-select formControlName="birthDay" [disabled]="!form.get('birthMonth')?.value">
+            <mat-option class="birth-day-option" [value]="day" *ngFor="let day of days">{{day}}</mat-option>
+        </mat-select>
+        <mat-hint>Day</mat-hint>
     </mat-form-field>
 
     <!-- Action Buttons -->

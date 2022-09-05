@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { BacMauBusinessService } from 'src/app/bac-mau-business.service';
 import { CustomerInfo } from 'src/app/model/customer-info.model';
 
@@ -9,29 +9,48 @@ import { CustomerInfo } from 'src/app/model/customer-info.model';
   styleUrls: ['./customer-check-in.component.scss']
 })
 export class CustomerCheckInComponent implements OnInit {
-  @ViewChild('formDirective', {static: false}) formDirective: NgForm | undefined;
+  @ViewChild('formDirective', { static: false }) formDirective: NgForm | undefined;
 
   form: FormGroup;
   monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  dayCountInMonth: { [monthName: string]: number } = {
+    Jan: 31,
+    Feb: 28,
+    Mar: 31,
+    Apr: 30,
+    May: 31,
+    Jun: 30,
+    Jul: 31,
+    Aug: 31,
+    Sep: 30,
+    Oct: 31,
+    Nov: 30,
+    Dec: 31
+  };
+  days: number[] = [];
 
   constructor(
     private _fb: FormBuilder,
     private bacMauBusinessService: BacMauBusinessService,
-    ) {
+  ) {
     this.form = this._fb.group({
       name: ['', Validators.required],
       phone: ['', Validators.required],
-      birthday: [new Date()],
+      birthMonth: [null],
+      birthDay: {value: null},
     });
   }
 
   ngOnInit(): void {
   }
 
+  onMonthSelected() {
+    const dayCountInSelectedMonth = this.dayCountInMonth[this.form.get('birthMonth')!.value];
+    this.days = Array.from({length: dayCountInSelectedMonth}, (_, i) => i + 1);
+  }
+
   async onSubmit() {
     const customerInfo = this.form.value as CustomerInfo;
-    const birthDayInMMDDYYY = (this.form.get('birthday')?.value as Date)?.toLocaleDateString();
-    customerInfo.birthday = birthDayInMMDDYYY;
     console.log('customerInfo =', customerInfo);
     // await this.bacMauBusinessService.saveCustomerInfo(customerInfo);
     this.resetForm();

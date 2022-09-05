@@ -1,5 +1,6 @@
 export interface CustomerInfo {
     name: string;
     phone: string;
-    birthday: string;
+    birthMonth: string;
+    birthDay: string;
 }
