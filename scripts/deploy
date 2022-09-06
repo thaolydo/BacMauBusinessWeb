@@ -1,7 +1,7 @@
 #!/bin/bash
 PROFILE=bac-mau-business
-BUCKET=s3://huy-business.com
-DISTRIBUTION_ID=E2SRECAIZ04S2Y
+BUCKET=s3://venusspa.net
+DISTRIBUTION_ID=E360ORER2635Z7
 
 # Remove all existing files in the bucket
 echo "Deleting all existing files in the bucket"

@@ -12,8 +12,16 @@ export class SendSmsService {
 
   constructor(private http: HttpClient) { }
 
-  sendSms(content: string, imageUrl: string) {
+  sendSms(content: string, imageUrl?: string) {
+    console.log('Sending sms:', content, imageUrl)
     return firstValueFrom(this.http.post(`${this.baseUrl}/send-sms`, { content, imageUrl }));
+  }
+
+  getImageUrls() {
+    console.log('getting image urls');
+    return Promise.resolve(['https://bac-mau-business.s3.us-west-1.amazonaws.com/DSC01213.JPG',
+      'https://bac-mau-business.s3.us-west-1.amazonaws.com/DSC01219.JPG']);
+    // return firstValueFrom(this.http.);
   }
 
   // https://aws.amazon.com/blogs/compute/uploading-to-amazon-s3-directly-from-a-web-or-mobile-application

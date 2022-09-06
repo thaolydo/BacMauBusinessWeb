@@ -1,0 +1,49 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    padding: 1em 1em;
+    justify-content: center;
+    align-items: center;
+}
+
+textarea {
+    width: 50vw;
+}
+
+.images {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-y: scroll;
+    max-height: 100%;
+
+    .img-container {
+        width: 25vw;
+        margin: 1em;
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        img.selected {
+            transform: scale(1.05);
+            border: solid lightblue;
+        }
+    }
+
+}
+
+.send-button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 6em;
+    position: relative;
+
+    mat-spinner {
+        position: absolute;
+        right: 0;
+    }
+}

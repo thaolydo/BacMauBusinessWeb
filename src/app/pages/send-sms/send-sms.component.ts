@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSelectionList } from '@angular/material/list';
+import { SendSmsService } from 'src/app/send-sms.service';
 
 @Component({
   selector: 'app-send-sms',
@@ -7,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SendSmsComponent implements OnInit {
 
-  constructor() { }
+  imageUrls: string[] = [];
+  messageContent = '';
+  selectedImage: string | undefined = undefined;
+  isSending: boolean = false;
 
-  ngOnInit(): void {
+  constructor(
+    private sendSmsService: SendSmsService
+  ) { }
+
+  async ngOnInit() {
+    this.imageUrls = await this.sendSmsService.getImageUrls();
+  }
+
+  async sendSms() {
+    this.isSending = true;
+    await new Promise(r => setTimeout(r, 2000));
+    // await this.sendSmsService.sendSms(this.messageContent, this.selectedImage);
+    this.isSending = false;
   }
 
 }

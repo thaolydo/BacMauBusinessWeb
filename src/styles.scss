@@ -1,4 +1,55 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+@media only screen and (min-width: 768px) {
+
+    /* Desktop */
+    .gigantify-15 {
+        transition: transform .2s;
+    }
+
+    .gigantify-15:hover {
+        transform: scale(1.5);
+    }
+
+    .gigantify-105 {
+        transition: transform .2s;
+    }
+
+    .gigantify-105:hover {
+        transform: scale(1.05);
+    }
+
+    .gigantify-11 {
+        transition: transform .2s;
+    }
+
+    .gigantify-11:hover {
+        transform: scale(1.1);
+    }
+
+    .gigantify-12 {
+        transition: transform .2s;
+    }
+
+    .gigantify-12:hover {
+        transform: scale(1.2);
+    }
+
+    .gigantify-13 {
+        transition: transform .2s;
+    }
+
+    .gigantify-13:hover {
+        transform: scale(1.3);
+    }
+}
