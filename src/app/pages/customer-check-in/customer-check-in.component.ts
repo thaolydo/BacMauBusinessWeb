@@ -28,6 +28,7 @@ export class CustomerCheckInComponent implements OnInit {
     Dec: 31
   };
   days: number[] = [];
+  isSubmitting = false;
 
   constructor(
     private _fb: FormBuilder,
@@ -50,10 +51,13 @@ export class CustomerCheckInComponent implements OnInit {
   }
 
   async onSubmit() {
+    this.isSubmitting = true;
     const customerInfo = this.form.value as CustomerInfo;
     console.log('customerInfo =', customerInfo);
+    await new Promise(r => setTimeout(r, 2000));
     // await this.bacMauBusinessService.saveCustomerInfo(customerInfo);
     this.resetForm();
+    this.isSubmitting = false;
   }
 
   resetForm() {

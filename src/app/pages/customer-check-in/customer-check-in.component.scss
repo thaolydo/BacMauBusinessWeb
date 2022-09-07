@@ -1,5 +1,17 @@
 :host {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
 
+mat-form-field {
+    margin: 0.5em;
+}
+
+button {
+    margin: 0.5em;
 }
 
 .birth-month-field {
