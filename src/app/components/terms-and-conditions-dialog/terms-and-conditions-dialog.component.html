@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>{{data.businessName}}</h1>
+<div mat-dialog-content>
+    <p>Sign up for receiving marketing SMS messages for coupons and birthday discount reminder. Message freqency varies.
+    </p>
+    <p style="font-size: smaller;">By clicking "Subscribe", you agree that {{data.businessName}} may send SMS at the number on file with your
+        check-in info. You understand that you are not required to provide this consent as a condition of purchasing any
+        services.</p>
+</div>
+<div class="action-buttons" mat-dialog-actions>
+    <button mat-raised-button mat-dialog-close (click)="onSubmit()" cdkFocusInitial color="primary">Subscribe</button>
+    <span class="skip-button" mat-dialog-close (click)="onSkip()">Skip</span>
+</div>

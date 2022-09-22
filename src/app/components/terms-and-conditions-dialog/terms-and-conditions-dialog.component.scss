@@ -1,0 +1,18 @@
+.mat-dialog-title {
+    text-align: center;
+    font-size: xx-large;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: relative;
+
+    .skip-button {
+        cursor: pointer;
+        position: absolute;
+        right: 0;
+        font-size: x-small;
+    }
+}

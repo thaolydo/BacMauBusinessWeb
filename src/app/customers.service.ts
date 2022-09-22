@@ -9,7 +9,7 @@ import { CustomerInfo } from './model/customer-info.model';
 })
 export class CustomersService {
 
-  baseUrl = environment.baseUrl;
+  private baseUrl = environment.baseUrl;
 
   constructor(private http: HttpClient) { }
 

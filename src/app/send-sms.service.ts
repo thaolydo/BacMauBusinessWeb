@@ -12,6 +12,10 @@ export class SendSmsService {
 
   constructor(private http: HttpClient) { }
 
+  subscribeToMarketingSms(phone: string) {
+    return firstValueFrom(this.http.post(`${this.baseUrl}/subscribe-marketing-sms`, { phone }));
+  }
+
   sendSms(content: string, imageUrl?: string) {
     console.log('Sending sms:', content, imageUrl)
     return firstValueFrom(this.http.post(`${this.baseUrl}/send-sms`, { content, imageUrl }));

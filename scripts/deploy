@@ -3,14 +3,13 @@ PROFILE=bac-mau-business
 BUCKET=s3://venusspa.net
 DISTRIBUTION_ID=E360ORER2635Z7
 
-# Remove all existing files in the bucket
+# # Remove all existing files in the bucket
 echo "Deleting all existing files in the bucket"
 aws s3 --profile $PROFILE rm "$BUCKET" --recursive
 
-# Upload from dist folder
+# # Upload from dist folder
 echo "Uploading files in the dist folder"
 aws s3 --profile $PROFILE cp dist/bac-mau-business-web "$BUCKET" --recursive
 
 # Invalidate cache from CloudFront
-
-aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*"
+aws cloudfront --profile=$PROFILE create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths "/*"

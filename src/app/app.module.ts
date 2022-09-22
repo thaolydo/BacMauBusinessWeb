@@ -14,6 +14,7 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { UsernamePipe } from './username.pipe';
 import { CustomersComponent } from './pages/customers/customers.component';
 import { SendSmsComponent } from './pages/send-sms/send-sms.component';
+import { TermsAndConditionsDialogComponent } from './components/terms-and-conditions-dialog/terms-and-conditions-dialog.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SendSmsComponent } from './pages/send-sms/send-sms.component';
     NavBarComponent,
     UsernamePipe,
     CustomersComponent,
-    SendSmsComponent
+    SendSmsComponent,
+    TermsAndConditionsDialogComponent
   ],
   imports: [
     BrowserModule,

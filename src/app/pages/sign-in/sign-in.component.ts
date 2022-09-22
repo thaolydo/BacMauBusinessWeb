@@ -35,7 +35,8 @@ export class SignInComponent implements OnInit {
   }
 
   async onSubmit() {
-    // await this.authService.signIn(this.username, this.password);
+    const res = await this.authService.signIn(this.username, this.password);
+    console.log('res =', res);
     this.router.navigate(['/customers']);
   }
 

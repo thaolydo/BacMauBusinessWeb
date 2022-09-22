@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { BacMauBusinessService } from 'src/app/bac-mau-business.service';
+import { TermsAndConditionsDialogComponent } from 'src/app/components/terms-and-conditions-dialog/terms-and-conditions-dialog.component';
 import { CustomerInfo } from 'src/app/model/customer-info.model';
 
 @Component({
@@ -33,6 +35,7 @@ export class CustomerCheckInComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private bacMauBusinessService: BacMauBusinessService,
+    private dialog: MatDialog,
   ) {
     this.form = this._fb.group({
       name: ['', Validators.required],
@@ -54,6 +57,13 @@ export class CustomerCheckInComponent implements OnInit {
     this.isSubmitting = true;
     const customerInfo = this.form.value as CustomerInfo;
     console.log('customerInfo =', customerInfo);
+    this.dialog.open(TermsAndConditionsDialogComponent, {
+      panelClass: 'dialog',
+      data: {
+        customerInfo,
+        businessName: 'Venus', // TODO: use the correct business name
+      }
+    });
     await new Promise(r => setTimeout(r, 2000));
     // await this.bacMauBusinessService.saveCustomerInfo(customerInfo);
     this.resetForm();
