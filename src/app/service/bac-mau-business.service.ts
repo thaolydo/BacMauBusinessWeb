@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { CustomerInfo } from './model/customer-info.model';
+import { CustomerInfo } from '../model/customer-info.model';
 
 @Injectable({
   providedIn: 'root'
