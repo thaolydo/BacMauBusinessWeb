@@ -28,14 +28,6 @@ export class TermsAndConditionsDialogComponent implements OnInit {
     console.log('onSubmit');
     const res = await this.sendSmsService.subscribeToMarketingSms(this.customerInfo.phone);
     console.log('res =', res);
-    const res2 = await this.customersService.uploadCustomers([this.customerInfo]);
-    console.log('res2 =', res2);
-  }
-
-  async onSkip() {
-    console.log('onSkip');
-    const res = await this.customersService.uploadCustomers([this.customerInfo]);
-    console.log('res =', res);
   }
 
 }

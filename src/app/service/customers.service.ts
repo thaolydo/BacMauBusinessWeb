@@ -21,4 +21,8 @@ export class CustomersService {
     return firstValueFrom(this.http.post(`${this.baseUrl}/customers`, { customers }));
   }
 
+  checkIn(customer: CustomerInfo) {
+    return firstValueFrom(this.http.post(`${this.baseUrl}/customers/checkin`, { customer }));
+  }
+
 }

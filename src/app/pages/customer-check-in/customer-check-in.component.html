@@ -29,7 +29,6 @@
     </mat-form-field>
 
     <!-- Action Buttons -->
-    <button mat-raised-button [disabled]="!form.valid || isSubmitting">Submit</button>
+    <app-submit-button [disabled]="!form.valid || isSubmitting" [isSubmitting]="isSubmitting">Submit</app-submit-button>
     <button mat-raised-button (click)="resetForm()">Reset</button>
-    <mat-spinner *ngIf="isSubmitting" class="uploading-spinner" diameter="20"></mat-spinner>
 </form>

@@ -15,6 +15,7 @@ import { UsernamePipe } from './username.pipe';
 import { CustomersComponent } from './pages/customers/customers.component';
 import { SendSmsComponent } from './pages/send-sms/send-sms.component';
 import { TermsAndConditionsDialogComponent } from './components/terms-and-conditions-dialog/terms-and-conditions-dialog.component';
+import { SubmitButtonComponent } from './components/submit-button/submit-button.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { TermsAndConditionsDialogComponent } from './components/terms-and-condit
     UsernamePipe,
     CustomersComponent,
     SendSmsComponent,
-    TermsAndConditionsDialogComponent
+    TermsAndConditionsDialogComponent,
+    SubmitButtonComponent
   ],
   imports: [
     BrowserModule,
