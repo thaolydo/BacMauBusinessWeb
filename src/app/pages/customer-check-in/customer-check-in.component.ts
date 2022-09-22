@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { BacMauBusinessService } from 'src/app/bac-mau-business.service';
+import { BacMauBusinessService } from '@service/bac-mau-business.service';
 import { TermsAndConditionsDialogComponent } from 'src/app/components/terms-and-conditions-dialog/terms-and-conditions-dialog.component';
 import { CustomerInfo } from 'src/app/model/customer-info.model';
 
@@ -57,6 +57,14 @@ export class CustomerCheckInComponent implements OnInit {
     this.isSubmitting = true;
     const customerInfo = this.form.value as CustomerInfo;
     console.log('customerInfo =', customerInfo);
+
+    // Check-in
+    await new Promise(r => setTimeout(r, 2000));
+    // await this.bacMauBusinessService.saveCustomerInfo(customerInfo);
+    this.resetForm();
+    this.isSubmitting = false;
+
+    // Open subscribe dialog
     this.dialog.open(TermsAndConditionsDialogComponent, {
       panelClass: 'dialog',
       data: {
@@ -64,10 +72,6 @@ export class CustomerCheckInComponent implements OnInit {
         businessName: 'Venus', // TODO: use the correct business name
       }
     });
-    await new Promise(r => setTimeout(r, 2000));
-    // await this.bacMauBusinessService.saveCustomerInfo(customerInfo);
-    this.resetForm();
-    this.isSubmitting = false;
   }
 
   resetForm() {

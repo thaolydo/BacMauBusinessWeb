@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSelectionList } from '@angular/material/list';
-import { SendSmsService } from 'src/app/send-sms.service';
+import { SendSmsService } from '@service/send-sms.service';
 
 @Component({
   selector: 'app-send-sms',

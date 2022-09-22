@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserSession } from 'amazon-cognito-identity-js';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AuthEventType } from '../model/auth-event-types.enum';
+import { AuthEventType } from '@model/auth-event-types.enum';
 
 @Injectable({
   providedIn: 'root'
