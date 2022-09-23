@@ -12,5 +12,5 @@
     </mat-form-field>
 
     <!-- Action Buttons -->
-    <button mat-raised-button color="primary" [disabled]="!form.valid">Sign In</button>
+    <app-submit-button [disabled]="!form.valid || isSubmitting" [isSubmitting]="isSubmitting">Sign In</app-submit-button>
 </form>

@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/service/auth.service';
 export class SignInComponent implements OnInit {
 
   form: FormGroup;
+  isSubmitting = false;
 
   constructor(
     private _fb: FormBuilder,
@@ -35,9 +36,18 @@ export class SignInComponent implements OnInit {
   }
 
   async onSubmit() {
-    const res = await this.authService.signIn(this.username, this.password);
-    console.log('res =', res);
-    this.router.navigate(['/customers']);
+    this.isSubmitting = true;
+    try {
+      const res = await this.authService.signIn(this.username, this.password);
+      console.log('res =', res);
+      this.router.navigate(['/customers']);
+    } catch (e: any) {
+      if (e.name == 'NotAuthorizedException') {
+        alert('Incorrect username or password');
+      }
+    } finally {
+      this.isSubmitting = false;
+    }
   }
 
 }
