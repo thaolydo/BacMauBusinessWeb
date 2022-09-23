@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/service/auth.service';
-import { AuthEventType } from 'src/app/model/auth-event-types.enum';
 
 @Component({
   selector: 'app-nav-bar',
@@ -15,11 +14,13 @@ export class NavBarComponent implements OnInit {
 
   curUser: CognitoUser | undefined;
   authEventSubscription: Subscription | undefined;
+  showNavBar: boolean = true;
 
   constructor(
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private router: Router,
+    private route: ActivatedRoute
   ) {
     // this.authEventSubscription = this.authService.getAuthEventUpdates().subscribe(async event => {
     //   console.log('NavBarComponent: auth event =', event);
@@ -29,6 +30,14 @@ export class NavBarComponent implements OnInit {
     //     this.curUser = undefined;
     //   }
     // });
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        console.log('url =', event.url);
+        if (event.url == '/' || event.url.startsWith('/customer-check-in')) {
+          this.showNavBar = false;
+        }
+      }
+    });
   }
 
   async ngOnInit() {

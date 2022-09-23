@@ -24,7 +24,6 @@ export class SubmitButtonComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     const button = this.button?._elementRef.nativeElement as HTMLButtonElement;
-    console.log('width =', button.clientWidth, button.offsetWidth, button.scrollWidth);
     const spinnerLeft = button.clientWidth / 2 - this.diameter / 2;
     this.spinnerLeft = `${spinnerLeft}px`;
     const spinnerTop = button.clientHeight / 2 - this.diameter / 2;
