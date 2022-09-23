@@ -23,9 +23,7 @@ export class SendSmsService {
 
   getImageUrls() {
     console.log('getting image urls');
-    return Promise.resolve(['https://bac-mau-business.s3.us-west-1.amazonaws.com/DSC01213.JPG',
-      'https://bac-mau-business.s3.us-west-1.amazonaws.com/DSC01219.JPG']);
-    // return firstValueFrom(this.http.);
+    return firstValueFrom(this.http.get<string[]>(`${this.baseUrl}/getImages`));
   }
 
   // https://aws.amazon.com/blogs/compute/uploading-to-amazon-s3-directly-from-a-web-or-mobile-application
