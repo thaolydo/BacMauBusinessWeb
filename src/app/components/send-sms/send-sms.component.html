@@ -1,0 +1,16 @@
+<!-- Message Content -->
+<textarea matInput cols="3" rows="10" [(ngModel)]="messageContent"></textarea>
+
+<!-- Images -->
+<div class="images">
+    <div class="img-container" *ngFor="let imageUrl of imageUrls" (click)="selectedImage=imageUrl">
+        <img [src]="imageUrl" [ngClass]="{selected: selectedImage === imageUrl}">
+    </div>
+</div>
+
+<!-- Action Buttons -->
+<button mat-raised-button (click)="selectedImage = undefined">Clear Image</button>
+<div class="send-button-container">
+    <button mat-raised-button (click)="sendSms()" color="primary" [disabled]="isSending">Send</button>
+    <mat-spinner *ngIf="isSending" class="uploading-spinner" diameter="20"></mat-spinner>
+</div>

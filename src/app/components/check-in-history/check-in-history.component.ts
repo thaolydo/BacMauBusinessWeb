@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { CheckInEvent } from '@model/check-in.model';
+import { CheckInEvent } from '@model/check-in-event.model';
 
 @Component({
   selector: 'app-check-in-history',
