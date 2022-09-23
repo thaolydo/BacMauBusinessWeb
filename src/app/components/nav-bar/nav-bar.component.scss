@@ -3,3 +3,21 @@ mat-toolbar {
     justify-content: space-between;
     align-items: center;
 }
+
+.tabs {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.tab {
+    margin: 1em;
+    cursor: pointer;
+    color: rgb(212, 209, 209);
+}
+
+.selected {
+    font-size: large;
+    font-weight: bolder;
+    color: white;
+}

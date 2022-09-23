@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CognitoUser } from 'amazon-cognito-identity-js';
@@ -11,6 +11,8 @@ import { AuthService } from 'src/app/service/auth.service';
   styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent implements OnInit {
+
+  @Input() businessName: string = 'Venus'; // TODO: get it from query params in the current url
 
   curUser: CognitoUser | undefined;
   authEventSubscription: Subscription | undefined;

@@ -1,4 +1,13 @@
 <mat-toolbar *ngIf="showNavBar" color="primary">
+    <!-- Logo -->
+    <h1>{{businessName}}</h1>
+
+    <!-- Tabs -->
+    <span class="tabs">
+        <span [routerLinkActive]="'selected'" routerLink="/customers" class="tab">Customers</span>
+        <span [routerLinkActive]="'selected'" routerLink="/send-sms" class="tab">SMS</span>
+    </span>
+
     <!-- Business name -->
     <span>{{curUser | username}}</span>
 
