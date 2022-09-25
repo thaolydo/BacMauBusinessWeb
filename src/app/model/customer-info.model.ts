@@ -3,4 +3,5 @@ export interface CustomerInfo {
     phone: string;
     birthMonth: string;
     birthDay: string;
+    birthday?: Date;
 }
