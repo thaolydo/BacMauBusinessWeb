@@ -1,9 +1,9 @@
-<table *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<table #matSort *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
 
     <!-- Timestamp Column -->
-    <ng-container matColumnDef="timestamp">
-        <th mat-header-cell *matHeaderCellDef> Timestamp </th>
-        <td mat-cell *matCellDef="let element"> {{element.timestamp}} </td>
+    <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </th>
+        <td mat-cell *matCellDef="let element"> {{element.createdAt | date : 'short'}} </td>
     </ng-container>
 
     <!-- Message Content Column -->

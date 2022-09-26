@@ -25,7 +25,7 @@ export class CustomerListComponent implements OnInit {
     try {
       // TODO: get data from backend
       const customers = await this.customersService.getCustomers();
-      await new Promise((x) => setTimeout(x, 1000));
+      // await new Promise((x) => setTimeout(x, 1000));
       // const customers: CustomerInfo[] = [
       //   { phone: '1234', name: 'huy', birthDay: '08', birthMonth: 'Jun' },
       //   { phone: '434', name: 'ly', birthDay: '17', birthMonth: 'Sep' },
