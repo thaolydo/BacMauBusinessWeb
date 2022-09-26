@@ -20,6 +20,7 @@ import { CheckInHistoryComponent } from './components/check-in-history/check-in-
 import { CustomerListComponent } from './components/customer-list/customer-list.component';
 import { SmsHistoryComponent } from './components/sms-history/sms-history.component';
 import { SmsComponent } from './pages/sms/sms.component';
+import { PhonePipe } from './pipes/phone.pipe';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { SmsComponent } from './pages/sms/sms.component';
     CustomerListComponent,
     SmsHistoryComponent,
     SendSmsComponent,
+    PhonePipe,
   ],
   imports: [
     BrowserModule,
