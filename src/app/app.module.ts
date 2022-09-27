@@ -22,6 +22,7 @@ import { SmsHistoryComponent } from './components/sms-history/sms-history.compon
 import { SmsComponent } from './pages/sms/sms.component';
 import { PhonePipe } from './pipes/phone.pipe';
 import { CouponComponent } from './pages/coupon/coupon.component';
+import { SubmitFabButtonComponent } from './components/submit-fab-button/submit-fab-button.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { CouponComponent } from './pages/coupon/coupon.component';
     SmsComponent,
     TermsAndConditionsDialogComponent,
     SubmitButtonComponent,
+    SubmitFabButtonComponent,
     CheckInHistoryComponent,
     CustomerListComponent,
     SmsHistoryComponent,

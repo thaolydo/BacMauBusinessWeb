@@ -14,5 +14,6 @@
     <mat-icon *ngIf="couponStatus == 'INVALID'" color="warn">close</mat-icon>
     <mat-icon *ngIf="couponStatus == 'USED'" style="color: rgb(202, 202, 4);">warning</mat-icon>
     {{couponStatus}}
-    <app-submit-button *ngIf="couponStatus == 'VALID'" [disabled]="isMarkingUsed" [isSubmitting]="isMarkingUsed" (onClick)="onMarkUsed()" style="margin: 1em;">Mark USED</app-submit-button>
+    <app-submit-button *ngIf="couponStatus == 'VALID'" [disabled]="isMarkingUsed" [isSubmitting]="isMarkingUsed"
+        (onClick)="onMarkUsed()" style="margin: 1em;">Mark USED</app-submit-button>
 </span>
