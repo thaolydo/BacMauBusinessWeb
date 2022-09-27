@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CustomersService } from '@service/customers.service';
-import { CustomerInfo } from 'src/app/model/customer-info.model';
-import { SendSmsService } from '@service/send-sms.service';
+import { CustomersService } from 'src/app/services/customers.service';
+import { CustomerInfo } from 'src/app/models/customer-info.model';
+import { SendSmsService } from 'src/app/services/send-sms.service';
 
 @Component({
   selector: 'app-terms-and-conditions-dialog',

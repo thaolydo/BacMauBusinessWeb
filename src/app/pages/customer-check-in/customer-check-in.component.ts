@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { BacMauBusinessService } from '@service/bac-mau-business.service';
+import { BacMauBusinessService } from 'src/app/services/bac-mau-business.service';
 import { TermsAndConditionsDialogComponent } from 'src/app/components/terms-and-conditions-dialog/terms-and-conditions-dialog.component';
-import { CustomerInfo } from 'src/app/model/customer-info.model';
+import { CustomerInfo } from 'src/app/models/customer-info.model';
 
 @Component({
   selector: 'app-customer-check-in',

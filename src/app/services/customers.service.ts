@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { CustomerInfo } from '@model/customer-info.model';
-import { CheckInEvent } from '@model/check-in-event.model';
+import { CustomerInfo } from 'src/app/models/customer-info.model';
+import { CheckInEvent } from 'src/app/models/check-in-event.model';
 
 @Injectable({
   providedIn: 'root'

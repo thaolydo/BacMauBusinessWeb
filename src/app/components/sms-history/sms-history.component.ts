@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { SendSmsEvent } from '@model/send-sms-event.model';
+import { SendSmsEvent } from 'src/app/models/send-sms-event.model';
 
 @Component({
   selector: 'app-sms-history',

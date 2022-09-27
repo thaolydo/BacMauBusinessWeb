@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { CheckInEvent } from '@model/check-in-event.model';
-import { CustomersService } from '@service/customers.service';
+import { CheckInEvent } from 'src/app/models/check-in-event.model';
+import { CustomersService } from 'src/app/services/customers.service';
 
 @Component({
   selector: 'app-check-in-history',

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { CustomerInfo } from '@model/customer-info.model';
-import { CustomersService } from '@service/customers.service';
+import { CustomerInfo } from 'src/app/models/customer-info.model';
+import { CustomersService } from 'src/app/services/customers.service';
 
 @Component({
   selector: 'app-customer-list',

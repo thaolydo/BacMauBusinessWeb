@@ -24,10 +24,10 @@
     ],
     "paths": {
       "@service/*": [
-        "src/app/service/*"
+        "src/app/services/*"
       ],
       "@model/*": [
-        "src/app/model/*"
+        "src/app/models/*"
       ]
     }
   },
