@@ -1,0 +1,17 @@
+:host {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 1em;
+}
+
+mat-form-field {
+    margin: 1em;
+}
+
+.coupon-status-container {
+    display: flex;
+    align-items: center;
+    margin: 1em;
+}

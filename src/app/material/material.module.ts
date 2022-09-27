@@ -13,6 +13,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [],
@@ -31,6 +32,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatTabsModule,
     MatTableModule,
     MatSortModule,
+    MatIconModule,
   ],
   exports: [
     MatInputModule,
@@ -46,6 +48,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatTabsModule,
     MatTableModule,
     MatSortModule,
+    MatIconModule,
   ]
 })
 export class MaterialModule { }

@@ -21,6 +21,7 @@ import { CustomerListComponent } from './components/customer-list/customer-list.
 import { SmsHistoryComponent } from './components/sms-history/sms-history.component';
 import { SmsComponent } from './pages/sms/sms.component';
 import { PhonePipe } from './pipes/phone.pipe';
+import { CouponComponent } from './pages/coupon/coupon.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { PhonePipe } from './pipes/phone.pipe';
     SmsHistoryComponent,
     SendSmsComponent,
     PhonePipe,
+    CouponComponent,
   ],
   imports: [
     BrowserModule,

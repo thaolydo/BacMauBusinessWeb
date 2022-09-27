@@ -1,0 +1,18 @@
+<form (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+        <mat-label>Coupon Code</mat-label>
+        <input matInput type="text" required [(ngModel)]="couponCode" autofocus mask="000000"
+            [patterns]="couponCodePattern" (input)="onInput()" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+    <app-submit-button [disabled]="couponCode.length != 6 || isSubmitting" [isSubmitting]="isSubmitting">Check
+    </app-submit-button>
+</form>
+
+<!-- Coupon Status -->
+<span class="coupon-status-container">
+    <mat-icon *ngIf="couponStatus == 'VALID'" style="color: green;">check_circle</mat-icon>
+    <mat-icon *ngIf="couponStatus == 'INVALID'" color="warn">close</mat-icon>
+    <mat-icon *ngIf="couponStatus == 'USED'" style="color: rgb(202, 202, 4);">warning</mat-icon>
+    {{couponStatus}}
+    <app-submit-button *ngIf="couponStatus == 'VALID'" [disabled]="isMarkingUsed" [isSubmitting]="isMarkingUsed" (onClick)="onMarkUsed()" style="margin: 1em;">Mark USED</app-submit-button>
+</span>

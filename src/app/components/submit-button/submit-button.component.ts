@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 
 @Component({
@@ -10,6 +10,7 @@ export class SubmitButtonComponent implements OnInit, AfterViewInit {
 
   @Input('disabled') disabled: boolean | undefined;
   @Input('isSubmitting') isSubmitting: boolean | undefined;
+  @Output() onClick = new EventEmitter<string>();
 
   @ViewChild('button') button: MatButton | undefined;
 
@@ -30,5 +31,8 @@ export class SubmitButtonComponent implements OnInit, AfterViewInit {
     this.spinnerTop = `${spinnerTop}px`;
   }
 
+  onButtonClick() {
+    this.onClick.emit('dummy');
+  }
 
 }
