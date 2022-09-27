@@ -10,6 +10,7 @@ export class SubmitButtonComponent implements OnInit, AfterViewInit {
 
   @Input('disabled') disabled: boolean | undefined;
   @Input('isSubmitting') isSubmitting: boolean | undefined;
+  @Input('buttonType') buttonType: string = 'raised';
   @Output() onClick = new EventEmitter<string>();
 
   @ViewChild('button') button: MatButton | undefined;
@@ -21,6 +22,7 @@ export class SubmitButtonComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngOnInit(): void {
+    MatButton
   }
 
   ngAfterViewInit(): void {

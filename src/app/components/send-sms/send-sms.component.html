@@ -1,6 +1,15 @@
 <!-- Message Content -->
 <textarea matInput cols="3" rows="10" [(ngModel)]="messageContent"></textarea>
 
+<!-- Upload Button -->
+<div class="upload-button-container">
+    <app-submit-button [disabled]="uploadingImage" [isSubmitting]="uploadingImage" (onClick)="onAddImageUrl()">
+        Upload Image <mat-icon>file_upload</mat-icon>
+    </app-submit-button>
+</div>
+<input #imageUploadInput type="file" class="menu-item-upload-input" (change)="onFileSelected($event)"
+    style="visibility: hidden; width: 0 !important;">
+
 <!-- Images -->
 <div class="images" *ngIf="imageUrls">
     <div class="img-container" *ngFor="let imageUrl of imageUrls" (click)="onSelectImage(imageUrl)">
@@ -10,6 +19,7 @@
 <mat-spinner *ngIf="isLoading" diameter="30"></mat-spinner>
 
 <!-- Action Buttons -->
-<app-submit-fab-button class="send-button" [disabled]="!messageContent || isSending" [isSubmitting]="isSending" (onClick)="sendSms()">
+<app-submit-button buttonType="fab" class="send-button" [disabled]="!messageContent || isSending" [isSubmitting]="isSending"
+    (onClick)="sendSms()">
     <mat-icon style="font-size: x-large;">send</mat-icon>
-</app-submit-fab-button>
+</app-submit-button>

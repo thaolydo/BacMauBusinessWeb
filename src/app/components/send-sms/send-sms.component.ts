@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatSelectionList } from '@angular/material/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SendSmsService } from 'src/app/services/send-sms.service';
@@ -15,6 +16,9 @@ export class SendSmsComponent implements OnInit {
   selectedImage: string | undefined = undefined;
   isLoading = false;
   isSending: boolean = false;
+  uploadingImage = false;
+
+  @ViewChild('imageUploadInput') imageUploadInput: ElementRef<HTMLInputElement> | undefined;
 
   constructor(
     private sendSmsService: SendSmsService,
@@ -51,6 +55,47 @@ export class SendSmsComponent implements OnInit {
     } finally {
       // TODO: catch error here, eg. send sms too frequent
       this.isSending = false;
+    }
+  }
+
+  onAddImageUrl() {
+    console.log('on add image url');
+    this.imageUploadInput?.nativeElement.click();
+  }
+
+  async onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (!file) {
+      return;
+    }
+    if (file.size >= 10_000_000) {
+      alert('File size must not exceed 10MB.');
+      return;
+    }
+
+    // Upload the image
+    this.uploadingImage = true;
+    try {
+      // TODO: uncomment to upload image to backend
+      const signedUrlResponse = await this.sendSmsService.getSignedUrl(file.name, file.type);
+      const bucketName = signedUrlResponse.url.split('/').pop();
+      await this.sendSmsService.uploadToSignedPostUrl(signedUrlResponse.url, signedUrlResponse.fields, file);
+
+      // Update the form
+      const imageUrl = `https://${bucketName}.s3.us-west-1.amazonaws.com/${signedUrlResponse.fields['key']}`;
+      this.imageUrls.push(imageUrl);
+    } catch (e) {
+      console.error('Unable to upload the image', e);
+      if (e instanceof HttpErrorResponse) {
+        if ((e.error as string).includes('exceeds the maximum allowed size')) {
+          alert('File must not exceed 30MB.');
+        }
+      } else {
+        alert('Unable to upload the image. Please try again.');
+      }
+      return;
+    } finally {
+      this.uploadingImage = false;
     }
   }
 

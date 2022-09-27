@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -23,13 +23,16 @@ export class SendSmsService {
 
   getImageUrls() {
     console.log('getting image urls');
-    return firstValueFrom(this.http.get<string[]>(`${this.baseUrl}/getImages`));
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/getImages`)
+      .pipe(
+        map(res => res.imageUrls)
+      ));
   }
 
   // https://aws.amazon.com/blogs/compute/uploading-to-amazon-s3-directly-from-a-web-or-mobile-application
   getSignedUrl(fileName: string, contentType: string): Promise<GetSignedUrlResponse> {
     console.log('Getting signed url');
-    return firstValueFrom(this.http.get<GetSignedUrlResponse>(`${this.baseUrl}/upload-image/get-signed-url`, {
+    return firstValueFrom(this.http.get<GetSignedUrlResponse>(`${this.baseUrl}/getSignedUrl`, {
       params: {
         fileName,
         contentType
