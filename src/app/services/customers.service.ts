@@ -18,7 +18,7 @@ export class CustomersService {
     return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customers`)
     .pipe(
       map(res => {
-        const customers = Object.values(res) as any[];
+        const customers = Object.values(res.customers) as any[];
         for (const customer of customers) {
           customer.phone = customer.cid;
           delete customer.cid;
