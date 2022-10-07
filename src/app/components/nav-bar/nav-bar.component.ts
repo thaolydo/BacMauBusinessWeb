@@ -59,9 +59,9 @@ export class NavBarComponent implements OnInit {
 
   async onLogout() {
     console.log('Logging out');
-    // await this.authService.signOut();
+    await this.authService.signOut();
     console.log('current route =', this.router.url);
-    this.router.navigate(['/customer-check-in']);
+    this.router.navigate(['/sign-in']);
     this.snackBar.open('Successfully logged out', 'close', { duration: 3000 });
   }
 
