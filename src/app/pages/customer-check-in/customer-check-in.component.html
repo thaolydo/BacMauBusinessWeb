@@ -12,23 +12,26 @@
             formControlName="phone" required>
     </mat-form-field>
 
-    <!-- Birth Month -->
-    <mat-form-field class="birth-month-field" appearance="fill">
-        <mat-select formControlName="birthMonth" (selectionChange)="onMonthSelected()">
-            <mat-option class="birth-month-option" [value]="i + 1" *ngFor="let monthName of monthNames; let i = index">{{i + 1}} - {{monthName}}</mat-option>
-        </mat-select>
-        <mat-hint>Month</mat-hint>
-    </mat-form-field>
+    <fieldset>
+        <legend>Birthday</legend>
+        <!-- Birth Month -->
+        <mat-form-field class="birth-month-field" appearance="fill">
+            <mat-select formControlName="birthMonth" (selectionChange)="onMonthSelected()">
+                <mat-option class="birth-month-option" [value]="i + 1" *ngFor="let monthName of monthNames; let i = index">{{i + 1}} - {{monthName}}</mat-option>
+            </mat-select>
+            <mat-hint>Month</mat-hint>
+        </mat-form-field>
 
-    <!-- Birth Day -->
-    <mat-form-field class="birth-day-field" appearance="fill">
-        <mat-select formControlName="birthDay" [disabled]="!form.get('birthMonth')?.value">
-            <mat-option class="birth-day-option" [value]="day" *ngFor="let day of days">{{day}}</mat-option>
-        </mat-select>
-        <mat-hint>Day</mat-hint>
-    </mat-form-field>
+        <!-- Birth Day -->
+        <mat-form-field class="birth-day-field" appearance="fill">
+            <mat-select formControlName="birthDay" [disabled]="!form.get('birthMonth')?.value">
+                <mat-option class="birth-day-option" [value]="day" *ngFor="let day of days">{{day}}</mat-option>
+            </mat-select>
+            <mat-hint>Day</mat-hint>
+        </mat-form-field>
+    </fieldset>
 
     <!-- Action Buttons -->
     <app-submit-button [disabled]="!form.valid || isSubmitting" [isSubmitting]="isSubmitting">Submit</app-submit-button>
-    <button mat-raised-button (click)="resetForm()">Reset</button>
+    <button mat-raised-button (click)="resetForm()">Clear</button>
 </form>
