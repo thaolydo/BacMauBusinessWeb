@@ -36,11 +36,19 @@ export class CustomersService {
     return firstValueFrom(this.http.post(`${this.baseUrl}/customers/check-in`, { customer }));
   }
 
-  getCheckInEventHistory(month: number): Promise<CheckInEvent[]> {
+  getCheckInEventHistory(month: number, date?: Date): Promise<CheckInEvent[]> {
+    const params = { month, date: date?.toISOString() } as any;
+    if (date) {
+      const start = new Date(date);
+      start.setHours(0,0,0,0);
+      const end = new Date(date);
+      end.setHours(23,59,59,999);
+      params.start = start.getTime();
+      params.end = end.getTime();
+    }
+    console.log('params =', params);
     return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customers/check-in`, {
-      params: {
-        month
-      }
+      params
     }).pipe(
       map(res => res.paginatedItems.items)
     ));

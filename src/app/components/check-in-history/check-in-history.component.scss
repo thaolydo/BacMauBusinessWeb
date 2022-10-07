@@ -1,11 +1,32 @@
 :host {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 1em;
+    width: 50vw;
+}
+
+.search-container {
+    display: flex;
+    flex-direction: row;
+    align-self: flex-start;
+    height: 4em;
+
+    label {
+        margin: 1em 1em 1em 0;
+    }
+
+    mat-radio-button {
+        margin: 1em;
+    }
+
+    .birth-month-field {
+        width: 7em;
+    }
 }
 
 table {
-    width: 50%;
+    width: 100%;
+    margin: 1em;
 }

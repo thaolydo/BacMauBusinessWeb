@@ -16,18 +16,18 @@ export class CustomerCheckInComponent implements OnInit {
   form: FormGroup;
   monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   dayCountInMonth: { [monthName: string]: number } = {
-    Jan: 31,
-    Feb: 28,
-    Mar: 31,
-    Apr: 30,
-    May: 31,
-    Jun: 30,
-    Jul: 31,
-    Aug: 31,
-    Sep: 30,
-    Oct: 31,
-    Nov: 30,
-    Dec: 31
+    1: 31,
+    2: 28,
+    3: 31,
+    4: 30,
+    5: 31,
+    6: 30,
+    7: 31,
+    8: 31,
+    9: 30,
+    10: 31,
+    11: 30,
+    12: 31
   };
   days: number[] = [];
   isSubmitting = false;

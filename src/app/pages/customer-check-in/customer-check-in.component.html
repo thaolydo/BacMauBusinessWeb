@@ -15,7 +15,7 @@
     <!-- Birth Month -->
     <mat-form-field class="birth-month-field" appearance="fill">
         <mat-select formControlName="birthMonth" (selectionChange)="onMonthSelected()">
-            <mat-option class="birth-month-option" [value]="monthName" *ngFor="let monthName of monthNames">{{monthName}}</mat-option>
+            <mat-option class="birth-month-option" [value]="i + 1" *ngFor="let monthName of monthNames; let i = index">{{i + 1}} - {{monthName}}</mat-option>
         </mat-select>
         <mat-hint>Month</mat-hint>
     </mat-form-field>

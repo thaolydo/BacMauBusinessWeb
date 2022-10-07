@@ -11,6 +11,11 @@ import { CustomersService } from 'src/app/services/customers.service';
 })
 export class CheckInHistoryComponent implements OnInit {
 
+  groupBy = 'day';
+  selectedDate = new Date();
+  selectedMonth = new Date().getMonth() + 1;
+  monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
   isLoading = false;
   displayedColumns: string[] = ['phone', 'name', 'createdAt'];
 
@@ -39,7 +44,7 @@ export class CheckInHistoryComponent implements OnInit {
       //   { phone: '546456', name: 'ac', timestamp: new Date().toISOString() },
       // ];
       const curMonth = new Date().getMonth() + 1;
-      const checkInEvents = await this.customersService.getCheckInEventHistory(curMonth);
+      const checkInEvents = await this.customersService.getCheckInEventHistory(this.selectedMonth + 1, this.groupBy == 'day' ? this.selectedDate : undefined);
       console.log('checkInEvents =', checkInEvents);
       this.dataSource = new MatTableDataSource<CheckInEvent>(checkInEvents);
     } catch (e: any) {
@@ -47,6 +52,23 @@ export class CheckInHistoryComponent implements OnInit {
     } finally {
       this.isLoading = false;
     }
+  }
+
+  async onGroupBy() {
+    console.log('on group by');
+    await this.loadTableDataSource();
+  }
+
+  async onDateSelected() {
+    console.log('selectedDate =', this.selectedDate.getTime());
+    this.selectedMonth = this.selectedDate.getMonth();
+    await this.loadTableDataSource();
+  }
+
+  async onMonthSelected() {
+    console.log('selectedMonth =', this.selectedMonth);
+    this.selectedDate.setMonth(this.selectedMonth);
+    await this.loadTableDataSource();
   }
 
 }

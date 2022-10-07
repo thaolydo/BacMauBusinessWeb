@@ -14,6 +14,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [],
@@ -33,6 +34,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatTableModule,
     MatSortModule,
     MatIconModule,
+    MatRadioModule,
   ],
   exports: [
     MatInputModule,
@@ -49,6 +51,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatTableModule,
     MatSortModule,
     MatIconModule,
+    MatRadioModule,
   ]
 })
 export class MaterialModule { }
