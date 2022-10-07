@@ -1,5 +1,5 @@
 export interface SendSmsEvent {
     createdAt: string;
     content: string;
-    imageUrl?: string;
+    imageUrl?: string; // not needed currently
 }

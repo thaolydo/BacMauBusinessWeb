@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { SendSmsService } from '@service/send-sms.service';
 import { SendSmsEvent } from 'src/app/models/send-sms-event.model';
 
 @Component({
@@ -11,7 +12,7 @@ import { SendSmsEvent } from 'src/app/models/send-sms-event.model';
 export class SmsHistoryComponent implements OnInit {
 
   isLoading = false;
-  displayedColumns: string[] = ['createdAt', 'content', 'imageUrl'];
+  displayedColumns: string[] = ['createdAt', 'content'];
 
   dataSource: MatTableDataSource<SendSmsEvent> | undefined;
   private sortHodler: MatSort | undefined;
@@ -22,7 +23,9 @@ export class SmsHistoryComponent implements OnInit {
     }
   }
 
-  constructor() { }
+  constructor(
+    private sendSmsService: SendSmsService,
+  ) { }
 
   async ngOnInit() {
     await this.loadTableDataSource();
@@ -31,15 +34,8 @@ export class SmsHistoryComponent implements OnInit {
   async loadTableDataSource() {
     this.isLoading = true;
     try {
-      // TODO: get data from backend
-      await new Promise((x) => setTimeout(x, 1000));
-      const sendSmsEvents: SendSmsEvent[] = [
-        { createdAt: new Date().toISOString(), content: 'hello', imageUrl: 'djjf' },
-        { createdAt: new Date('2022-09-28').toISOString(), content: 'hi', imageUrl: 'djjf' },
-        { createdAt: new Date().toISOString(), content: 'kdlj', imageUrl: 'djjf' },
-      ];
+      const sendSmsEvents = await this.sendSmsService.getSmsEvents();
       this.dataSource = new MatTableDataSource<SendSmsEvent>(sendSmsEvents);
-      // this.dataSource.sort = this.sort ? this.sort : null;
     } catch (e: any) {
       throw e;
     } finally {

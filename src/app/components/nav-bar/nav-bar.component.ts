@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { AuthEventType } from '@model/auth-event-types.enum';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
@@ -12,7 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class NavBarComponent implements OnInit {
 
-  @Input() businessName: string = 'Venus'; // TODO: get it from query params in the current url
+  @Input() businessName: string = 'Life Reflexology'; // TODO: get it from query params in the current url
 
   curUser: CognitoUser | undefined;
   authEventSubscription: Subscription | undefined;
@@ -24,14 +25,14 @@ export class NavBarComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    // this.authEventSubscription = this.authService.getAuthEventUpdates().subscribe(async event => {
-    //   console.log('NavBarComponent: auth event =', event);
-    //   if (event == AuthEventType.SIGNED_IN || event == AuthEventType.ATTRIBUTE_UPDATED) {
-    //     this.curUser = await this.authService.getCurUser();
-    //   } else if (event == AuthEventType.SIGNED_OUT) {
-    //     this.curUser = undefined;
-    //   }
-    // });
+    this.authEventSubscription = this.authService.getAuthEventUpdates().subscribe(async event => {
+      console.log('NavBarComponent: auth event =', event);
+      if (event == AuthEventType.SIGNED_IN || event == AuthEventType.ATTRIBUTE_UPDATED) {
+        this.curUser = await this.authService.getCurUser();
+      } else if (event == AuthEventType.SIGNED_OUT) {
+        this.curUser = undefined;
+      }
+    });
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         console.log('url =', event.url);
@@ -47,9 +48,6 @@ export class NavBarComponent implements OnInit {
       this.curUser = await this.authService.getCurUser();
     } catch (err) {
       console.log('nav-bar onInit: User not logged in');
-
-      // TODO: Remove this line below
-      // this.curUser = {} as CognitoUser;
     }
   }
 

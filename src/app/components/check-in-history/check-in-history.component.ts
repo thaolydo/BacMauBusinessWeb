@@ -37,12 +37,6 @@ export class CheckInHistoryComponent implements OnInit {
   async loadTableDataSource() {
     this.isLoading = true;
     try {
-      // await new Promise((x) => setTimeout(x, 1000));
-      // const checkInEvents: CheckInEvent[] = [
-      //   { phone: '1234', name: 'huy', timestamp: new Date().toISOString() },
-      //   { phone: '434', name: 'ly', timestamp: new Date().toISOString() },
-      //   { phone: '546456', name: 'ac', timestamp: new Date().toISOString() },
-      // ];
       const curMonth = new Date().getMonth() + 1;
       const checkInEvents = await this.customersService.getCheckInEventHistory(this.selectedMonth + 1, this.groupBy == 'day' ? this.selectedDate : undefined);
       console.log('checkInEvents =', checkInEvents);

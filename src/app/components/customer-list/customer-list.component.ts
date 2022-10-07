@@ -23,14 +23,7 @@ export class CustomerListComponent implements OnInit {
   async loadTableDataSource() {
     this.isLoading = true;
     try {
-      // TODO: get data from backend
       const customers = await this.customersService.getCustomers();
-      // await new Promise((x) => setTimeout(x, 1000));
-      // const customers: CustomerInfo[] = [
-      //   { phone: '1234', name: 'huy', birthDay: '08', birthMonth: 'Jun' },
-      //   { phone: '434', name: 'ly', birthDay: '17', birthMonth: 'Sep' },
-      //   { phone: 'dfsdf', name: 'ac', birthDay: '12', birthMonth: 'Oct' },
-      // ];
       console.log('customers =', customers);
       this.dataSource = new MatTableDataSource<CustomerInfo>(customers);
     } catch (e: any) {

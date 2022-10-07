@@ -24,7 +24,13 @@ export class SignInComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    try {
+      await this.authService.getCurUser();
+      this.router.navigate(['/customers']);
+    } catch (err) {
+      console.log('sign-in onInit: User not logged in');
+    }
   }
 
   get username() {

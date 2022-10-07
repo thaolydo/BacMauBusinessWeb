@@ -76,7 +76,6 @@ export class SendSmsComponent implements OnInit {
     // Upload the image
     this.uploadingImage = true;
     try {
-      // TODO: uncomment to upload image to backend
       const signedUrlResponse = await this.sendSmsService.getSignedUrl(file.name, file.type);
       const bucketName = signedUrlResponse.url.split('/').pop();
       await this.sendSmsService.uploadToSignedPostUrl(signedUrlResponse.url, signedUrlResponse.fields, file);

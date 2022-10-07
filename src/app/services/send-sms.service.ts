@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { SendSmsEvent } from '@model/send-sms-event.model';
 import { firstValueFrom, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -54,6 +55,23 @@ export class SendSmsService {
     // Actual file has to be appended last.
     formData.append("file", blob);
     return firstValueFrom(this.http.post(signedUrl, formData));
+  }
+
+  getSmsEvents(): Promise<SendSmsEvent[]> {
+    console.log('Getting sms events');
+    return firstValueFrom(this.http.get(`${this.baseUrl}/getSmsEvents`)
+      .pipe(
+        map((res: any) => {
+          const toReturn = [] as SendSmsEvent[];
+          for (const event of res.smsEvents) {
+            toReturn.push({
+              createdAt: event.createdAt,
+              content: event.ad.adContent
+            } as SendSmsEvent);
+          }
+          return toReturn;
+        })
+      ));
   }
 }
 

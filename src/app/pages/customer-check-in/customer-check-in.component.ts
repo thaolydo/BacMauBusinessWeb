@@ -69,7 +69,7 @@ export class CustomerCheckInComponent implements OnInit {
       panelClass: 'dialog',
       data: {
         customerInfo,
-        businessName: 'Venus', // TODO: use the correct business name
+        businessName: 'Life Reflexology',
       }
     });
   }

@@ -11,9 +11,7 @@ export class UsernamePipe implements PipeTransform {
     if (!user) {
       return undefined;
     }
-    // TODO: uncomment below
-    // user.getUsername();
-    return 'venus';
+    return user.getUsername();
   }
 
 }
