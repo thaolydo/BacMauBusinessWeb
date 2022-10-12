@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CustomersService } from 'src/app/services/customers.service';
 import { CustomerInfo } from 'src/app/models/customer-info.model';
 import { SendSmsService } from 'src/app/services/send-sms.service';
 
@@ -16,7 +15,6 @@ export class TermsAndConditionsDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private sendSmsService: SendSmsService,
-    private customersService: CustomersService,
   ) {
     this.customerInfo = data.customerInfo as CustomerInfo;
    }

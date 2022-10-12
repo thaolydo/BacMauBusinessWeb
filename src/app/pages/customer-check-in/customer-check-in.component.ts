@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { BacMauBusinessService } from 'src/app/services/bac-mau-business.service';
+import { CustomersService } from '@service/customers.service';
 import { TermsAndConditionsDialogComponent } from 'src/app/components/terms-and-conditions-dialog/terms-and-conditions-dialog.component';
 import { CustomerInfo } from 'src/app/models/customer-info.model';
 
@@ -34,7 +34,7 @@ export class CustomerCheckInComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-    private bacMauBusinessService: BacMauBusinessService,
+    private customersService: CustomersService,
     private dialog: MatDialog,
   ) {
     this.form = this._fb.group({
@@ -55,23 +55,31 @@ export class CustomerCheckInComponent implements OnInit {
 
   async onSubmit() {
     this.isSubmitting = true;
-    const customerInfo = this.form.value as CustomerInfo;
-    console.log('customerInfo =', customerInfo);
+    try {
+      const customerInfo = this.form.value as CustomerInfo;
+      console.log('customerInfo =', customerInfo);
 
-    // Check-in
-    await new Promise(r => setTimeout(r, 2000));
-    // await this.bacMauBusinessService.saveCustomerInfo(customerInfo);
-    this.resetForm();
-    this.isSubmitting = false;
+      // Check-in
+      const res = await this.customersService.checkIn(customerInfo);
+      const alreadySubsribed = res.subscribed;
+      this.resetForm();
 
-    // Open subscribe dialog
-    this.dialog.open(TermsAndConditionsDialogComponent, {
-      panelClass: 'dialog',
-      data: {
-        customerInfo,
-        businessName: 'Life Reflexology',
+      // Open subscribe dialog
+      if (!alreadySubsribed) {
+        this.dialog.open(TermsAndConditionsDialogComponent, {
+          panelClass: 'dialog',
+          data: {
+            customerInfo,
+            businessName: 'Life Reflexology',
+          }
+        });
       }
-    });
+    } catch (e: any) {
+      alert(e.message);
+    } finally {
+      this.isSubmitting = false;
+    }
+
   }
 
   resetForm() {

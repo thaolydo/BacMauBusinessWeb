@@ -32,7 +32,7 @@ export class CustomersService {
     return firstValueFrom(this.http.post(`${this.baseUrl}/customers`, { customers }));
   }
 
-  checkIn(customer: CustomerInfo) {
+  checkIn(customer: CustomerInfo): Promise<any> {
     return firstValueFrom(this.http.post(`${this.baseUrl}/customers/check-in`, { customer }));
   }
 
