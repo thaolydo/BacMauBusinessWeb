@@ -10,7 +10,7 @@ import { SmsComponent } from './pages/sms/sms.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/customer-check-in' },
-  { path: 'customer-check-in', component: CustomerCheckInComponent },
+  { path: 'customer-check-in', component: CustomerCheckInComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK] } },
   { path: 'sign-in', component: SignInComponent },
   { path: 'customers', component: CustomersComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
   { path: 'sms', component: SmsComponent, canActivate: [AuthGuard], data: { roles: [Role.OWNER] } },
