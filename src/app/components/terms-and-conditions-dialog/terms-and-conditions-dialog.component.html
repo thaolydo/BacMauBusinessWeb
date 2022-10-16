@@ -7,6 +7,7 @@
         services.</p>
 </div>
 <div class="action-buttons" mat-dialog-actions>
-    <button mat-raised-button mat-dialog-close (click)="onSubmit()" cdkFocusInitial color="primary">Subscribe</button>
+    <app-submit-button [disabled]="isSubmitting" [isSubmitting]="isSubmitting" (onClick)="onSubmit()">Subscribe
+    </app-submit-button>
     <span class="skip-button" mat-dialog-close>Skip</span>
 </div>

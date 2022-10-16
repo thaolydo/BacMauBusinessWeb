@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { SendSmsEvent } from '@model/send-sms-event.model';
 import { firstValueFrom, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,33 +12,43 @@ export class SendSmsService {
 
   baseUrl = environment.baseUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) { }
 
-  subscribeToMarketingSms(phone: string) {
-    return firstValueFrom(this.http.post(`${this.baseUrl}/subscribe-marketing-sms`, { phone }));
+  async subscribeToMarketingSms(phone: string) {
+    return firstValueFrom(this.http.post(`${this.baseUrl}/subscribe-marketing-sms`, { phone }, {
+      headers: await this._buildCommonHeaders()
+    }));
   }
 
-  sendSms(content: string, imageUrl?: string) {
+  async sendSms(content: string, imageUrl?: string) {
     console.log('Sending sms:', content, imageUrl)
-    return firstValueFrom(this.http.post(`${this.baseUrl}/send-sms`, { content, imageUrl }));
+    return firstValueFrom(this.http.post(`${this.baseUrl}/send-sms`, { content, imageUrl }, {
+      headers: await this._buildCommonHeaders()
+    }));
   }
 
-  getImageUrls() {
+  async getImageUrls() {
     console.log('getting image urls');
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/getImages`)
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/getImages`, {
+      headers: await this._buildCommonHeaders()
+    })
       .pipe(
         map(res => res.imageUrls)
       ));
   }
 
   // https://aws.amazon.com/blogs/compute/uploading-to-amazon-s3-directly-from-a-web-or-mobile-application
-  getSignedUrl(fileName: string, contentType: string): Promise<GetSignedUrlResponse> {
+  async getSignedUrl(fileName: string, contentType: string): Promise<GetSignedUrlResponse> {
     console.log('Getting signed url');
     return firstValueFrom(this.http.get<GetSignedUrlResponse>(`${this.baseUrl}/getSignedUrl`, {
       params: {
         fileName,
-        contentType
-      }
+        contentType,
+      },
+      headers: await this._buildCommonHeaders()
     }));
   }
 
@@ -57,9 +68,11 @@ export class SendSmsService {
     return firstValueFrom(this.http.post(signedUrl, formData));
   }
 
-  getSmsEvents(): Promise<SendSmsEvent[]> {
+  async getSmsEvents(): Promise<SendSmsEvent[]> {
     console.log('Getting sms events');
-    return firstValueFrom(this.http.get(`${this.baseUrl}/getSmsEvents`)
+    return firstValueFrom(this.http.get(`${this.baseUrl}/getSmsEvents`, {
+      headers: await this._buildCommonHeaders()
+    })
       .pipe(
         map((res: any) => {
           const toReturn = [] as SendSmsEvent[];
@@ -72,6 +85,14 @@ export class SendSmsService {
           return toReturn;
         })
       ));
+  }
+
+  private async _buildCommonHeaders(): Promise<any> {
+    const curUser = await this.authService.getCurUser();
+    console.log('curUser?.getSignInUserSession()?.getAccessToken =', curUser?.getSignInUserSession()?.getAccessToken().getJwtToken());
+    return {
+      Authorization: curUser?.getSignInUserSession()?.getAccessToken().getJwtToken()
+    }
   }
 }
 
