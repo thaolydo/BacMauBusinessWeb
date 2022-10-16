@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { Role } from '@model/role.model';
 import { AuthGuard } from './auth.guard';
 import { CouponComponent } from './pages/coupon/coupon.component';
 import { CustomerCheckInComponent } from './pages/customer-check-in/customer-check-in.component';
@@ -11,9 +12,9 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/customer-check-in' },
   { path: 'customer-check-in', component: CustomerCheckInComponent },
   { path: 'sign-in', component: SignInComponent },
-  { path: 'customers', component: CustomersComponent, canActivate: [AuthGuard] },
-  { path: 'sms', component: SmsComponent, canActivate: [AuthGuard] },
-  { path: 'coupon', component: CouponComponent, canActivate: [AuthGuard] },
+  { path: 'customers', component: CustomersComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
+  { path: 'sms', component: SmsComponent, canActivate: [AuthGuard], data: { roles: [Role.OWNER] } },
+  { path: 'coupon', component: CouponComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
 ];
 
 @NgModule({

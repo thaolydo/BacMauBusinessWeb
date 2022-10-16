@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -17,19 +17,18 @@ export class SignInComponent implements OnInit {
     private _fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {
     this.form = this._fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
+      signingInAsOwner: [false],
     });
   }
 
   async ngOnInit() {
-    try {
-      await this.authService.getCurUser();
+    if (await this.authService.getCurUser()) {
       this.router.navigate(['/customers']);
-    } catch (err) {
-      console.log('sign-in onInit: User not logged in');
     }
   }
 
@@ -41,10 +40,14 @@ export class SignInComponent implements OnInit {
     return this.form.get('password')?.value as string;
   }
 
+  get signingInAsOwner() {
+    return this.form.get('signingInAsOwner')?.value;
+  }
+
   async onSubmit() {
     this.isSubmitting = true;
     try {
-      const res = await this.authService.signIn(this.username, this.password);
+      const res = await this.authService.signIn(this.signingInAsOwner, this.username, this.password);
       console.log('res =', res);
       this.router.navigate(['/customers']);
     } catch (e: any) {

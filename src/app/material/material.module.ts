@@ -15,6 +15,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [],
@@ -35,6 +36,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatSortModule,
     MatIconModule,
     MatRadioModule,
+    MatCheckboxModule,
   ],
   exports: [
     MatInputModule,
@@ -52,6 +54,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatSortModule,
     MatIconModule,
     MatRadioModule,
+    MatCheckboxModule,
   ]
 })
 export class MaterialModule { }

@@ -11,6 +11,10 @@
         <input matInput type="password" required formControlName="password">
     </mat-form-field>
 
+    <!-- Signing in as owner checkbox -->
+    <mat-checkbox formControlName="signingInAsOwner">as Onwer</mat-checkbox>
+
     <!-- Action Buttons -->
-    <app-submit-button [disabled]="!form.valid || isSubmitting" [isSubmitting]="isSubmitting">Sign In</app-submit-button>
+    <app-submit-button [disabled]="!form.valid || isSubmitting" [isSubmitting]="isSubmitting">Sign In
+    </app-submit-button>
 </form>
