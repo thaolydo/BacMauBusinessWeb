@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatSelectionList } from '@angular/material/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CustomersService } from '@service/customers.service';
 import { SendSmsService } from 'src/app/services/send-sms.service';
 
 @Component({
@@ -17,18 +18,21 @@ export class SendSmsComponent implements OnInit {
   isLoading = false;
   isSending: boolean = false;
   uploadingImage = false;
+  customerCount: number | undefined;
 
   @ViewChild('imageUploadInput') imageUploadInput: ElementRef<HTMLInputElement> | undefined;
 
   constructor(
     private sendSmsService: SendSmsService,
+    private customersService: CustomersService,
     private snackBar: MatSnackBar,
   ) { }
 
   async ngOnInit() {
     this.isLoading = true;
     try {
-      this.imageUrls = await this.sendSmsService.getImageUrls();
+      // this.imageUrls = await this.sendSmsService.getImageUrls();
+      this.customerCount = await this.customersService.getCustomerCount();
     } finally {
       this.isLoading = false;
     }
@@ -52,8 +56,10 @@ export class SendSmsComponent implements OnInit {
       // Clear the form to avoid accidentally sending it twice
       this.messageContent = '';
       this.selectedImage = undefined;
-    } finally {
+    } catch(e: any) {
       // TODO: catch error here, eg. send sms too frequent
+      alert('Unable to send SMS');
+    } finally {
       this.isSending = false;
     }
   }

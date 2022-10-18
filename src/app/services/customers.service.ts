@@ -66,9 +66,17 @@ export class CustomersService {
     ));
   }
 
+  async getCustomerCount(): Promise<number> {
+    console.log('Getting customer count');
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customers/count`, {
+      headers: await this._buildCommonHeaders()
+    }).pipe(
+      map(res => res.count as number)
+    ));
+  }
+
   private async _buildCommonHeaders(): Promise<any> {
     const curUser = await this.authService.getCurUser();
-    console.log('curUser?.getSignInUserSession()?.getAccessToken =', curUser?.getSignInUserSession()?.getAccessToken().getJwtToken());
     return {
       Authorization: curUser?.getSignInUserSession()?.getAccessToken().getJwtToken()
     }

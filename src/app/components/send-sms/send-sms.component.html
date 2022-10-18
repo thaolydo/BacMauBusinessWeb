@@ -1,5 +1,7 @@
 <!-- Message Content -->
-<textarea matInput cols="3" [(ngModel)]="messageContent"></textarea>
+<!-- <textarea matInput cols="3" [(ngModel)]="messageContent"></textarea> -->
+<input matInput [(ngModel)]="messageContent" />
+<span style="color: grey;">Customer Count: {{customerCount}}</span>
 
 <!-- Upload Button -->
 <!-- <div class="upload-button-container">
@@ -19,7 +21,7 @@
 <mat-spinner *ngIf="isLoading" diameter="30"></mat-spinner> -->
 
 <!-- Action Buttons -->
-<app-submit-button buttonType="fab" class="send-button" [disabled]="!messageContent || isSending" [isSubmitting]="isSending"
-    (onClick)="sendSms()">
+<app-submit-button buttonType="fab" class="send-button" [disabled]="!messageContent || isSending"
+    [isSubmitting]="isSending" (onClick)="sendSms()">
     <mat-icon style="font-size: x-large;">send</mat-icon>
 </app-submit-button>

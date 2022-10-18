@@ -89,7 +89,6 @@ export class SendSmsService {
 
   private async _buildCommonHeaders(): Promise<any> {
     const curUser = await this.authService.getCurUser();
-    console.log('curUser?.getSignInUserSession()?.getAccessToken =', curUser?.getSignInUserSession()?.getAccessToken().getJwtToken());
     return {
       Authorization: curUser?.getSignInUserSession()?.getAccessToken().getJwtToken()
     }
