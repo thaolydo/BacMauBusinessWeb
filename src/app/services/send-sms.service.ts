@@ -18,8 +18,12 @@ export class SendSmsService {
   ) { }
 
   async subscribeToMarketingSms(phone: string) {
-    return firstValueFrom(this.http.post(`${this.baseUrl}/subscribe-marketing-sms`, { phone }, {
-      headers: await this._buildCommonHeaders()
+    phone = `+1${phone}`;
+    return firstValueFrom(this.http.post(`${this.baseUrl}/sendConfirmSms`, { phone }, {
+      params: {
+        cid: phone
+      },
+      headers: await this._buildCommonHeaders(),
     }));
   }
 
