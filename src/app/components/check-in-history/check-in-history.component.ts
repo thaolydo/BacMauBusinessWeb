@@ -13,7 +13,7 @@ export class CheckInHistoryComponent implements OnInit {
 
   groupBy = 'day';
   selectedDate = new Date();
-  selectedMonth = new Date().getMonth() + 1;
+  selectedMonth = new Date().getMonth();
   monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   isLoading = false;
