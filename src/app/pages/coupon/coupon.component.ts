@@ -31,9 +31,7 @@ export class CouponComponent implements OnInit {
   async onSubmit() {
     this.isSubmitting = true;
     try {
-      // TODO: call get coupon status API
-      await new Promise((x) => setTimeout(x, 1000));
-      this.couponStatus = CouponStatus.VALID; // await this.couponService.getCouponStatus(this.couponCode);
+      this.couponStatus = await this.couponService.getCouponStatus(this.couponCode);
     } finally {
       this.isSubmitting = false;
     }
@@ -50,7 +48,7 @@ export class CouponComponent implements OnInit {
     try {
       await new Promise((x) => setTimeout(x, 1000));
       // TODO: call mark used API
-      // await this.couponService.markCouponUsed(this.couponCode);
+      await this.couponService.markCouponUsed(this.couponCode);
       this.snackBar.open(`Coupon '${this.couponCode}' is marked as USED`, 'dismiss', { duration: 3000 });
       this.couponStatus = CouponStatus.USED;
     } finally {

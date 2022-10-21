@@ -18,16 +18,22 @@ export class CouponService {
   ) { }
 
   async getCouponStatus(couponCode: string): Promise<CouponStatus> {
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/coupon`, {
-      headers: await this._buildCommonHeaders()
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/getCouponStatus`, {
+      headers: await this._buildCommonHeaders(),
+      params: {
+        coupon: couponCode
+      }
     })
       .pipe(
-        map(res => res.status)
+        map(res => res.res.couponStatus)
       ));
   }
 
   async markCouponUsed(couponCode: string) {
-    return firstValueFrom(this.http.post(`${this.baseUrl}/coupon`, undefined, {
+    return firstValueFrom(this.http.post(`${this.baseUrl}/saveCoupon`, {
+      coupon: couponCode,
+      status: 'USED'
+    }, {
       headers: await this._buildCommonHeaders()
     }));
   }
