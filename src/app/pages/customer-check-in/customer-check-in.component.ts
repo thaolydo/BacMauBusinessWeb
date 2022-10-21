@@ -61,6 +61,9 @@ export class CustomerCheckInComponent implements OnInit {
 
       // Check-in
       const res = await this.customersService.checkIn(customerInfo);
+
+      // TODO: add dialog to notify checked in successfully
+
       const alreadySubsribed = res.subscribed;
       this.resetForm();
 
