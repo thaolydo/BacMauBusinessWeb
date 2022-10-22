@@ -11,7 +11,7 @@ import { Role } from '@model/role.model';
 export class AuthService {
 
   private ownerUserPool: CognitoUserPool;
-  private frontDeskUserPool: CognitoUserPool;
+  // private frontDeskUserPool: CognitoUserPool;
 
   private eventSubject: Subject<AuthEventType> = new Subject();
 
@@ -20,16 +20,16 @@ export class AuthService {
       ClientId: environment.ownerUserPoolClientId,
       UserPoolId: environment.ownerUserPoolId
     });
-    this.frontDeskUserPool = new CognitoUserPool({
-      ClientId: environment.frontDeskUserPoolClientId,
-      UserPoolId: environment.frontDeskUserPoolId
-    });
+    // this.frontDeskUserPool = new CognitoUserPool({
+    //   ClientId: environment.frontDeskUserPoolClientId,
+    //   UserPoolId: environment.frontDeskUserPoolId
+    // });
   }
 
-  signIn(signInAsOnwer: boolean, username: string, password: string): Promise<CognitoUser> {
-    console.log(`Signing in user with username '${username}'${signInAsOnwer ? 'as owner' : ''}`);
+  signIn(username: string, password: string): Promise<CognitoUser> {
+    console.log(`Signing in user with username '${username}'`);
     const user = new CognitoUser({
-      Pool: signInAsOnwer ? this.ownerUserPool : this.frontDeskUserPool,
+      Pool: this.ownerUserPool,
       Username: username,
     });
     return new Promise((resolve, reject) => {
@@ -88,13 +88,13 @@ export class AuthService {
     });
   }
 
-  async getCurUser(): Promise<CognitoUser | undefined> {
-    const curUser = await this._getCurUser(true);
-    return curUser ? curUser : await this._getCurUser(false);
-  }
+  // async getCurUser(): Promise<CognitoUser | undefined> {
+  //   const curUser = await this._getCurUser(true);
+  //   return curUser ? curUser : await this._getCurUser(false);
+  // }
 
-  _getCurUser(signInAsOnwer: boolean): Promise<CognitoUser | undefined> {
-    const curUser = signInAsOnwer ? this.ownerUserPool.getCurrentUser() : this.frontDeskUserPool.getCurrentUser();
+  getCurUser(): Promise<CognitoUser | undefined> {
+    const curUser = this.ownerUserPool.getCurrentUser();
     return new Promise((resolve, reject) => {
       if (!curUser) {
         console.log('getCurUser(): User not logged in');
@@ -118,11 +118,15 @@ export class AuthService {
   }
 
   async hasRole(role: Role) {
+    const user = await this.getCurUser();
+    if (!user) {
+      return false;
+    }
     if (role == Role.OWNER) {
-      return await this._getCurUser(true) != undefined;
+      return user.getUsername() == 'venus-admin'; // TODO: change this when creating new user in the pool
     }
     if (role == Role.FRONT_DESK) {
-      return await this._getCurUser(false) != undefined;
+      return user.getUsername() == 'frontdesk'; // TODO: change this when creating new user in the pool
     }
     return false;
   }

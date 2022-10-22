@@ -1,6 +1,8 @@
 <!-- Message Content -->
-<!-- <textarea matInput cols="3" [(ngModel)]="messageContent"></textarea> -->
-<input matInput [(ngModel)]="messageContent" />
+<mat-form-field appearance="fill" class="message-content">
+    <textarea matInput rows="10" [(ngModel)]="messageContent"></textarea>
+</mat-form-field>
+<!-- <input matInput [(ngModel)]="messageContent" /> -->
 <span style="color: grey;">Customer Count: {{customerCount}}</span>
 
 <!-- Upload Button -->
