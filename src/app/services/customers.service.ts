@@ -41,6 +41,7 @@ export class CustomersService {
   }
 
   async checkIn(customer: CustomerInfo): Promise<any> {
+    customer.phone = `+1${customer.phone}`;
     customer.cid = customer.phone;
     return firstValueFrom(this.http.post(`${this.baseUrl}/customers/check-in`, { customer }, {
       headers: await this._buildCommonHeaders()
