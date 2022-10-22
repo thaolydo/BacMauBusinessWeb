@@ -18,7 +18,6 @@ export class SendSmsService {
   ) { }
 
   async subscribeToMarketingSms(phone: string) {
-    phone = `+1${phone}`;
     return firstValueFrom(this.http.post(`${this.baseUrl}/sendConfirmSms`, { phone }, {
       params: {
         cid: phone

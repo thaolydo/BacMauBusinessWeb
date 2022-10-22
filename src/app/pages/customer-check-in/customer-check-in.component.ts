@@ -57,6 +57,8 @@ export class CustomerCheckInComponent implements OnInit {
     this.isSubmitting = true;
     try {
       const customerInfo = this.form.value as CustomerInfo;
+      customerInfo.phone = `+1${customerInfo.phone}`;
+      customerInfo.cid = customerInfo.phone;
       console.log('customerInfo =', customerInfo);
 
       // Check-in
