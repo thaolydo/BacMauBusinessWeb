@@ -15,6 +15,10 @@ export class PhonePipe {
    * @returns
    */
   transform(value: string, ...args: unknown[]): unknown {
+    if (!value) {
+      return value;
+    }
+
     // Skip +1
     if (value.startsWith('+1')) {
       value = value.substring(2);

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomersService } from '@service/customers.service';
@@ -8,7 +8,7 @@ import { CustomerInfo } from 'src/app/models/customer-info.model';
 @Component({
   selector: 'app-customer-check-in',
   templateUrl: './customer-check-in.component.html',
-  styleUrls: ['./customer-check-in.component.scss']
+  styleUrls: ['./customer-check-in.component.scss'],
 })
 export class CustomerCheckInComponent implements OnInit {
   @ViewChild('formDirective', { static: false }) formDirective: NgForm | undefined;
