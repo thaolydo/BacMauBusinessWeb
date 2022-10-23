@@ -1,6 +1,17 @@
+:host {
+    font-size: xx-large;
+}
+
+:host ::ng-deep button, button {
+    font-size: xx-large;
+    width: 7em;
+    height: 2em;
+    margin: 0.5em;
+}
+
 .mat-dialog-title {
     text-align: center;
-    font-size: xx-large;
+    font-size: xxx-large;
 }
 
 .action-buttons {
@@ -13,6 +24,6 @@
         cursor: pointer;
         position: absolute;
         right: 0;
-        font-size: x-small;
+        font-size: large;
     }
 }
