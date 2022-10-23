@@ -49,9 +49,8 @@ export class SendSmsComponent implements OnInit {
   async sendSms() {
     this.isSending = true;
     try {
-      // await new Promise(r => setTimeout(r, 2000));
-      await this.sendSmsService.sendSms(this.messageContent, this.selectedImage);
-      this.snackBar.open('Send SMS successful', undefined, { duration: 3000 });
+      const res = await this.sendSmsService.sendSms(this.messageContent, this.selectedImage);
+      this.snackBar.open('Sent SMS successfully', undefined, { duration: 3000 });
 
       // Clear the form to avoid accidentally sending it twice
       this.messageContent = '';

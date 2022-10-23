@@ -47,7 +47,6 @@ export class CouponComponent implements OnInit {
     this.isMarkingUsed = true;
     try {
       await new Promise((x) => setTimeout(x, 1000));
-      // TODO: call mark used API
       await this.couponService.markCouponUsed(this.couponCode);
       this.snackBar.open(`Coupon '${this.couponCode}' is marked as USED`, 'dismiss', { duration: 3000 });
       this.couponStatus = CouponStatus.USED;
