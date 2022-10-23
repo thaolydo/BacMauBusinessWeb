@@ -47,9 +47,15 @@ export class SendSmsComponent implements OnInit {
   }
 
   async sendSms() {
+    if (!confirm(`Are you sure you want to send the SMS to ${this.customerCount} customers?`)) {
+      return;
+    }
+
     this.isSending = true;
     try {
       const res = await this.sendSmsService.sendSms(this.messageContent, this.selectedImage);
+      // await new Promise(x => setTimeout(x, 1000));
+      // const res = { success: true };
       if (res.success) {
         this.snackBar.open('Sent SMS successfully', undefined, { duration: 3000 });
       } else {
@@ -59,7 +65,7 @@ export class SendSmsComponent implements OnInit {
       // Clear the form to avoid accidentally sending it twice
       this.messageContent = '';
       this.selectedImage = undefined;
-    } catch(e: any) {
+    } catch (e: any) {
       // TODO: catch error here, eg. send sms too frequent
       alert('Unable to send SMS');
     } finally {
