@@ -24,7 +24,7 @@
 
 </div>
 
-<table *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+<table *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort matSortActive="createdAt" matSortDirection="desc">
 
     <!-- Phone Column -->
     <ng-container matColumnDef="phone">
