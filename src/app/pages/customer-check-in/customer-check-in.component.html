@@ -32,6 +32,6 @@
     </fieldset>
 
     <!-- Action Buttons -->
-    <app-submit-button [disabled]="!form.valid || isSubmitting" [isSubmitting]="isSubmitting">Submit</app-submit-button>
+    <app-submit-button [diameter]="50" [disabled]="!form.valid || isSubmitting" [isSubmitting]="isSubmitting">Submit</app-submit-button>
     <button mat-raised-button (click)="resetForm()">Clear</button>
 </form>

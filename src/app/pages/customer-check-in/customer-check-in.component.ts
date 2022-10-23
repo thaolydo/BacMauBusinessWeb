@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomersService } from '@service/customers.service';
+import { firstValueFrom } from 'rxjs';
+import { CheckInSuccessDialogComponent } from 'src/app/components/check-in-success-dialog/check-in-success-dialog.component';
 import { TermsAndConditionsDialogComponent } from 'src/app/components/terms-and-conditions-dialog/terms-and-conditions-dialog.component';
 import { CustomerInfo } from 'src/app/models/customer-info.model';
 
@@ -73,14 +75,17 @@ export class CustomerCheckInComponent implements OnInit {
 
       // Open subscribe dialog
       if (!alreadySubsribed) {
-        this.dialog.open(TermsAndConditionsDialogComponent, {
+        const dialogRef = this.dialog.open(TermsAndConditionsDialogComponent, {
           panelClass: 'dialog',
           data: {
             customerInfo,
             businessName: 'Life Reflexology',
           }
         });
+        await firstValueFrom(dialogRef.afterClosed());
       }
+
+      this.dialog.open(CheckInSuccessDialogComponent);
     } catch (e: any) {
       alert(e.message);
     } finally {

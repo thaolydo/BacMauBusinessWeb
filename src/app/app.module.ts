@@ -22,6 +22,7 @@ import { SmsHistoryComponent } from './components/sms-history/sms-history.compon
 import { SmsComponent } from './pages/sms/sms.component';
 import { PhonePipe } from './pipes/phone.pipe';
 import { CouponComponent } from './pages/coupon/coupon.component';
+import { CheckInSuccessDialogComponent } from './components/check-in-success-dialog/check-in-success-dialog.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { CouponComponent } from './pages/coupon/coupon.component';
     SendSmsComponent,
     PhonePipe,
     CouponComponent,
+    CheckInSuccessDialogComponent,
   ],
   imports: [
     BrowserModule,
