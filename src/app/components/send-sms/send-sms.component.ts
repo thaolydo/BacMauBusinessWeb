@@ -50,7 +50,11 @@ export class SendSmsComponent implements OnInit {
     this.isSending = true;
     try {
       const res = await this.sendSmsService.sendSms(this.messageContent, this.selectedImage);
-      this.snackBar.open('Sent SMS successfully', undefined, { duration: 3000 });
+      if (res.success) {
+        this.snackBar.open('Sent SMS successfully', undefined, { duration: 3000 });
+      } else {
+        alert('You can only send 1 SMS per day');
+      }
 
       // Clear the form to avoid accidentally sending it twice
       this.messageContent = '';

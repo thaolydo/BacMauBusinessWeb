@@ -28,7 +28,7 @@ export class SendSmsService {
 
   async sendSms(content: string, imageUrl?: string) {
     console.log('Sending sms:', content, imageUrl)
-    return firstValueFrom(this.http.post(`${this.baseUrl}/sendSmsToCustomers`, { content, imageUrl }, {
+    return firstValueFrom(this.http.post<any>(`${this.baseUrl}/sendSmsToCustomers`, { content, imageUrl }, {
       headers: await this._buildCommonHeaders()
     }));
   }
