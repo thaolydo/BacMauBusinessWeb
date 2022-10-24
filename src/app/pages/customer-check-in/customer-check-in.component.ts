@@ -43,7 +43,7 @@ export class CustomerCheckInComponent implements OnInit {
       name: ['', Validators.required],
       phone: ['', Validators.required],
       birthMonth: [null],
-      birthDay: { value: null },
+      birthDay: {value: null},
     });
   }
 
@@ -52,7 +52,7 @@ export class CustomerCheckInComponent implements OnInit {
 
   onMonthSelected() {
     const dayCountInSelectedMonth = this.dayCountInMonth[this.form.get('birthMonth')!.value];
-    this.days = Array.from({ length: dayCountInSelectedMonth }, (_, i) => i + 1);
+    this.days = Array.from({length: dayCountInSelectedMonth}, (_, i) => i + 1);
   }
 
   async onSubmit() {
@@ -64,11 +64,7 @@ export class CustomerCheckInComponent implements OnInit {
       console.log('customerInfo =', customerInfo);
 
       // Check-in
-      // const res = await this.customersService.checkIn(customerInfo);
-      const res = { subscribed: false };
-      await new Promise(x => setTimeout(x, 1000));
-
-      // TODO: add dialog to notify checked in successfully
+      const res = await this.customersService.checkIn(customerInfo);
 
       const alreadySubsribed = res.subscribed;
       this.resetForm();
