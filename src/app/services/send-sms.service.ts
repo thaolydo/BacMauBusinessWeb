@@ -82,7 +82,7 @@ export class SendSmsService {
           for (const event of res.smsEvents) {
             toReturn.push({
               createdAt: event.createdAt,
-              content: event.ad.adContent
+              content: event.ad.content
             } as SendSmsEvent);
           }
           return toReturn;
