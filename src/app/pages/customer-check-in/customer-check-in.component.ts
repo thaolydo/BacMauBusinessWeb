@@ -47,6 +47,22 @@ export class CustomerCheckInComponent implements OnInit {
     });
   }
 
+  get name() {
+    return this.form.get('name')?.value;
+  }
+
+  set name(val: string) {
+    this.form.get('name')?.setValue(val);
+  }
+
+  get phone() {
+    return this.form.get('phone')?.value;
+  }
+
+  set phone(val: string) {
+    this.form.get('phone')?.setValue(val);
+  }
+
   ngOnInit(): void {
   }
 
