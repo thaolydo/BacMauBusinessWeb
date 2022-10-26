@@ -123,7 +123,7 @@ export class AuthService {
       return false;
     }
     if (role == Role.OWNER) {
-      return user.getUsername() == 'venus-admin'; // TODO: change this when creating new user in the pool
+      return user.getUsername() == 'owner'; // TODO: change this when creating new user in the pool
     }
     if (role == Role.FRONT_DESK) {
       return user.getUsername() == 'frontdesk'; // TODO: change this when creating new user in the pool

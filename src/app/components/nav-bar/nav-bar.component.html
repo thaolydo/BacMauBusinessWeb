@@ -6,7 +6,7 @@
     <span class="tabs">
         <span routerLink="/customer-check-in" class="tab" *ngIf="curUser?.getUsername() == 'frontdesk'">Customer Check In</span>
         <span [routerLinkActive]="'selected'" routerLink="/customers" class="tab">Customers</span>
-        <span [routerLinkActive]="'selected'" routerLink="/sms" class="tab" *ngIf="curUser?.getUsername() == 'venus-admin'">SMS</span>
+        <span [routerLinkActive]="'selected'" routerLink="/sms" class="tab" *ngIf="curUser?.getUsername() == 'owner'">SMS</span>
         <span [routerLinkActive]="'selected'" routerLink="/coupon" class="tab">Coupon</span>
     </span>
 
