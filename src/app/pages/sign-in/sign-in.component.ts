@@ -42,7 +42,7 @@ export class SignInComponent implements OnInit {
   async onSubmit() {
     this.isSubmitting = true;
     try {
-      const res = await this.authService.signIn(this.username, this.password);
+      const res = await this.authService.signIn(this.username.toLowerCase(), this.password);
       console.log('res =', res);
       this.router.navigate(['/customers']);
     } catch (e: any) {
