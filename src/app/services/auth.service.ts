@@ -4,6 +4,9 @@ import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthEventType } from 'src/app/models/auth-event-types.enum';
 import { Role } from '@model/role.model';
+import * as AWS from "aws-sdk/global";
+import { LoginsMap } from "aws-sdk/clients/cognitoidentity";
+// import { CognitoIdentityClient } from '@aws-sdk/client-cognito-identity';
 
 @Injectable({
   providedIn: 'root'
@@ -126,12 +129,44 @@ export class AuthService {
       return user.getUsername() == 'owner'; // TODO: change this when creating new user in the pool
     }
     if (role == Role.FRONT_DESK) {
-      return user.getUsername() == 'frontdesk'; // TODO: change this when creating new user in the pool
+      return new Set([
+        'frontdesk',
+        'huypham'
+      ]).has(user.getUsername()); // TODO: change this when creating new user in the pool
     }
     return false;
   }
 
   getAuthEventUpdates() {
     return this.eventSubject.asObservable();
+  }
+
+  async getAwsCredentials(): Promise<AWS.CognitoIdentityCredentials> {
+    const user = await this.getCurUser();
+    if (!user || !user?.getSignInUserSession()?.getIdToken()?.getJwtToken()) {
+      throw new Error('user not logged in');
+    }
+    console.log('user =', user);
+    AWS.config.region = 'us-west-1';
+    const url = `cognito-idp.us-west-1.amazonaws.com/${environment.ownerUserPoolId}`;
+    const Logins = {} as LoginsMap;
+    const idToken = user.getSignInUserSession()!.getIdToken();
+    Logins[url] = idToken.getJwtToken();
+    console.log('role =', idToken.payload['cognito:roles'][0]);
+    const creds = new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: environment.adminIdentityPoolId,
+      Logins,
+      DurationSeconds: 3600,
+      RoleArn: idToken.payload['cognito:roles'][0],
+    });
+    return new Promise((resolve, reject) => {
+      creds?.get((err) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(creds);
+      });
+    });
   }
 }

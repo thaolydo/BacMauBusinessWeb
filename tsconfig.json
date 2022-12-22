@@ -28,6 +28,9 @@
       ],
       "@model/*": [
         "src/app/models/*"
+      ],
+      "crypto": [
+        "node_modules/crypto-js"
       ]
     }
   },
