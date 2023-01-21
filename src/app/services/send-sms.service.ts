@@ -18,7 +18,7 @@ export class SendSmsService {
   ) { }
 
   async subscribeToMarketingSms(phone: string) {
-    return firstValueFrom(this.http.post(`${this.baseUrl}/sendConfirmSms`, { phone }, {
+    return firstValueFrom(this.http.post(`${this.baseUrl}/send-confirm-sms`, { phone }, {
       params: {
         cid: phone
       },
@@ -28,14 +28,14 @@ export class SendSmsService {
 
   async sendSms(content: string, imageUrl?: string) {
     console.log('Sending sms:', content, imageUrl)
-    return firstValueFrom(this.http.post<any>(`${this.baseUrl}/sendSmsToCustomers`, { content, imageUrl }, {
+    return firstValueFrom(this.http.post<any>(`${this.baseUrl}/send-sms-to-customers`, { content, imageUrl }, {
       headers: await this._buildCommonHeaders()
     }));
   }
 
   async getImageUrls() {
     console.log('getting image urls');
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/getImages`, {
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-images`, {
       headers: await this._buildCommonHeaders()
     })
       .pipe(
@@ -46,7 +46,7 @@ export class SendSmsService {
   // https://aws.amazon.com/blogs/compute/uploading-to-amazon-s3-directly-from-a-web-or-mobile-application
   async getSignedUrl(fileName: string, contentType: string): Promise<GetSignedUrlResponse> {
     console.log('Getting signed url');
-    return firstValueFrom(this.http.get<GetSignedUrlResponse>(`${this.baseUrl}/getSignedUrl`, {
+    return firstValueFrom(this.http.get<GetSignedUrlResponse>(`${this.baseUrl}/get-signed-url`, {
       params: {
         fileName,
         contentType,
@@ -73,7 +73,7 @@ export class SendSmsService {
 
   async getSmsEvents(): Promise<SendSmsEvent[]> {
     console.log('Getting sms events');
-    return firstValueFrom(this.http.get(`${this.baseUrl}/getSmsEvents`, {
+    return firstValueFrom(this.http.get(`${this.baseUrl}/get-sms-events`, {
       headers: await this._buildCommonHeaders()
     })
       .pipe(

@@ -10,14 +10,15 @@ import { SHA256, enc, HmacSHA256 } from 'crypto-js';
 })
 export class HuyService {
 
-  private BASE_URL = environment.huyApiUrl;
+  private baseUrl = environment.baseUrl;
 
   constructor(private http: HttpClient) { }
 
   async get(access_key: string, secret_key: string, sessionToken: string) {
     // Task 1: Create canonical request
     const service = 'execute-api'
-    const host = '46ozz8hiti.execute-api.us-west-1.amazonaws.com';
+    const host = this.baseUrl.split('//')[0];
+    console.log('host =', host);
     const amzdate = new Date().toISOString().split('.')[0].replace(/[-|:]/g, '') + 'Z';
 
     const method = 'GET';
@@ -36,7 +37,7 @@ export class HuyService {
       hexEncodedHash
 
     // Task 2: Create string to sign
-    const region = 'us-west-1';
+    const region = 'us-east-1';
     const algorithm = 'AWS4-HMAC-SHA256';
     const datestamp = '20221209';
     const credential_scope = datestamp + '/' + region + '/' + service + '/' + 'aws4_request'
@@ -50,7 +51,7 @@ export class HuyService {
     // Task 4: add signature to the request
     const authorization_header = algorithm + ' ' + 'Credential=' + access_key + '/' + credential_scope + ', ' +  'SignedHeaders=' + signed_headers + ', ' + 'Signature=' + signature;
 
-    return firstValueFrom(this.http.get(this.BASE_URL, {
+    return firstValueFrom(this.http.get(this.baseUrl, {
       headers: {
         'x-amz-date': amzdate,
         'Authorization': authorization_header,

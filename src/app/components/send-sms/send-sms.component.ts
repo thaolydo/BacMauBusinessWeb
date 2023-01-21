@@ -96,7 +96,7 @@ export class SendSmsComponent implements OnInit {
       await this.sendSmsService.uploadToSignedPostUrl(signedUrlResponse.url, signedUrlResponse.fields, file);
 
       // Update the form
-      const imageUrl = `https://${bucketName}.s3.us-west-1.amazonaws.com/${signedUrlResponse.fields['key']}`;
+      const imageUrl = `https://${bucketName}.s3.us-east-1.amazonaws.com/${signedUrlResponse.fields['key']}`;
       this.imageUrls.push(imageUrl);
     } catch (e) {
       console.error('Unable to upload the image', e);

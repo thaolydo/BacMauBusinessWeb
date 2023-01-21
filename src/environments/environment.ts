@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   baseUrl: 'https://0v0i9lpw81.execute-api.us-east-1.amazonaws.com',
   ownerUserPoolId: 'us-east-1_rOcuzbIg8',
-  ownerUserPoolClientId: 'qa88he63smvf8rm1mcsr5kln7',
+  ownerUserPoolClientId: '6aogn2kdrrco2ijmdu6ro45qnl',
   ownerIdentityPoolId: 'us-east-1:c1f4ab0d-dc4d-4086-a129-e285da76e9e7',
   frontDeskUserPoolId: 'us-east-1_HsQZ7hC2u',
   frontDeskUserPoolClientId: '735qbq66lu0dcbi547l7daivi',

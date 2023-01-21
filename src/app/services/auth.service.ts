@@ -14,25 +14,33 @@ import { LoginsMap } from "aws-sdk/clients/cognitoidentity";
 export class AuthService {
 
   private ownerUserPool: CognitoUserPool;
-  // private frontDeskUserPool: CognitoUserPool;
+  private frontDeskUserPool: CognitoUserPool;
 
   private eventSubject: Subject<AuthEventType> = new Subject();
 
   constructor() {
     this.ownerUserPool = new CognitoUserPool({
       ClientId: environment.ownerUserPoolClientId,
-      UserPoolId: environment.ownerUserPoolId
+      UserPoolId: environment.ownerUserPoolId,
     });
-    // this.frontDeskUserPool = new CognitoUserPool({
-    //   ClientId: environment.frontDeskUserPoolClientId,
-    //   UserPoolId: environment.frontDeskUserPoolId
-    // });
+    this.frontDeskUserPool = new CognitoUserPool({
+      ClientId: environment.frontDeskUserPoolClientId,
+      UserPoolId: environment.frontDeskUserPoolId
+    });
   }
 
-  signIn(username: string, password: string): Promise<CognitoUser> {
+  signInAsOwner(username: string, password: string): Promise<CognitoUser> {
+    return this._signIn(username, password, true);
+  }
+
+  signInAsFrontdesk(username: string, password: string): Promise<CognitoUser> {
+    return this._signIn(username, password, false);
+  }
+
+  _signIn(username: string, password: string, asOwner: boolean): Promise<CognitoUser> {
     console.log(`Signing in user with username '${username}'`);
     const user = new CognitoUser({
-      Pool: this.ownerUserPool,
+      Pool: asOwner ? this.ownerUserPool : this.frontDeskUserPool,
       Username: username,
     });
     return new Promise((resolve, reject) => {
@@ -147,14 +155,14 @@ export class AuthService {
       throw new Error('user not logged in');
     }
     console.log('user =', user);
-    AWS.config.region = 'us-west-1';
-    const url = `cognito-idp.us-west-1.amazonaws.com/${environment.ownerUserPoolId}`;
+    AWS.config.region = 'us-east-1';
+    const url = `cognito-idp.us-east-1.amazonaws.com/${environment.ownerUserPoolId}`;
     const Logins = {} as LoginsMap;
     const idToken = user.getSignInUserSession()!.getIdToken();
     Logins[url] = idToken.getJwtToken();
     console.log('role =', idToken.payload['cognito:roles'][0]);
     const creds = new AWS.CognitoIdentityCredentials({
-      IdentityPoolId: environment.adminIdentityPoolId,
+      IdentityPoolId: environment.ownerIdentityPoolId,
       Logins,
       DurationSeconds: 3600,
       RoleArn: idToken.payload['cognito:roles'][0],
