@@ -19,7 +19,6 @@ export class CouponService {
 
   async getCouponStatus(couponCode: string): Promise<CouponStatus> {
     return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-coupon-status`, {
-      headers: await this._buildCommonHeaders(),
       params: {
         coupon: couponCode
       }
@@ -33,15 +32,7 @@ export class CouponService {
     return firstValueFrom(this.http.post(`${this.baseUrl}/save-coupon`, {
       coupon: couponCode,
       status: 'USED'
-    }, {
-      headers: await this._buildCommonHeaders()
     }));
   }
 
-  private async _buildCommonHeaders(): Promise<any> {
-    const curUser = await this.authService.getCurUser();
-    return {
-      Authorization: curUser?.getSignInUserSession()?.getAccessToken().getJwtToken()
-    }
-  }
 }

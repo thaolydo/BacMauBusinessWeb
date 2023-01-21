@@ -57,7 +57,7 @@ export class CustomersService {
       params.end = end.getTime();
     }
     console.log('params =', params);
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customers/check-in`, {
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customers/get-check-in-event`, {
       params,
       headers: await this._buildCommonHeaders()
     }).pipe(
@@ -67,7 +67,7 @@ export class CustomersService {
 
   async getCustomerCount(): Promise<number> {
     console.log('Getting customer count');
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customers/count`, {
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-customer-count`, {
       headers: await this._buildCommonHeaders()
     }).pipe(
       map(res => res.count as number)

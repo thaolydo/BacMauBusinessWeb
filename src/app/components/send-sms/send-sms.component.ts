@@ -33,6 +33,7 @@ export class SendSmsComponent implements OnInit {
     try {
       // this.imageUrls = await this.sendSmsService.getImageUrls();
       this.customerCount = await this.customersService.getCustomerCount();
+      console.log('customerCount =', this.customerCount);
     } finally {
       this.isLoading = false;
     }

@@ -7,7 +7,6 @@ import { CognitoUser } from 'amazon-cognito-identity-js';
 export class UsernamePipe implements PipeTransform {
 
   transform(user: CognitoUser | undefined, ...args: unknown[]): unknown {
-    console.log('user =', user);
     if (!user) {
       return undefined;
     }

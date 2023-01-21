@@ -55,7 +55,7 @@ import { AwsSigningInterceptor } from '@service/aws-signing.interceptor';
     HttpClientModule,
   ],
   providers: [
-    // { provide: HTTP_INTERCEPTORS, useClass: AwsSigningInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AwsSigningInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

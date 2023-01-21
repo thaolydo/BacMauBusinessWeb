@@ -7,12 +7,16 @@ import { Role } from '@model/role.model';
 import * as AWS from "aws-sdk/global";
 import { LoginsMap } from "aws-sdk/clients/cognitoidentity";
 // import { CognitoIdentityClient } from '@aws-sdk/client-cognito-identity';
+import { SHA256, enc, HmacSHA256 } from 'crypto-js';
+import { CognitoIdentityCredentials } from 'aws-sdk/global';
+import { HttpRequest } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  private baseUrl = environment.baseUrl;
   private ownerUserPool: CognitoUserPool;
   private frontDeskUserPool: CognitoUserPool;
 
@@ -154,18 +158,18 @@ export class AuthService {
     if (!user || !user?.getSignInUserSession()?.getIdToken()?.getJwtToken()) {
       throw new Error('user not logged in');
     }
-    console.log('user =', user);
     AWS.config.region = 'us-east-1';
     const url = `cognito-idp.us-east-1.amazonaws.com/${environment.ownerUserPoolId}`;
     const Logins = {} as LoginsMap;
     const idToken = user.getSignInUserSession()!.getIdToken();
     Logins[url] = idToken.getJwtToken();
-    console.log('role =', idToken.payload['cognito:roles'][0]);
+    // console.log('role =', idToken.payload['cognito:roles'][0]);
     const creds = new AWS.CognitoIdentityCredentials({
       IdentityPoolId: environment.ownerIdentityPoolId,
       Logins,
       DurationSeconds: 3600,
-      RoleArn: idToken.payload['cognito:roles'][0],
+      // RoleArn: idToken.payload['cognito:roles'][0],
+      // RoleArn: 'arn:aws:iam::335178857666:role/PhamSmsServiceStack-owneridentitypoolAuthenticated-1MCS6BNJBZER5',
     });
     return new Promise((resolve, reject) => {
       creds?.get((err) => {
@@ -176,5 +180,69 @@ export class AuthService {
         resolve(creds);
       });
     });
+  }
+
+  signRequestWithSignatureV4(request: HttpRequest<unknown>, creds: CognitoIdentityCredentials): HttpRequest<unknown> {
+    // Task 1: Create canonical request
+    const service = 'execute-api'
+    const host = this.baseUrl.split('//')[1];
+    const amzdate = new Date().toISOString().split('.')[0].replace(/[-|:]/g, '') + 'Z';
+
+    const method = 'GET';
+    const canonical_uri = '/';
+    // const request_parameters = 'Action=DescribeRegions&Version=2013-10-15';
+    const request_parameters = '';
+    const canonical_querystring = request_parameters;
+    const canonical_headers = 'host:' + host + '\n' + 'x-amz-date:' + amzdate + '\n';
+    const signed_headers = 'host;x-amz-date';
+    const hexEncodedHash = this.hash('');
+    const canical_request = method + '\n' +
+      canonical_uri + '\n' +
+      canonical_querystring + '\n' +
+      canonical_headers + '\n' +
+      signed_headers + '\n' +
+      hexEncodedHash
+
+    // Task 2: Create string to sign
+    const region = 'us-east-1';
+    const algorithm = 'AWS4-HMAC-SHA256';
+    const datestamp = '20230121';
+    const credential_scope = datestamp + '/' + region + '/' + service + '/' + 'aws4_request'
+    const string_to_sign = algorithm + '\n' +  amzdate + '\n' +  credential_scope + '\n' +  this.hash(canical_request);
+
+    // Task 3: calcualte the signature
+    const signing_key = this.getSignatureKey(creds.secretAccessKey, datestamp, region, service);
+    const signature = this.sign(signing_key, string_to_sign).toString();
+
+    // Task 4: add signature to the request
+    const authorization_header = algorithm + ' ' + 'Credential=' + creds.accessKeyId + '/' + credential_scope + ', ' +  'SignedHeaders=' + signed_headers + ', ' + 'Signature=' + signature;
+
+    const headers = request.headers
+          .append('x-amz-date', amzdate)
+          .append('Authorization', authorization_header)
+          .append('X-Amz-Security-Token', creds.sessionToken);
+    return request.clone({
+      headers: headers,
+      params: request.params.appendAll({
+        bid: 'venus', // TODO: remove hard-coded
+      })
+    });;
+  }
+
+  // private decoder = new TextDecoder();
+  private sign(key: CryptoJS.lib.WordArray, msg: string): CryptoJS.lib.WordArray {
+    return HmacSHA256(msg, key);
+  }
+
+  private getSignatureKey(key: string, date_stamp: string, regionName: string, serviceName: string) {
+    const kDate = this.sign(enc.Utf8.parse('AWS4' + key), date_stamp);
+    const kRegion = this.sign(kDate, regionName);
+    const kService = this.sign(kRegion, serviceName);
+    const kSigning = this.sign(kService, 'aws4_request');
+    return kSigning;
+  }
+
+  private hash(msg: string) {
+    return SHA256(msg).toString(enc.Hex);
   }
 }

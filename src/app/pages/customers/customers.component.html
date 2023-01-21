@@ -3,6 +3,8 @@
         <app-check-in-history></app-check-in-history>
     </mat-tab>
     <mat-tab label="Customer List">
-        <app-customer-list></app-customer-list>
+        <ng-template matTabContent>
+            <app-customer-list></app-customer-list>
+        </ng-template>
     </mat-tab>
 </mat-tab-group>

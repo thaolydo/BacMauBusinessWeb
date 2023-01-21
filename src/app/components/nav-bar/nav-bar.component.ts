@@ -35,7 +35,7 @@ export class NavBarComponent implements OnInit {
     });
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        console.log('url =', event.url);
+        console.log('current url =', event.url);
         if (event.url == '/' || event.url.startsWith('/customer-check-in') ||  event.url.startsWith('/sign-in')) {
           this.showNavBar = false;
         } else {
