@@ -15,9 +15,11 @@ export class CouponComponent implements OnInit {
   huyRes: any = undefined;
 
   async getHuy() {
-    const creds = await this.authService.getAwsCredentials();
-    console.log('creds =', creds);
-    this.huyRes = await this.huyService.get(creds.accessKeyId, creds.secretAccessKey, creds.sessionToken);
+    // const res = await this.couponService.getHuy();
+    // console.log('huy =', res);
+    // const creds = await this.authService.getAwsCredentials();
+    // console.log('creds =', creds);
+    // this.huyRes = await this.huyService.get(creds.accessKeyId, creds.secretAccessKey, creds.sessionToken);
   }
 
   couponCode: string = '';

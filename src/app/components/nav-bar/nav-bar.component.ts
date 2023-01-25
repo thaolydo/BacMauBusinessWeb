@@ -15,7 +15,7 @@ export class NavBarComponent implements OnInit {
 
   @Input() businessName: string = 'Life Reflexology'; // TODO: get it from query params in the current url
 
-  curUser: CognitoUser | undefined;
+  curUser: CognitoUser | null = null;
   authEventSubscription: Subscription | undefined;
   showNavBar: boolean = true;
 
@@ -30,7 +30,7 @@ export class NavBarComponent implements OnInit {
       if (event == AuthEventType.SIGNED_IN || event == AuthEventType.ATTRIBUTE_UPDATED) {
         this.curUser = await this.authService.getCurUser();
       } else if (event == AuthEventType.SIGNED_OUT) {
-        this.curUser = undefined;
+        this.curUser = null;
       }
     });
     this.router.events.subscribe(event => {
