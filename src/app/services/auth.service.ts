@@ -9,7 +9,7 @@ import { LoginsMap } from "aws-sdk/clients/cognitoidentity";
 // import { CognitoIdentityClient } from '@aws-sdk/client-cognito-identity';
 import { SHA256, enc, HmacSHA256 } from 'crypto-js';
 import { CognitoIdentityCredentials } from 'aws-sdk/global';
-import { HttpHeaders, HttpRequest } from '@angular/common/http';
+import { HttpRequest } from '@angular/common/http';
 import { AwsV4Signer } from 'aws4fetch';
 
 @Injectable({

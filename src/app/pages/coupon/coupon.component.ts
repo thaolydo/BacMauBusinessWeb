@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthService } from '@service/auth.service';
-import { HuyService } from '@service/huy.service';
 import { CouponStatus } from 'src/app/models/coupon-status.model';
 import { CouponService } from 'src/app/services/coupon.service';
 
@@ -11,16 +9,6 @@ import { CouponService } from 'src/app/services/coupon.service';
   styleUrls: ['./coupon.component.scss']
 })
 export class CouponComponent implements OnInit {
-
-  huyRes: any = undefined;
-
-  async getHuy() {
-    // const res = await this.couponService.getHuy();
-    // console.log('huy =', res);
-    // const creds = await this.authService.getAwsCredentials();
-    // console.log('creds =', creds);
-    // this.huyRes = await this.huyService.get(creds.accessKeyId, creds.secretAccessKey, creds.sessionToken);
-  }
 
   couponCode: string = '';
   couponStatus: CouponStatus | undefined;
@@ -35,8 +23,6 @@ export class CouponComponent implements OnInit {
   constructor(
     private couponService: CouponService,
     private snackBar: MatSnackBar,
-    private huyService: HuyService,
-    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {
