@@ -5,6 +5,6 @@ export const environment = {
   ownerUserPoolClientId: '6aogn2kdrrco2ijmdu6ro45qnl',
   ownerIdentityPoolId: 'us-east-1:c1f4ab0d-dc4d-4086-a129-e285da76e9e7',
   frontDeskUserPoolId: 'us-east-1_HsQZ7hC2u',
-  frontDeskUserPoolClientId: '735qbq66lu0dcbi547l7daivi',
+  frontDeskUserPoolClientId: '60n1lklmn9f0al538612a4rvm2',
   frontDeskIdentityPoolId: 'us-east-1:b3cf882d-c6fd-4ea4-968d-c09e108e6841',
 };

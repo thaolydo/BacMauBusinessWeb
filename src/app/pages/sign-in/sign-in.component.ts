@@ -22,6 +22,7 @@ export class SignInComponent implements OnInit {
     this.form = this._fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
+      asOwner: true
     });
   }
 
@@ -39,10 +40,16 @@ export class SignInComponent implements OnInit {
     return this.form.get('password')?.value as string;
   }
 
+  get asOwner() {
+    return this.form.get('asOwner')?.value as boolean;
+  }
+
   async onSubmit() {
     this.isSubmitting = true;
     try {
-      const res = await this.authService.signInAsOwner(this.username.toLowerCase(), this.password);
+      const res = this.asOwner
+        ? await this.authService.signInAsOwner(this.username.toLowerCase(), this.password)
+        : await this.authService.signInAsFrontdesk(this.username.toLowerCase(), this.password);
       console.log('res =', res);
       this.router.navigate(['/customers']);
     } catch (e: any) {
