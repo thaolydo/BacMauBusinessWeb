@@ -1,10 +1,9 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CustomerInfo } from 'src/app/models/customer-info.model';
 import { CheckInEvent } from 'src/app/models/check-in-event.model';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +14,10 @@ export class CustomersService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService,
   ) { }
 
   async getCustomers(): Promise<CustomerInfo[]> {
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customers`, {
-      headers: await this._buildCommonHeaders()
-    })
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-all-customers-info`)
       .pipe(
         map(res => {
           const customers = Object.values(res.customers) as any[];
@@ -34,16 +30,13 @@ export class CustomersService {
       ));
   }
 
+  // Deprecated
   async uploadCustomers(customers: CustomerInfo[]) {
-    return firstValueFrom(this.http.post(`${this.baseUrl}/customers`, { customers }, {
-      headers: await this._buildCommonHeaders()
-    }));
+    return firstValueFrom(this.http.post(`${this.baseUrl}/customers`, { customers }));
   }
 
   async checkIn(customer: CustomerInfo): Promise<any> {
-    return firstValueFrom(this.http.post(`${this.baseUrl}/customers/check-in`, { customer }, {
-      headers: await this._buildCommonHeaders()
-    }));
+    return firstValueFrom(this.http.post(`${this.baseUrl}/check-in`, { customer }));
   }
 
   async getCheckInEventHistory(month: number, date?: Date): Promise<CheckInEvent[]> {
@@ -57,9 +50,8 @@ export class CustomersService {
       params.end = end.getTime();
     }
     console.log('params =', params);
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customers/get-check-in-event`, {
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-check-in-event`, {
       params,
-      headers: await this._buildCommonHeaders()
     }).pipe(
       map(res => res.paginatedItems.items)
     ));
@@ -67,18 +59,9 @@ export class CustomersService {
 
   async getCustomerCount(): Promise<number> {
     console.log('Getting customer count');
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-customer-count`, {
-      headers: await this._buildCommonHeaders()
-    }).pipe(
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-customer-count`).pipe(
       map(res => res.count as number)
     ));
-  }
-
-  private async _buildCommonHeaders(): Promise<any> {
-    const curUser = await this.authService.getCurUser();
-    return {
-      Authorization: curUser?.getSignInUserSession()?.getAccessToken().getJwtToken()
-    }
   }
 
 }
