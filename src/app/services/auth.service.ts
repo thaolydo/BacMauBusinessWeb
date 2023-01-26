@@ -239,11 +239,15 @@ export class AuthService {
       // singleEncode,       // set to true to only encode %2F once (usually only needed for testing)
     })
     const signed = await signer.sign();
+    const jwtToken = this.curUser?.getSignInUserSession()?.getIdToken()?.getJwtToken();
+    if (!jwtToken) {
+      throw new Error('jwtToken is empty');
+    }
     const headers = request.headers
       .append('authorization', signed.headers.get('authorization')!)
       .append('x-amz-date', signed.headers.get('x-amz-date')!)
       .append('x-amz-security-token', signed.headers.get('x-amz-security-token')!)
-      .append('jwt-token', 'sldkfj');
+      .append('jwt-token', jwtToken);
     return request.clone({
       headers: headers,
     });
