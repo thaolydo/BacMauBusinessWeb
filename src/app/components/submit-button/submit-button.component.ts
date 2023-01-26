@@ -11,6 +11,7 @@ export class SubmitButtonComponent implements OnInit, AfterViewInit {
   @Input('disabled') disabled: boolean | undefined;
   @Input('isSubmitting') isSubmitting: boolean | undefined;
   @Input('buttonType') buttonType: string = 'raised';
+  @Input('buttonText') buttonText: string | undefined;
   @Input('diameter') diameter: number = 30;
   @Output() onClick = new EventEmitter<string>();
 
@@ -22,14 +23,22 @@ export class SubmitButtonComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngOnInit(): void {
+    // this.isSubmitting = true;
   }
 
   ngAfterViewInit(): void {
-    const button = this.button?._elementRef.nativeElement as HTMLButtonElement;
-    const spinnerLeft = button.clientWidth / 2 - this.diameter / 2;
-    this.spinnerLeft = `${spinnerLeft}px`;
-    const spinnerTop = button.clientHeight / 2 - this.diameter / 2;
-    this.spinnerTop = `${spinnerTop}px`;
+    setTimeout(() => {
+      const button = this.button?._elementRef.nativeElement as HTMLButtonElement;
+      const parent = button.children.item(1) as HTMLElement;
+      // const spinnerLeft = button.clientWidth / 2 - this.diameter / 2;
+      // this.spinnerLeft = `${spinnerLeft}px`;
+      // const spinnerTop = button.clientHeight / 2 - this.diameter / 2;
+      // this.spinnerTop = `${spinnerTop}px`;
+      const spinnerLeft = button.clientWidth / 2 - this.diameter / 2- parent.offsetLeft;
+      this.spinnerLeft = `${spinnerLeft}px`;
+      const spinnerTop = button.clientHeight / 2 - this.diameter / 2 - parent.offsetTop;
+      this.spinnerTop = `${spinnerTop}px`;
+    });
   }
 
   onButtonClick() {
