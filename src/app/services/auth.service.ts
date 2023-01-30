@@ -220,7 +220,8 @@ export class AuthService {
    * @returns
    */
   async signRequestWithSignatureV4(request: HttpRequest<unknown>, creds: CognitoIdentityCredentials): Promise<HttpRequest<unknown>> {
-    console.log('request.urlWithParams =', request.urlWithParams);
+    console.log('signRequestWithSignatureV4');
+    console.log('creds =', creds); // TODO: remove in prod
     const signer = new AwsV4Signer({
       url: request.urlWithParams,                // required, the AWS endpoint to sign
       accessKeyId: creds.accessKeyId,        // required, akin to AWS_ACCESS_KEY_ID
@@ -228,7 +229,7 @@ export class AuthService {
       sessionToken: creds.sessionToken,       // akin to AWS_SESSION_TOKEN if using temp credentials
       method: request.method,             // if not supplied, will default to 'POST' if there's a body, otherwise 'GET'
       // headers: request.headers,            // standard JS object literal, or Headers instance
-      // body,               // optional, String or ArrayBuffer/ArrayBufferView – ie, remember to stringify your JSON
+      body: request.body ? JSON.stringify(request.body) : '',               // optional, String or ArrayBuffer/ArrayBufferView – ie, remember to stringify your JSON
       // signQuery: true,          // set to true to sign the query string instead of the Authorization header
       service: 'execute-api',            // AWS service, by default parsed at fetch time
       region: 'us-east-1',             // AWS region, by default parsed at fetch time
@@ -243,6 +244,9 @@ export class AuthService {
     if (!jwtToken) {
       throw new Error('jwtToken is empty');
     }
+    // console.log('signed =', signed.headers.forEach((val, key, parent) => {
+    //   console.log('elem:', key, val);
+    // }));
     const headers = request.headers
       .append('authorization', signed.headers.get('authorization')!)
       .append('x-amz-date', signed.headers.get('x-amz-date')!)
@@ -263,7 +267,7 @@ export class AuthService {
    * @param creds
    * @returns
    */
-  private _signRequestWithSignatureV4(request: HttpRequest<unknown>, creds: CognitoIdentityCredentials): HttpRequest<unknown> {
+  async _signRequestWithSignatureV4(request: HttpRequest<unknown>, creds: CognitoIdentityCredentials): Promise<HttpRequest<unknown>> {
     console.log('creds =', creds);
 
     // Task 1: Create canonical request
@@ -271,19 +275,17 @@ export class AuthService {
     const host = this.baseUrl.split('//')[1];
     const amzdate = new Date().toISOString().split('.')[0].replace(/[-|:]/g, '') + 'Z';
 
-    const canonical_uri = '/get-coupon-status'; // TODO: extract from request.url
+    const canonical_uri = '/send-sms-to-customers'; // TODO: extract from request.url
     // const request_parameters = 'Action=DescribeRegions&Version=2013-10-15';
-    console.log('params =', request.params.keys);
+    console.log('params =', request.params.toString());
     console.log('headers =', request.headers.keys);
-    const canonical_querystring = 'coupon=SDFSDF&bids=venus'; // TODO: extract from request.params
+    const canonical_querystring = request.params.toString();
     const canonical_headers = 'host:' + host + '\n' +
       'x-amz-date:' + amzdate + '\n' +
       'x-amz-security-token:' + creds.sessionToken + '\n'; // TODO: extract from request.headers
     const signed_headers = 'host;x-amz-date;x-amz-security-token'; // TODO: extract from request.headers
     console.log('body =', request.body);
-    // const hexEncodedHash = this.hash(request.body ? request.body as string : '');
-    const hexEncodedHash = this.hash(''); // TODO: extract from request.body
-    // const hexEncodedHash = '';
+    const hexEncodedHash = this.hash(request.body ? JSON.stringify(request.body) : '');
     console.log('hexEncodedHash =', hexEncodedHash);
     const canical_request = request.method + '\n' +
       canonical_uri + '\n' +
@@ -308,10 +310,16 @@ export class AuthService {
     const authorization_header = algorithm + ' ' + 'Credential=' + creds.accessKeyId + '/' + credential_scope + ', ' + 'SignedHeaders=' + signed_headers + ', ' + 'Signature=' + signature;
     console.log('authorization_header =', authorization_header);
 
+    const jwtToken = this.curUser?.getSignInUserSession()?.getIdToken()?.getJwtToken();
+    if (!jwtToken) {
+      throw new Error('jwtToken is empty');
+    }
     const headers = request.headers
       .append('Authorization', authorization_header)
+      .append('x-amz-content-sha256', hexEncodedHash)
       .append('X-Amz-Date', amzdate)
-      .append('X-Amz-Security-Token', creds.sessionToken);
+      .append('X-Amz-Security-Token', creds.sessionToken)
+      .append('jwt-token', jwtToken);
     // const headers = new HttpHeaders({
     //   'Authorization': 'AWS4-HMAC-SHA256 Credential=ASIAU4CRXPTBD5EWIQL2/20230124/us-east-1/execute-api/aws4_request, SignedHeaders=host;x-amz-date;x-amz-security-token, Signature=0e4df837dc4c95fbecaa55d377eba202381f98f12c36eb03dbca5fff648f4754',
     //   'X-Amz-Date': '20230124T025727Z',

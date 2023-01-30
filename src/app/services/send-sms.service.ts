@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { SendSmsEvent } from '@model/send-sms-event.model';
 import { firstValueFrom, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +13,6 @@ export class SendSmsService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService,
   ) { }
 
   async subscribeToMarketingSms(phone: string) {
@@ -22,22 +20,17 @@ export class SendSmsService {
       params: {
         cid: phone
       },
-      headers: await this._buildCommonHeaders(),
     }));
   }
 
   async sendSms(content: string, imageUrl?: string) {
     console.log('Sending sms:', content, imageUrl)
-    return firstValueFrom(this.http.post<any>(`${this.baseUrl}/send-sms-to-customers`, { content, imageUrl }, {
-      headers: await this._buildCommonHeaders()
-    }));
+    return firstValueFrom(this.http.post<any>(`${this.baseUrl}/send-sms-to-customers`, { content, imageUrl }));
   }
 
   async getImageUrls() {
     console.log('getting image urls');
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-images`, {
-      headers: await this._buildCommonHeaders()
-    })
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-images`)
       .pipe(
         map(res => res.imageUrls)
       ));
@@ -51,7 +44,6 @@ export class SendSmsService {
         fileName,
         contentType,
       },
-      headers: await this._buildCommonHeaders()
     }));
   }
 
@@ -73,9 +65,7 @@ export class SendSmsService {
 
   async getSmsEvents(): Promise<SendSmsEvent[]> {
     console.log('Getting sms events');
-    return firstValueFrom(this.http.get(`${this.baseUrl}/get-sms-events`, {
-      headers: await this._buildCommonHeaders()
-    })
+    return firstValueFrom(this.http.get(`${this.baseUrl}/get-sms-events`)
       .pipe(
         map((res: any) => {
           const toReturn = [] as SendSmsEvent[];
@@ -90,12 +80,6 @@ export class SendSmsService {
       ));
   }
 
-  private async _buildCommonHeaders(): Promise<any> {
-    const curUser = await this.authService.getCurUser();
-    return {
-      Authorization: curUser?.getSignInUserSession()?.getAccessToken().getJwtToken()
-    }
-  }
 }
 
 export interface GetSignedUrlResponse {
