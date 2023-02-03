@@ -197,7 +197,8 @@ export class AuthService {
     console.log('user =', this.curUser);
 
     AWS.config.region = 'us-east-1';
-    const url = `cognito-idp.us-east-1.amazonaws.com/${environment.ownerUserPoolId}`;
+    // TODO: fix hardcoding user pool ID
+    const url = `cognito-idp.us-east-1.amazonaws.com/${environment.frontDeskUserPoolId}`;
     const Logins = {} as LoginsMap;
     const idToken = this.curUser.getSignInUserSession()!.getIdToken();
     Logins[url] = idToken.getJwtToken();

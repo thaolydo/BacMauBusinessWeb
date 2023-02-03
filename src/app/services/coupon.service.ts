@@ -23,7 +23,7 @@ export class CouponService {
       },
     })
       .pipe(
-        map(res => res.res.couponStatus)
+        map(res => res.couponStatus)
       ));
   }
 

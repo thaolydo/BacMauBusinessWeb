@@ -40,7 +40,8 @@ export class CustomersService {
   }
 
   async getCheckInEventHistory(month: number, date?: Date): Promise<CheckInEvent[]> {
-    const params = { month, date: date?.toISOString() } as any;
+    // TODO: fix hardcoding year
+    const params = { month, year: new Date().getFullYear(), date: date?.toISOString() } as any;
     if (date) {
       const start = new Date(date);
       start.setHours(0, 0, 0, 0);
