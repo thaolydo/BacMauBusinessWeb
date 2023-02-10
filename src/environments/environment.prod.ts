@@ -1,10 +1,10 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://0v0i9lpw81.execute-api.us-east-1.amazonaws.com',
-  ownerUserPoolId: 'us-east-1_rOcuzbIg8',
-  ownerUserPoolClientId: '6aogn2kdrrco2ijmdu6ro45qnl',
-  ownerIdentityPoolId: 'us-east-1:c1f4ab0d-dc4d-4086-a129-e285da76e9e7',
-  frontDeskUserPoolId: 'us-east-1_HsQZ7hC2u',
-  frontDeskUserPoolClientId: '60n1lklmn9f0al538612a4rvm2',
-  frontDeskIdentityPoolId: 'us-east-1:b3cf882d-c6fd-4ea4-968d-c09e108e6841',
+  baseUrl: 'https://c1dv45cn6j.execute-api.us-east-1.amazonaws.com',
+  ownerUserPoolId: 'us-east-1_L1qZaoWII',
+  ownerUserPoolClientId: '3u955lq05h5nb6ss83e2v9c7gs',
+  ownerIdentityPoolId: 'us-east-1:592ba38e-cff5-405d-8a75-fa7eec25af8f',
+  frontDeskUserPoolId: 'us-east-1_9pZ077M2x',
+  frontDeskUserPoolClientId: '14u5t3684bkvkaud76a17f161u',
+  frontDeskIdentityPoolId: 'us-east-1:73120d60-5216-4808-b833-add6a592db03',
 };
