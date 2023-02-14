@@ -11,6 +11,7 @@ import { SHA256, enc, HmacSHA256 } from 'crypto-js';
 import { CognitoIdentityCredentials } from 'aws-sdk/global';
 import { HttpRequest } from '@angular/common/http';
 import { AwsV4Signer } from 'aws4fetch';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class AuthService {
   private curUser: CognitoUser | null = null;
   private curAwsCreds: CognitoIdentityCredentials | undefined;
 
-  constructor() {
+  constructor(private router: Router) {
     this.ownerUserPool = new CognitoUserPool({
       ClientId: environment.ownerUserPoolClientId,
       UserPoolId: environment.ownerUserPoolId,
@@ -166,14 +167,18 @@ export class AuthService {
     return this.eventSubject.asObservable();
   }
 
-  async getAwsCredentials(): Promise<AWS.CognitoIdentityCredentials> {
+  async getAwsCredentials(): Promise<AWS.CognitoIdentityCredentials | undefined> {
     if (!this.curUser) {
       throw new Error('user not logged in');
     }
 
     if (this.curAwsCreds && this.curUser?.getSignInUserSession()?.getIdToken()) {
       const curJwtToken = this.curUser?.getSignInUserSession()?.getIdToken().getJwtToken();
-      await this.getCurUser();
+      if (await this.getCurUser()) {
+        alert('User session has expired');
+        this.router.navigate(['/sign-in']);
+        return undefined;
+      }
       const newJwtToken = this.curUser?.getSignInUserSession()?.getIdToken().getJwtToken();
       if (curJwtToken === newJwtToken) {
         console.log('same jwt');
@@ -194,11 +199,11 @@ export class AuthService {
       await this.getCurUser();
     }
 
-    console.log('user =', this.curUser);
+    console.log('getAwsCredentials: user =', this.curUser);
 
     AWS.config.region = 'us-east-1';
     // TODO: fix hardcoding user pool ID
-    const url = `cognito-idp.us-east-1.amazonaws.com/${environment.frontDeskUserPoolId}`;
+    const url = `cognito-idp.us-east-1.amazonaws.com/${this.isSignedInAsOwner ? environment.ownerUserPoolId : environment.frontDeskUserPoolId}`;
     const Logins = {} as LoginsMap;
     const idToken = this.curUser.getSignInUserSession()!.getIdToken();
     Logins[url] = idToken.getJwtToken();
