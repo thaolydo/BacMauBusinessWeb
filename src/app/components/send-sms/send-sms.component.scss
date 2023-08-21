@@ -16,6 +16,15 @@ mat-tab-group {
     // height: 30vh;
 }
 
+#customer-count-container {
+    display: flex;
+    align-items: center;
+}
+
+#customer-count-spinner {
+    margin-left: 1em;
+}
+
 .upload-button-container {
     width: 50vw;
     display: flex;

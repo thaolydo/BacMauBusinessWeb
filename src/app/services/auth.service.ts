@@ -13,6 +13,7 @@ import { HttpRequest } from '@angular/common/http';
 import { AwsV4Signer } from 'aws4fetch';
 import { Router } from '@angular/router';
 
+// Documentation: https://www.npmjs.com/package/amazon-cognito-identity-js
 @Injectable({
   providedIn: 'root'
 })

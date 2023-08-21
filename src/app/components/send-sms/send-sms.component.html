@@ -3,7 +3,12 @@
     <textarea matInput rows="10" [(ngModel)]="messageContent"></textarea>
 </mat-form-field>
 <!-- <input matInput [(ngModel)]="messageContent" /> -->
-<span style="color: grey;">Customer Count: {{customerCount}}</span>
+<span id="customer-count-container" style="color: grey;">Customer Count:
+    <ng-container *ngIf="isLoading">
+        <mat-spinner id="customer-count-spinner" diameter="20"></mat-spinner>
+    </ng-container>
+    {{customerCount}}
+</span>
 
 <!-- Upload Button -->
 <!-- <div class="upload-button-container">
