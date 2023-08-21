@@ -7,10 +7,12 @@ import { CustomerCheckInComponent } from './pages/customer-check-in/customer-che
 import { CustomersComponent } from './pages/customers/customers.component';
 import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { SmsComponent } from './pages/sms/sms.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/customer-check-in' },
   { path: 'customer-check-in', component: CustomerCheckInComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK] } },
+  { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'customers', component: CustomersComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
   { path: 'sms', component: SmsComponent, canActivate: [AuthGuard], data: { roles: [Role.OWNER] } },

@@ -60,6 +60,7 @@ export class AuthService {
       Username: username,
     });
     return new Promise((resolve, reject) => {
+      user.confirmPassword
       user.authenticateUser(new AuthenticationDetails({
         Username: username,
         Password: password,
@@ -98,6 +99,26 @@ export class AuthService {
           reject(err);
         }
       });
+    });
+  }
+
+  // https://stackoverflow.com/questions/38110615/how-to-allow-my-user-to-reset-their-password-on-cognito-user-pools
+  confirmPassword(username: string, newPassword: string, verificationCode: string, asOwner: boolean): Promise<string> {
+    console.log(`Resetting password for user with username '${username}'`);
+    const user = new CognitoUser({
+      Pool: asOwner ? this.ownerUserPool : this.frontDeskUserPool,
+      Username: username,
+    });
+    return new Promise((resolve, reject) => {
+      user.confirmPassword(verificationCode, newPassword, {
+        onSuccess: (success: string) => {
+          console.log('Successfully reset password');
+          resolve(success);
+        },
+        onFailure: (err: Error) => {
+          reject(err);
+        }
+      })
     });
   }
 
@@ -174,7 +195,7 @@ export class AuthService {
 
     if (this.curAwsCreds && this.curUser?.getSignInUserSession()?.getIdToken()) {
       const curJwtToken = this.curUser?.getSignInUserSession()?.getIdToken().getJwtToken();
-      if (await this.getCurUser()) {
+      if (!await this.getCurUser()) {
         alert('User session has expired');
         this.router.navigate(['/sign-in']);
         return undefined;
