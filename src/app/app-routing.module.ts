@@ -11,7 +11,7 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/customer-check-in' },
-  { path: 'customer-check-in', component: CustomerCheckInComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK] } },
+  { path: 'customer-check-in', component: CustomerCheckInComponent, canActivate: [], data: { roles: [Role.FRONT_DESK] } },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'customers', component: CustomersComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },

@@ -80,10 +80,11 @@ export class CustomerCheckInComponent implements OnInit {
       console.log('customerInfo =', customerInfo);
 
       // Check-in
-      const res = await this.customersService.checkIn(customerInfo);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      const res = {} as any;
+      // const res = await this.customersService.checkIn(customerInfo);
 
       const alreadySubsribed = res.subscribed;
-      this.resetForm();
 
       // Open subscribe dialog
       if (!alreadySubsribed) {
@@ -96,8 +97,9 @@ export class CustomerCheckInComponent implements OnInit {
         });
         await firstValueFrom(dialogRef.afterClosed());
       }
-
       this.dialog.open(CheckInSuccessDialogComponent);
+
+      this.resetForm();
     } catch (e: any) {
       alert(e.message);
     } finally {
