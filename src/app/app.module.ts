@@ -25,6 +25,7 @@ import { CouponComponent } from './pages/coupon/coupon.component';
 import { CheckInSuccessDialogComponent } from './components/check-in-success-dialog/check-in-success-dialog.component';
 import { AwsSigningInterceptor } from '@service/aws-signing.interceptor';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { HomeComponent } from './pages/home/home.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
     CouponComponent,
     CheckInSuccessDialogComponent,
     ResetPasswordComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
