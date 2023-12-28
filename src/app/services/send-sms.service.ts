@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { SendSmsEvent } from '@model/send-sms-event.model';
 import { firstValueFrom, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { TimeUtil } from '../utils/time.util';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class SendSmsService {
   ) { }
 
   async subscribeToMarketingSms(phone: string) {
-    return firstValueFrom(this.http.post(`${this.baseUrl}/send-confirm-sms`, { phone }, {
+    return firstValueFrom(this.http.post(`${this.baseUrl}/subscribe-customer`, { phone }, {
       params: {
         cid: phone
       },
@@ -25,7 +26,7 @@ export class SendSmsService {
 
   async sendSms(content: string, imageUrl?: string) {
     console.log('Sending sms:', content, imageUrl)
-    return firstValueFrom(this.http.post<any>(`${this.baseUrl}/send-sms-to-customers`, { content, imageUrl }));
+    return firstValueFrom(this.http.post<any>(`${this.baseUrl}/create-ad-event`, { content, imageUrl }));
   }
 
   async getImageUrls() {
@@ -65,14 +66,15 @@ export class SendSmsService {
 
   async getSmsEvents(): Promise<SendSmsEvent[]> {
     console.log('Getting sms events');
-    return firstValueFrom(this.http.get(`${this.baseUrl}/get-sms-events`)
+    return firstValueFrom(this.http.get(`${this.baseUrl}/get-ad-events`)
       .pipe(
         map((res: any) => {
           const toReturn = [] as SendSmsEvent[];
-          for (const event of res.smsEvents) {
+          for (const event of res.smsEvents.items) {
             toReturn.push({
-              createdAt: event.createdAt,
-              content: event.ad.content
+              createdAt: TimeUtil.parseTimeString(event.createdAt).valueOf(),
+              description: event.description,
+              content: event.content,
             } as SendSmsEvent);
           }
           return toReturn;

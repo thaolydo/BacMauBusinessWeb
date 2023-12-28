@@ -28,6 +28,7 @@ export class SendSmsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    console.log('send-sms init');
     this.isLoading = true;
     try {
       // this.imageUrls = await this.sendSmsService.getImageUrls();
@@ -56,7 +57,8 @@ export class SendSmsComponent implements OnInit {
       const res = await this.sendSmsService.sendSms(this.messageContent, this.selectedImage);
       // await new Promise(x => setTimeout(x, 1000));
       // const res = { success: true };
-      if (res.success) {
+      // TODO: display error depending on the response
+      if (res) {
         this.snackBar.open('Sent SMS successfully', undefined, { duration: 3000 });
       } else {
         alert('You can only send 1 SMS per day');

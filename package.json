@@ -25,6 +25,7 @@
     "amazon-cognito-identity-js": "^5.2.10",
     "aws-sdk": "^2.1253.0",
     "aws4fetch": "^1.0.17",
+    "moment-timezone": "^0.5.43",
     "ngx-mask": "^14.0.3",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

@@ -12,7 +12,7 @@ import { SendSmsEvent } from 'src/app/models/send-sms-event.model';
 export class SmsHistoryComponent implements OnInit {
 
   isLoading = false;
-  displayedColumns: string[] = ['createdAt', 'content'];
+  displayedColumns: string[] = ['createdAt', 'description', 'content'];
 
   dataSource: MatTableDataSource<SendSmsEvent> | undefined;
   private sortHodler: MatSort | undefined;
@@ -28,14 +28,16 @@ export class SmsHistoryComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    console.log('sms-history init');
     await this.loadTableDataSource();
   }
 
   async loadTableDataSource() {
+    console.log('load table');
     this.isLoading = true;
     try {
       const sendSmsEvents = await this.sendSmsService.getSmsEvents();
-      console.debug('sendSmsEvents=', sendSmsEvents);
+      console.debug('sendSmsEvents = ', sendSmsEvents);
       this.dataSource = new MatTableDataSource<SendSmsEvent>(sendSmsEvents);
     } catch (e: any) {
       throw e;

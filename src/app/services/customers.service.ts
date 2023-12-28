@@ -17,7 +17,7 @@ export class CustomersService {
   ) { }
 
   async getCustomers(): Promise<CustomerInfo[]> {
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-all-customers-info`)
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-all-customers-for-bid`)
       .pipe(
         map(res => {
           const customers = Object.values(res.customers) as any[];

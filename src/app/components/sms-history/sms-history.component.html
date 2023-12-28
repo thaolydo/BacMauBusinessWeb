@@ -3,13 +3,19 @@
     <!-- Timestamp Column -->
     <ng-container matColumnDef="createdAt">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </th>
-        <td mat-cell *matCellDef="let element"> {{element.createdAt | date : 'short'}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.createdAt | date : 'medium'}} </td>
     </ng-container>
 
     <!-- Message Content Column -->
     <ng-container matColumnDef="content">
         <th mat-header-cell *matHeaderCellDef> Content </th>
         <td mat-cell *matCellDef="let element"> {{element.content}} </td>
+    </ng-container>
+
+    <!-- Message Description Column -->
+    <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
     </ng-container>
 
     <!-- Not needed currently -->
