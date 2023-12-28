@@ -28,9 +28,9 @@ export class TermsAndConditionsDialogComponent implements OnInit {
     console.log('onSubmit');
     try {
       this.isSubmitting = true;
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      // const res = await this.sendSmsService.subscribeToMarketingSms(this.customerInfo.phone);
-      // console.log('res =', res);
+      // await new Promise(resolve => setTimeout(resolve, 1000));
+      const res = await this.sendSmsService.subscribeToMarketingSms(this.customerInfo.phone);
+      console.log('res =', res);
     } catch (e: any) {
       alert('Unable to subscribe');
     } finally {

@@ -80,9 +80,10 @@ export class CustomerCheckInComponent implements OnInit {
       console.log('customerInfo =', customerInfo);
 
       // Check-in
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      const res = {} as any;
-      // const res = await this.customersService.checkIn(customerInfo);
+      // await new Promise(resolve => setTimeout(resolve, 1000));
+      // const res = {} as any;
+      const res = await this.customersService.checkIn(customerInfo);
+      this.isSubmitting = false;
 
       const alreadySubsribed = res.subscribed;
 

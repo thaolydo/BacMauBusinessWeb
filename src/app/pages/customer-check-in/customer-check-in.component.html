@@ -3,7 +3,7 @@
     <mat-form-field appearance="fill">
         <mat-label>Name</mat-label>
         <input matInput formControlName="name" required autofocus>
-        <button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+        <button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" tabindex="-1" (click)="name=''">
             <mat-icon style="width: auto;">close</mat-icon>
         </button>
     </mat-form-field>
@@ -12,7 +12,7 @@
     <mat-form-field appearance="fill">
         <mat-label>Phone</mat-label>
         <input #phoneInput mask="(000) 000-0000" matInput placeholder="(xxx) xxx-xxxx" formControlName="phone" required>
-        <button *ngIf="phone" matSuffix mat-icon-button aria-label="Clear" (click)="phone=''">
+        <button *ngIf="phone" matSuffix mat-icon-button aria-label="Clear" tabindex="-1" (click)="phone=''">
             <mat-icon style="width: auto;">close</mat-icon>
         </button>
     </mat-form-field>

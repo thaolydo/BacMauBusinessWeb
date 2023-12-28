@@ -4,6 +4,7 @@ import { firstValueFrom, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CustomerInfo } from 'src/app/models/customer-info.model';
 import { CheckInEvent } from 'src/app/models/check-in-event.model';
+import { TimeUtil } from '../utils/time.util';
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +55,13 @@ export class CustomersService {
     return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-check-in-event`, {
       params,
     }).pipe(
-      map(res => res.paginatedItems.items)
+      map(res => (res.paginatedItems.items as any[]).
+        map(item => {
+          return {
+            ...item,
+            createdAt: TimeUtil.parseTimeString(item.createdAt).valueOf(),
+          }
+        }))
     ));
   }
 
