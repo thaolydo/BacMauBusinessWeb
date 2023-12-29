@@ -5,6 +5,7 @@ import { AuthEventType } from '@model/auth-event-types.enum';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-nav-bar',
@@ -16,6 +17,7 @@ export class NavBarComponent implements OnInit {
   @Input() businessName: string = 'Life Reflexology'; // TODO: get it from query params in the current url
 
   curUser: CognitoUser | null = null;
+  userPoolId = undefined;
   authEventSubscription: Subscription | undefined;
   showNavBar: boolean = true;
 
@@ -29,14 +31,16 @@ export class NavBarComponent implements OnInit {
       console.log('NavBarComponent: auth event =', event);
       if (event == AuthEventType.SIGNED_IN || event == AuthEventType.ATTRIBUTE_UPDATED) {
         this.curUser = await this.authService.getCurUser();
+        this.userPoolId = (this.curUser as any).pool.userPoolId;
       } else if (event == AuthEventType.SIGNED_OUT) {
         this.curUser = null;
+        this.userPoolId = undefined;
       }
     });
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         console.log('current url =', event.url);
-        if (event.url == '/' || event.url.startsWith('/customer-check-in') ||  event.url.startsWith('/sign-in')) {
+        if (event.url == '/' || event.url.startsWith('/customer-check-in') || event.url.startsWith('/sign-in')) {
           this.showNavBar = false;
         } else {
           this.showNavBar = true;
@@ -45,9 +49,14 @@ export class NavBarComponent implements OnInit {
     });
   }
 
+  get ownerUserPoolId() {
+    return environment.ownerUserPoolId;
+  }
+
   async ngOnInit() {
     try {
       this.curUser = await this.authService.getCurUser();
+      this.userPoolId = (this.curUser as any).pool.userPoolId;
     } catch (err) {
       console.log('nav-bar onInit: User not logged in');
     }

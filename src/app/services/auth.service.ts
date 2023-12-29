@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserSession } from 'amazon-cognito-identity-js';
+import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserSession, UserData } from 'amazon-cognito-identity-js';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthEventType } from 'src/app/models/auth-event-types.enum';
@@ -67,7 +67,7 @@ export class AuthService {
         Password: password,
       }), {
         onSuccess: (session) => {
-          console.log(`Successfull signed in with username '${username}' and session '${session}'`);
+          console.log(`Successfull signed in with username '${username}' and session '${JSON.stringify(session)}'`);
           this.isSignedInAsOwner = asOwner;
           this.curUser = user;
           this.eventSubject.next(AuthEventType.SIGNED_IN);
@@ -168,19 +168,26 @@ export class AuthService {
     });
   }
 
+  async getUserData(): Promise<UserData> {
+    const curUser = await this.getCurUser();
+    return new Promise((resolve, reject) => {
+      curUser?.getUserData((err, userData) => {
+        resolve(userData as UserData);
+      });
+    });
+  }
+
   async hasRole(role: Role) {
     const user = await this.getCurUser();
     if (!user) {
       return false;
     }
+    const userPoolId = (user as any).pool.userPoolId;
     if (role == Role.OWNER) {
-      return user.getUsername() == 'owner'; // TODO: change this when creating new user in the pool
+      return environment.ownerUserPoolId === userPoolId;
     }
     if (role == Role.FRONT_DESK) {
-      return new Set([
-        'frontdesk',
-        'huypham'
-      ]).has(user.getUsername()); // TODO: change this when creating new user in the pool
+      return environment.frontDeskUserPoolId === userPoolId;
     }
     return false;
   }
