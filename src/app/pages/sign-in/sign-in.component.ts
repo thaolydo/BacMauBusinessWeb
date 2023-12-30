@@ -22,12 +22,14 @@ export class SignInComponent implements OnInit {
     this.form = this._fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
-      asOwner: true
+      // asOwner: true
     });
   }
 
   async ngOnInit() {
-    if (await this.authService.getCurUser()) {
+    const curUser = await this.authService.getCurUser();
+    if (curUser) {
+      console.log('Already signed in. Navigating to page /customers');
       this.router.navigate(['/customers']);
     }
   }
@@ -40,16 +42,15 @@ export class SignInComponent implements OnInit {
     return this.form.get('password')?.value as string;
   }
 
-  get asOwner() {
-    return this.form.get('asOwner')?.value as boolean;
-  }
+  // Deprecated
+  // get asOwner() {
+  //   return this.form.get('asOwner')?.value as boolean;
+  // }
 
   async onSubmit() {
     this.isSubmitting = true;
     try {
-      const res = this.asOwner
-        ? await this.authService.signInAsOwner(this.username.toLowerCase(), this.password)
-        : await this.authService.signInAsFrontdesk(this.username.toLowerCase(), this.password);
+      const res = await this.authService.signIn(this.username.toLowerCase(), this.password);
       console.log('res =', res);
       this.router.navigate(['/customers']);
     } catch (e: any) {

@@ -39,6 +39,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": ["crypto-js", "aws-sdk/global", "js-cookie"],
             "outputPath": "dist/bac-mau-business-web",
             "index": "src/index.html",
             "main": "src/main.ts",

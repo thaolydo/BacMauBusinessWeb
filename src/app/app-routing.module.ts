@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'customers', component: CustomersComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
-  { path: 'sms', component: SmsComponent, canActivate: [AuthGuard], data: { roles: [Role.OWNER] } },
+  { path: 'sms', component: SmsComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
   { path: 'coupon', component: CouponComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
 ];
 

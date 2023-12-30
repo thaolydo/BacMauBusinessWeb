@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { CognitoUser } from 'amazon-cognito-identity-js';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -16,24 +17,19 @@ export class ResetPasswordComponent {
     private _fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute,
   ) {
     this.form = this._fb.group({
-      username: ['', Validators.required],
       newPassword: ['', Validators.required],
       verificationCode: ['', Validators.required],
-      asOwner: true
+      // asOwner: true
     });
   }
 
   async ngOnInit() {
-    if (await this.authService.getCurUser()) {
-      this.router.navigate(['/customers']);
-    }
-  }
-
-  get username() {
-    return this.form.get('username')?.value as string;
+    await this.authService.forgotPassword();
+    // if (await this.authService.getCurUser()) {
+    //   this.router.navigate(['/customers']);
+    // }
   }
 
   get newPassword() {
@@ -44,14 +40,19 @@ export class ResetPasswordComponent {
     return this.form.get('verificationCode')?.value as string;
   }
 
-  get asOwner() {
-    return this.form.get('asOwner')?.value as boolean;
+  // Deprecated
+  // get asOwner() {
+  //   return this.form.get('asOwner')?.value as boolean;
+  // }
+
+  async onSendCode() {
+
   }
 
-  async onSubmit() {
+  async onResetPassword() {
     this.isSubmitting = true;
     try {
-      const res = this.authService.confirmPassword(this.username.toLowerCase(), this.newPassword, this.verificationCode, this.asOwner);
+      const res = this.authService.confirmPassword(this.newPassword, this.verificationCode);
       console.log('res =', res);
       this.router.navigate(['/customers']);
     } catch (e: any) {

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthEventType } from '@model/auth-event-types.enum';
+import { Role } from '@model/role.model';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
@@ -17,12 +18,13 @@ export class NavBarComponent implements OnInit {
   @Input() businessName: string = 'Life Reflexology'; // TODO: get it from query params in the current url
 
   curUser: CognitoUser | null = null;
-  userPoolId = undefined;
   authEventSubscription: Subscription | undefined;
   showNavBar: boolean = true;
+  Role = Role;
+  curRole: Role | undefined = undefined;
 
   constructor(
-    private authService: AuthService,
+    protected authService: AuthService,
     private snackBar: MatSnackBar,
     private router: Router,
     private route: ActivatedRoute
@@ -31,10 +33,10 @@ export class NavBarComponent implements OnInit {
       console.log('NavBarComponent: auth event =', event);
       if (event == AuthEventType.SIGNED_IN || event == AuthEventType.ATTRIBUTE_UPDATED) {
         this.curUser = await this.authService.getCurUser();
-        this.userPoolId = (this.curUser as any).pool.userPoolId;
+        this.curRole = this.authService.getCurUserRole(true);
       } else if (event == AuthEventType.SIGNED_OUT) {
         this.curUser = null;
-        this.userPoolId = undefined;
+        this.curRole = undefined;
       }
     });
     this.router.events.subscribe(event => {
@@ -49,14 +51,10 @@ export class NavBarComponent implements OnInit {
     });
   }
 
-  get ownerUserPoolId() {
-    return environment.ownerUserPoolId;
-  }
-
   async ngOnInit() {
     try {
       this.curUser = await this.authService.getCurUser();
-      this.userPoolId = (this.curUser as any).pool.userPoolId;
+      this.curRole = this.authService.getCurUserRole(true);
     } catch (err) {
       console.log('nav-bar onInit: User not logged in');
     }

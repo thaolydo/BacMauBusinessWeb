@@ -3,7 +3,7 @@ import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserSession
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthEventType } from 'src/app/models/auth-event-types.enum';
-import { Role } from '@model/role.model';
+import { Role, UserGroup } from '@model/role.model';
 import * as AWS from "aws-sdk/global";
 import { LoginsMap } from "aws-sdk/clients/cognitoidentity";
 // import { CognitoIdentityClient } from '@aws-sdk/client-cognito-identity';
@@ -20,44 +20,27 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   private baseUrl = environment.baseUrl;
-  private ownerUserPool: CognitoUserPool;
-  private frontDeskUserPool: CognitoUserPool;
-  private isSignedInAsOwner: boolean = false;
+  private userPool: CognitoUserPool;
 
   private eventSubject: Subject<AuthEventType> = new Subject();
   private curUser: CognitoUser | null = null;
   private curAwsCreds: CognitoIdentityCredentials | undefined;
 
   constructor(private router: Router) {
-    this.ownerUserPool = new CognitoUserPool({
-      ClientId: environment.ownerUserPoolClientId,
-      UserPoolId: environment.ownerUserPoolId,
-    });
-    this.frontDeskUserPool = new CognitoUserPool({
-      ClientId: environment.frontDeskUserPoolClientId,
-      UserPoolId: environment.frontDeskUserPoolId
+    this.userPool = new CognitoUserPool({
+      ClientId: environment.userPoolClientId,
+      UserPoolId: environment.userPoolId,
     });
 
-    if (this.ownerUserPool.getCurrentUser() != null) {
-      this.isSignedInAsOwner = true;
-      this.curUser = this.ownerUserPool.getCurrentUser();
-    } else if (this.frontDeskUserPool.getCurrentUser() != null) {
-      this.curUser = this.frontDeskUserPool.getCurrentUser();
+    if (this.userPool.getCurrentUser() != null) {
+      this.curUser = this.userPool.getCurrentUser();
     }
   }
 
-  signInAsOwner(username: string, password: string): Promise<CognitoUser> {
-    return this._signIn(username, password, true);
-  }
-
-  signInAsFrontdesk(username: string, password: string): Promise<CognitoUser> {
-    return this._signIn(username, password, false);
-  }
-
-  _signIn(username: string, password: string, asOwner: boolean): Promise<CognitoUser> {
+  signIn(username: string, password: string): Promise<CognitoUser> {
     console.log(`Signing in user with username '${username}'`);
     const user = new CognitoUser({
-      Pool: asOwner ? this.ownerUserPool : this.frontDeskUserPool,
+      Pool: this.userPool,
       Username: username,
     });
     return new Promise((resolve, reject) => {
@@ -68,7 +51,6 @@ export class AuthService {
       }), {
         onSuccess: (session) => {
           console.log(`Successfull signed in with username '${username}' and session '${JSON.stringify(session)}'`);
-          this.isSignedInAsOwner = asOwner;
           this.curUser = user;
           this.eventSubject.next(AuthEventType.SIGNED_IN);
           resolve(user);
@@ -103,15 +85,94 @@ export class AuthService {
     });
   }
 
+  // // deprecated
+  // signInAsOwner(username: string, password: string): Promise<CognitoUser> {
+  //   return this._signIn(username, password, true);
+  // }
+
+  // // deprecated
+  // signInAsFrontdesk(username: string, password: string): Promise<CognitoUser> {
+  //   return this._signIn(username, password, false);
+  // }
+
+  // // deprecated
+  // _signIn(username: string, password: string, asOwner: boolean): Promise<CognitoUser> {
+  //   console.log(`Signing in user with username '${username}'`);
+  //   const user = new CognitoUser({
+  //     Pool: asOwner ? this.userPool : this.frontDeskUserPool,
+  //     Username: username,
+  //   });
+  //   return new Promise((resolve, reject) => {
+  //     user.confirmPassword
+  //     user.authenticateUser(new AuthenticationDetails({
+  //       Username: username,
+  //       Password: password,
+  //     }), {
+  //       onSuccess: (session) => {
+  //         console.log(`Successfull signed in with username '${username}' and session '${JSON.stringify(session)}'`);
+  //         this.isSignedInAsOwner = asOwner;
+  //         this.curUser = user;
+  //         this.eventSubject.next(AuthEventType.SIGNED_IN);
+  //         resolve(user);
+  //       },
+  //       newPasswordRequired: function (userAttributes, requiredAttributes) {
+  //         // https://stackoverflow.com/questions/40287012/how-to-change-user-status-force-change-password
+
+  //         // User was signed up by an admin and must provide new
+  //         // password and required attributes, if any, to complete
+  //         // authentication.
+
+  //         // the api doesn't accept this field back
+  //         delete userAttributes.email_verified;
+
+  //         // unsure about this field, but I don't send this back
+  //         delete userAttributes.phone_number_verified;
+
+  //         // Get these details and call
+  //         user.completeNewPasswordChallenge(password, userAttributes, this);
+  //       },
+  //       onFailure: (err) => {
+  //         /* Possible err.code:
+  //           UserNotFoundException: username not signed up yet
+  //           NotAuthorizedException: wrong username/password
+  //           UserNotConfirmedException: account is not verified yet by owner
+  //           UsernameExistsException: username exists
+  //         */
+  //         console.error(err);
+  //         reject(err);
+  //       }
+  //     });
+  //   });
+  // }
+
   // https://stackoverflow.com/questions/38110615/how-to-allow-my-user-to-reset-their-password-on-cognito-user-pools
-  confirmPassword(username: string, newPassword: string, verificationCode: string, asOwner: boolean): Promise<string> {
-    console.log(`Resetting password for user with username '${username}'`);
-    const user = new CognitoUser({
-      Pool: asOwner ? this.ownerUserPool : this.frontDeskUserPool,
-      Username: username,
-    });
+  async forgotPassword(): Promise<void> {
+    console.log('forgotPassword');
+    const curUser = await this.getCurUser();
+    if (!curUser) {
+      throw new Error('confirmPassword(): User is not signed in');
+    }
+
     return new Promise((resolve, reject) => {
-      user.confirmPassword(verificationCode, newPassword, {
+      curUser.forgotPassword({
+        onSuccess: (data) => {
+          resolve();
+        },
+        onFailure: (err: Error) => {
+          reject(err);
+        }
+      });
+    });
+  }
+
+  async confirmPassword(newPassword: string, verificationCode: string): Promise<string> {
+    console.log(`Resetting password`);
+    const curUser = await this.getCurUser();
+    if (!curUser) {
+      throw new Error('confirmPassword(): User is not signed in');
+    }
+    return new Promise((resolve, reject) => {
+      curUser.confirmPassword(verificationCode, newPassword, {
         onSuccess: (success: string) => {
           console.log('Successfully reset password');
           resolve(success);
@@ -168,6 +229,28 @@ export class AuthService {
     });
   }
 
+  getCurUserRole(ignoreError: boolean = false): Role {
+    console.log('getCurUserRole');
+    const groups = this.curUser?.getSignInUserSession()?.getIdToken().payload['cognito:groups'] as UserGroup[];
+    if (!groups || groups.length == 0) {
+      if (!ignoreError) {
+        alert('Something went wrong. Please contact admin');
+      }
+      return Role.OTHER;
+    }
+    const group = groups[0];
+    if (group === UserGroup.FRONT_DESK_GROUP) {
+      return Role.FRONT_DESK;
+    } else if (group === UserGroup.OWNER_GROUP) {
+      return Role.OWNER;
+    } else {
+      if (!ignoreError) {
+        alert('Invalid user role. Please contact admin');
+      }
+      return Role.OTHER;
+    }
+  }
+
   async getUserData(): Promise<UserData> {
     const curUser = await this.getCurUser();
     return new Promise((resolve, reject) => {
@@ -177,20 +260,20 @@ export class AuthService {
     });
   }
 
-  async hasRole(role: Role) {
-    const user = await this.getCurUser();
-    if (!user) {
-      return false;
-    }
-    const userPoolId = (user as any).pool.userPoolId;
-    if (role == Role.OWNER) {
-      return environment.ownerUserPoolId === userPoolId;
-    }
-    if (role == Role.FRONT_DESK) {
-      return environment.frontDeskUserPoolId === userPoolId;
-    }
-    return false;
-  }
+  // // Deprecated
+  // async hasRole(role: Role) {
+  //   const curUserGroup = this.getCurUserGroup();
+  //   if (!curUserGroup) {
+  //     return false;
+  //   }
+  //   if (role == Role.OWNER) {
+  //     return environment.userPoolId === userPoolId;
+  //   }
+  //   if (role == Role.FRONT_DESK) {
+  //     return environment.frontDeskUserPoolId === userPoolId;
+  //   }
+  //   return false;
+  // }
 
   getAuthEventUpdates() {
     return this.eventSubject.asObservable();
@@ -201,6 +284,7 @@ export class AuthService {
       throw new Error('user not logged in');
     }
 
+    // TODO: cache aws creds to local storage instead of this.curAwsCreds
     if (this.curAwsCreds && this.curUser?.getSignInUserSession()?.getIdToken()) {
       const curJwtToken = this.curUser?.getSignInUserSession()?.getIdToken().getJwtToken();
       if (!await this.getCurUser()) {
@@ -232,13 +316,13 @@ export class AuthService {
 
     AWS.config.region = 'us-east-1';
     // TODO: fix hardcoding user pool ID
-    const url = `cognito-idp.us-east-1.amazonaws.com/${this.isSignedInAsOwner ? environment.ownerUserPoolId : environment.frontDeskUserPoolId}`;
+    const url = `cognito-idp.us-east-1.amazonaws.com/${environment.userPoolId}`;
     const Logins = {} as LoginsMap;
     const idToken = this.curUser.getSignInUserSession()!.getIdToken();
     Logins[url] = idToken.getJwtToken();
     // console.log('role =', idToken.payload['cognito:roles'][0]);
     this.curAwsCreds = new AWS.CognitoIdentityCredentials({
-      IdentityPoolId: this.isSignedInAsOwner ? environment.ownerIdentityPoolId : environment.frontDeskIdentityPoolId,
+      IdentityPoolId: environment.identityPoolId,
       Logins,
       DurationSeconds: 3600,
       // RoleArn: idToken.payload['cognito:roles'][0],

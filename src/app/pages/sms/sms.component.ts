@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Role } from '@model/role.model';
+import { AuthService } from '@service/auth.service';
 
 @Component({
   selector: 'app-sms',
@@ -7,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SmsComponent implements OnInit {
 
-  constructor() { }
+  Role = Role;
+
+  constructor(protected authService: AuthService) { }
 
   ngOnInit() {
   }
