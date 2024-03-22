@@ -18,7 +18,7 @@ export class CustomersService {
   ) { }
 
   async getCustomers(): Promise<CustomerInfo[]> {
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-all-customers-for-bid`)
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customer`)
       .pipe(
         map(res => {
           const customers = Object.values(res.customers) as any[];
@@ -37,7 +37,7 @@ export class CustomersService {
   }
 
   async checkIn(customer: CustomerInfo): Promise<any> {
-    return firstValueFrom(this.http.post(`${this.baseUrl}/check-in`, { customer }));
+    return firstValueFrom(this.http.post(`${this.baseUrl}/customer/check-in`, { customer }));
   }
 
   async getCheckInEventHistory(month: number, date?: Date): Promise<CheckInEvent[]> {
@@ -52,7 +52,7 @@ export class CustomersService {
       params.end = end.getTime();
     }
     console.log('params =', params);
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-check-in-event`, {
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customer/check-in`, {
       params,
     }).pipe(
       map(res => (res.paginatedItems.items as any[]).
@@ -65,11 +65,12 @@ export class CustomersService {
     ));
   }
 
-  async getCustomerCount(): Promise<number> {
-    console.log('Getting customer count');
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-customer-count`).pipe(
-      map(res => res.count as number)
-    ));
-  }
+  // Deprecated in favor of get-estimated-customer-count
+  // async getCustomerCount(): Promise<number> {
+  //   console.log('Getting customer count');
+  //   return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-customer-count`).pipe(
+  //     map(res => res.count as number)
+  //   ));
+  // }
 
 }

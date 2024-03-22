@@ -284,6 +284,11 @@ export class AuthService {
     });
   }
 
+  async getDefaultBid(): Promise<string> {
+    const userData = await this.getUserData();
+    return userData.UserAttributes.find(attribute => attribute.Name === 'custom:bid')!.Value;
+  }
+
   // // Deprecated
   // async hasRole(role: Role) {
   //   const curUserGroup = this.getCurUserGroup();

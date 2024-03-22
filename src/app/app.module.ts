@@ -26,6 +26,7 @@ import { CheckInSuccessDialogComponent } from './components/check-in-success-dia
 import { AwsSigningInterceptor } from '@service/aws-signing.interceptor';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { HomeComponent } from './pages/home/home.component';
+import { AttachBidInterceptor } from '@service/attach-bid.interceptor';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { HomeComponent } from './pages/home/home.component';
     HttpClientModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AwsSigningInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AwsSigningInterceptor, multi: true, },
+    { provide: HTTP_INTERCEPTORS, useClass: AttachBidInterceptor, multi: true, },
   ],
   bootstrap: [AppComponent]
 })

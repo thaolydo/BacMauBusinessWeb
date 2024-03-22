@@ -82,6 +82,13 @@ export class SendSmsService {
       ));
   }
 
+  async getEstimatedCustomerCount(): Promise<number> {
+    console.log('Getting customer count');
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/sms/opt`).pipe(
+      map(res => res.estimatedCustomerCount as number)
+    ));
+  }
+
 }
 
 export interface GetSignedUrlResponse {

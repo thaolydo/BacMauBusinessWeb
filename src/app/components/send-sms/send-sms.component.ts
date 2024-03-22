@@ -23,7 +23,6 @@ export class SendSmsComponent implements OnInit {
 
   constructor(
     private sendSmsService: SendSmsService,
-    private customersService: CustomersService,
     private snackBar: MatSnackBar,
   ) { }
 
@@ -32,7 +31,7 @@ export class SendSmsComponent implements OnInit {
     this.isLoading = true;
     try {
       // this.imageUrls = await this.sendSmsService.getImageUrls();
-      this.customerCount = await this.customersService.getCustomerCount();
+      this.customerCount = await this.sendSmsService.getEstimatedCustomerCount();
       console.log('customerCount =', this.customerCount);
     } finally {
       this.isLoading = false;
