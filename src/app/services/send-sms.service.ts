@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SendSmsEvent } from '@model/send-sms-event.model';
+import { AdEvent } from '@model/send-sms-event.model';
 import { firstValueFrom, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TimeUtil } from '../utils/time.util';
@@ -71,18 +71,17 @@ export class SendSmsService {
     return firstValueFrom(this.http.post(signedUrl, formData));
   }
 
-  async getSmsEvents(): Promise<SendSmsEvent[]> {
+  async getSmsEvents(): Promise<AdEvent[]> {
     console.log('Getting sms events');
     return firstValueFrom(this.http.get(`${this.baseUrl}/sms/ad-event`)
       .pipe(
         map((res: any) => {
-          const toReturn = [] as SendSmsEvent[];
+          const toReturn = [] as AdEvent[];
           for (const event of res.smsEvents.items) {
             toReturn.push({
               createdAt: TimeUtil.parseTimeString(event.createdAt).valueOf(),
-              description: event.description,
-              content: event.content,
-            } as SendSmsEvent);
+              ...event,
+            } as AdEvent);
           }
           return toReturn;
         })

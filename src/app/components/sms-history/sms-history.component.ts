@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SendSmsService } from '@service/send-sms.service';
-import { SendSmsEvent } from 'src/app/models/send-sms-event.model';
+import { AdEvent } from 'src/app/models/send-sms-event.model';
 
 @Component({
   selector: 'app-sms-history',
@@ -12,9 +12,9 @@ import { SendSmsEvent } from 'src/app/models/send-sms-event.model';
 export class SmsHistoryComponent implements OnInit {
 
   isLoading = false;
-  displayedColumns: string[] = ['createdAt', 'description', 'content'];
+  displayedColumns: string[] = ['createdAt', 'description', 'content', 'receivedCount'];
 
-  dataSource: MatTableDataSource<SendSmsEvent> | undefined;
+  dataSource: MatTableDataSource<AdEvent> | undefined;
   private sortHodler: MatSort | undefined;
   @ViewChild(MatSort) set sort(sort: MatSort) {
     if (sort) {
@@ -36,9 +36,9 @@ export class SmsHistoryComponent implements OnInit {
     console.log('load table');
     this.isLoading = true;
     try {
-      const sendSmsEvents = await this.sendSmsService.getSmsEvents();
-      console.log('sendSmsEvents = ', sendSmsEvents);
-      this.dataSource = new MatTableDataSource<SendSmsEvent>(sendSmsEvents);
+      const adEvents = await this.sendSmsService.getSmsEvents();
+      console.log('adEvents = ', adEvents);
+      this.dataSource = new MatTableDataSource<AdEvent>(adEvents);
     } catch (e: any) {
       throw e;
     } finally {
