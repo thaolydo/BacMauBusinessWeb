@@ -11,7 +11,7 @@ import { CustomersService } from 'src/app/services/customers.service';
 export class CustomerListComponent implements OnInit {
 
   isLoading = false;
-  displayedColumns: string[] = ['phone', 'name', 'birthday'];
+  displayedColumns: string[] = ['phone', 'name', 'optStatus'];
   dataSource: MatTableDataSource<CustomerInfo> | undefined;
 
   constructor(private customersService: CustomersService) { }
