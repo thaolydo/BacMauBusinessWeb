@@ -1,13 +1,36 @@
 <!-- Message Content -->
-<mat-form-field appearance="fill" class="message-content">
-    <textarea matInput rows="10" [(ngModel)]="messageContent"></textarea>
+<mat-form-field class="message-content">
+    <mat-label>Description</mat-label>
+    <input matInput type="text" [(ngModel)]="description" required placeholder="Ex. Tuesday 30% OFF">
 </mat-form-field>
-<!-- <input matInput [(ngModel)]="messageContent" /> -->
-<span id="customer-count-container" style="color: grey;">Customer Count:
+
+<!-- Message Content -->
+<mat-form-field appearance="fill" class="message-content">
+    <mat-label>Message Content</mat-label>
+    <textarea matInput rows="10" [(ngModel)]="messageContent" required
+        placeholder="Ex. Get 30% off today only - Happy Tuesday!"></textarea>
+    <mat-hint>{{ messageContent.length }} / {{ maxChar }}</mat-hint>
+</mat-form-field>
+
+<!-- Include Click-Through Link -->
+<mat-checkbox [(ngModel)]="includeClickThroughLink" (change)="onIncludeClickThroughLinkChange($event)"
+    matTooltip="Include the click-through link at the end of the sms to track if the customer has seen the ad"
+    matTooltipPosition="right">Include Click-Throught Link</mat-checkbox>
+
+<span id="customer-count-container" style="color: grey;">Estimated Customer Count:
     <ng-container *ngIf="isLoading">
         <mat-spinner id="customer-count-spinner" diameter="20"></mat-spinner>
     </ng-container>
     {{customerCount}}
+</span>
+
+<span id="estimated-cost-container" style="color: grey;">Estimated Cost:
+    <ng-container *ngIf="isLoading">
+        <mat-spinner id="customer-count-spinner" diameter="20"></mat-spinner>
+    </ng-container>
+    <ng-container *ngIf="customerCount && pricePerSms">
+        {{ customerCount * pricePerSms | currency }}
+    </ng-container>
 </span>
 
 <!-- Upload Button -->
@@ -28,7 +51,7 @@
 <mat-spinner *ngIf="isLoading" diameter="30"></mat-spinner> -->
 
 <!-- Action Buttons -->
-<app-submit-button buttonType="fab" class="send-button" [disabled]="!messageContent || isSending"
+<app-submit-button buttonType="fab" class="send-button" [disabled]="!messageContent || !description || isSending"
     [isSubmitting]="isSending" (onClick)="sendSms()">
     <mat-icon style="font-size: x-large;">send</mat-icon>
 </app-submit-button>

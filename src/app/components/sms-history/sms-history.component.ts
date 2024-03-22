@@ -37,7 +37,7 @@ export class SmsHistoryComponent implements OnInit {
     this.isLoading = true;
     try {
       const sendSmsEvents = await this.sendSmsService.getSmsEvents();
-      console.debug('sendSmsEvents = ', sendSmsEvents);
+      console.log('sendSmsEvents = ', sendSmsEvents);
       this.dataSource = new MatTableDataSource<SendSmsEvent>(sendSmsEvents);
     } catch (e: any) {
       throw e;

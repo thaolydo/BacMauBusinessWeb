@@ -253,7 +253,6 @@ export class AuthService {
   }
 
   getCurUserRole(ignoreError: boolean = false): Role {
-    console.log('getCurUserRole');
     const groups = this.curUser?.getSignInUserSession()?.getIdToken().payload['cognito:groups'] as UserGroup[];
     if (!groups || groups.length == 0) {
       if (!ignoreError) {
@@ -287,6 +286,11 @@ export class AuthService {
   async getDefaultBid(): Promise<string> {
     const userData = await this.getUserData();
     return userData.UserAttributes.find(attribute => attribute.Name === 'custom:bid')!.Value;
+  }
+
+  async getSmsCost(): Promise<number> {
+    const userData = await this.getUserData();
+    return parseFloat(userData.UserAttributes.find(attribute => attribute.Name === 'custom:smsCost')!.Value);
   }
 
   // // Deprecated

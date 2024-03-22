@@ -4,6 +4,7 @@ import { SendSmsEvent } from '@model/send-sms-event.model';
 import { firstValueFrom, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TimeUtil } from '../utils/time.util';
+import { CreateAdEventRequest } from '@model/public-interface/create-ad-event-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +25,15 @@ export class SendSmsService {
     }));
   }
 
-  async sendSms(content: string, imageUrl?: string) {
-    console.log('Sending sms:', content, imageUrl)
-    return firstValueFrom(this.http.post<any>(`${this.baseUrl}/create-ad-event`, { content, imageUrl }));
+  async sendSms(content: string, description: string, includeClickThroughLink?: boolean, redirectUrl?: string) {
+    console.log('Sending sms:', content, description, redirectUrl);
+    const body = {
+      content,
+      description,
+      includeClickThroughLink,
+      redirectUrl,
+    } as CreateAdEventRequest;
+    return firstValueFrom(this.http.post<any>(`${this.baseUrl}/sms/ad-event`, body));
   }
 
   async getImageUrls() {
@@ -66,7 +73,7 @@ export class SendSmsService {
 
   async getSmsEvents(): Promise<SendSmsEvent[]> {
     console.log('Getting sms events');
-    return firstValueFrom(this.http.get(`${this.baseUrl}/get-ad-events`)
+    return firstValueFrom(this.http.get(`${this.baseUrl}/sms/ad-event`)
       .pipe(
         map((res: any) => {
           const toReturn = [] as SendSmsEvent[];

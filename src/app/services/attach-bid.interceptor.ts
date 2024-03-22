@@ -17,13 +17,26 @@ export class AttachBidInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    console.log(`AttachBidInterceptor: intercepting http requests`);
-    const res = from(this.authService.getDefaultBid().then(
-      bid => {
-        console.log('bid =', bid);
-        return request.clone({
-          params: request.params.append('bid', bid),
-        })
+    console.debug(`AttachBidInterceptor: intercepting http requests`);
+    const res = from(this.authService.getUserData().then(
+      userData => {
+        const bid = userData.UserAttributes.find(attribute => attribute.Name === 'custom:bid')!.Value;
+        console.debug('bid =', bid);
+        if (request.method == 'GET') {
+          return request.clone({
+            params: request.params.append('bid', bid),
+          });
+        } else if (request.method == 'POST') {
+          const businessName = userData.UserAttributes.find(attribute => attribute.Name === 'custom:businessName')!.Value;
+          const body = request.body! as any;
+          body.bid = bid;
+          body.businessName = businessName;
+          return request.clone({
+            body
+          });
+        } else {
+          return request;
+        }
       }
     )).pipe(
       switchMap(signedRequest => {
