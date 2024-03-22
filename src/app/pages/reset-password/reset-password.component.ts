@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { AuthService } from 'src/app/services/auth.service';
 
+// Deprecated in favor of using Cognito hosted UI for the web app client
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
@@ -26,7 +27,10 @@ export class ResetPasswordComponent {
   }
 
   async ngOnInit() {
-    await this.authService.forgotPassword();
+    window.open(
+      'https://pham-sms.auth.us-east-1.amazoncognito.com/forgotPassword?client_id=1pi94tnfo5aasrpmb8tb498baa&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=http%3A%2F%2Flocalhost%3A4200%2Fcustomers',
+      '_blank');
+    // await this.authService.forgotPassword();
     // if (await this.authService.getCurUser()) {
     //   this.router.navigate(['/customers']);
     // }

@@ -44,45 +44,68 @@ export class AuthService {
       Username: username,
     });
     return new Promise((resolve, reject) => {
-      user.confirmPassword
       user.authenticateUser(new AuthenticationDetails({
         Username: username,
         Password: password,
       }), {
-        onSuccess: (session) => {
+        onSuccess: (session: CognitoUserSession) => {
           console.log(`Successfull signed in with username '${username}' and session '${JSON.stringify(session)}'`);
           this.curUser = user;
           this.eventSubject.next(AuthEventType.SIGNED_IN);
           resolve(user);
         },
-        newPasswordRequired: function (userAttributes, requiredAttributes) {
+        newPasswordRequired: (userAttributes, requiredAttributes) => {
           // https://stackoverflow.com/questions/40287012/how-to-change-user-status-force-change-password
 
           // User was signed up by an admin and must provide new
           // password and required attributes, if any, to complete
           // authentication.
 
-          // the api doesn't accept this field back
-          delete userAttributes.email_verified;
+          // Deprecated, will use hosted UI to handle this
+          // // the api doesn't accept this field back
+          // console.log('userAttributes =', JSON.stringify(userAttributes));
+          // delete userAttributes.email_verified;
+          // // delete userAttributes.email;
 
-          // unsure about this field, but I don't send this back
-          delete userAttributes.phone_number_verified;
+          // // Get these details and call
+          // const newPassword = prompt('New Password')!;
+          // user.completeNewPasswordChallenge(newPassword, userAttributes, this);
 
-          // Get these details and call
-          user.completeNewPasswordChallenge(password, userAttributes, this);
+          this.openHostedUi('You must change your password to continue. Redirecting to creating new password page.');
+          resolve(user);
+          console.log('success 1');
         },
         onFailure: (err) => {
-          /* Possible err.code:
-            UserNotFoundException: username not signed up yet
-            NotAuthorizedException: wrong username/password
-            UserNotConfirmedException: account is not verified yet by owner
-            UsernameExistsException: username exists
-          */
-          console.error(err);
+          // Possible err.code:
+          // UserNotFoundException: username not signed up yet
+          // NotAuthorizedException: wrong username/password
+          // UserNotConfirmedException: account is not verified yet by owner
+          // UsernameExistsException: username exists
+
+          if (err.code === 'PasswordResetRequiredException') {
+            this.openHostedUi('You must change your password to continue. Redirecting to password reset page.');
+            resolve(user);
+            console.log('success 2');
+            return;
+          }
+          console.error(`Failed to login with error:`, err);
           reject(err);
         }
       });
     });
+  }
+
+  openHostedUi(alertMessage?: string) {
+    if (alertMessage) {
+      alert(alertMessage);
+    }
+    const url = new URL(`https://pham-sms.auth.us-east-1.amazoncognito.com/oauth2/authorize?client_id=${environment.userPoolClientId}&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile`);
+    url.searchParams.append('redirect_uri', environment.callBackUrl);
+    console.log('redirecting to url:', url.toString());
+    window.open(
+      url.toString(),
+      '_blank',
+    );
   }
 
   // // deprecated
@@ -234,6 +257,7 @@ export class AuthService {
     const groups = this.curUser?.getSignInUserSession()?.getIdToken().payload['cognito:groups'] as UserGroup[];
     if (!groups || groups.length == 0) {
       if (!ignoreError) {
+        console.trace();
         alert('Something went wrong. Please contact admin');
       }
       return Role.OTHER;
@@ -327,7 +351,12 @@ export class AuthService {
       DurationSeconds: 3600,
       // RoleArn: idToken.payload['cognito:roles'][0],
     });
-    await this.curAwsCreds.getPromise();
+    try {
+      await this.curAwsCreds.getPromise();
+    } catch (err) {
+      console.log('Logins =', JSON.stringify(Logins));
+      console.error(err);
+    }
     return this.curAwsCreds;
   }
 
