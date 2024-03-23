@@ -1,4 +1,5 @@
-<table *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort matSortActive="createdAt" matSortDirection="desc">
+<table *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort matSortActive="createdAt"
+    matSortDirection="desc">
 
     <!-- Timestamp Column -->
     <ng-container matColumnDef="createdAt">
@@ -18,10 +19,27 @@
         <td mat-cell *matCellDef="let element"> {{element.description}} </td>
     </ng-container>
 
+    <!-- Estimated Audience Size Column -->
+    <ng-container matColumnDef="estimatedAudienceSize">
+        <th mat-header-cell *matHeaderCellDef matTooltip="Estimated number of customers that will receive the ad"
+            matTooltipPosition="right"> Estimated </th>
+        <td mat-cell *matCellDef="let element"> {{element.estimatedAudienceSize}} </td>
+    </ng-container>
+
     <!-- Message Received Count Column -->
     <ng-container matColumnDef="receivedCount">
-        <th mat-header-cell *matHeaderCellDef> Received </th>
+        <th mat-header-cell *matHeaderCellDef matTooltip="Number of customers that have received the ad"
+            matTooltipPosition="right"> Received </th>
         <td mat-cell *matCellDef="let element"> {{element.successfulMessageCount}} </td>
+    </ng-container>
+
+    <!-- Cost Column -->
+    <ng-container matColumnDef="cost">
+        <th mat-header-cell *matHeaderCellDef matTooltip="Number of customers that have received the ad"
+            matTooltipPosition="right"> Cost </th>
+        <td mat-cell *matCellDef="let element">
+            <ng-container *ngIf="pricePerSms"> {{element.successfulMessageCount * pricePerSms | currency}} </ng-container>
+        </td>
     </ng-container>
 
     <!-- Not needed currently -->

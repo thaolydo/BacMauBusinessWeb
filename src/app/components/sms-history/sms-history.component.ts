@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { AuthService } from '@service/auth.service';
 import { SendSmsService } from '@service/send-sms.service';
 import { AdEvent } from 'src/app/models/send-sms-event.model';
 
@@ -11,8 +12,9 @@ import { AdEvent } from 'src/app/models/send-sms-event.model';
 })
 export class SmsHistoryComponent implements OnInit {
 
+  pricePerSms: number | undefined;
   isLoading = false;
-  displayedColumns: string[] = ['createdAt', 'description', 'content', 'receivedCount'];
+  displayedColumns: string[] = ['createdAt', 'description', 'content', 'receivedCount', 'estimatedAudienceSize', 'cost'];
 
   dataSource: MatTableDataSource<AdEvent> | undefined;
   private sortHodler: MatSort | undefined;
@@ -25,6 +27,7 @@ export class SmsHistoryComponent implements OnInit {
 
   constructor(
     private sendSmsService: SendSmsService,
+    private authService: AuthService,
   ) { }
 
   async ngOnInit() {
@@ -37,6 +40,7 @@ export class SmsHistoryComponent implements OnInit {
     this.isLoading = true;
     try {
       const adEvents = await this.sendSmsService.getSmsEvents();
+      this.pricePerSms = await this.authService.getSmsCost();
       console.log('adEvents = ', adEvents);
       this.dataSource = new MatTableDataSource<AdEvent>(adEvents);
     } catch (e: any) {
