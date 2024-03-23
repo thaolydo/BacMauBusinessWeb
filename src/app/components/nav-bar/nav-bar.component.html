@@ -1,6 +1,6 @@
 <mat-toolbar *ngIf="showNavBar" color="primary">
     <!-- Logo -->
-    <h1>{{businessName}}</h1>
+    <h1>{{ curBusinessName }}</h1>
 
     <!-- Tabs -->
     <span class="tabs">
@@ -11,12 +11,33 @@
     </span>
 
     <!-- Business name -->
-    <span style="margin: 1em;">{{curUser | username}}</span>
+    <!-- <span style="margin: 1em;">{{ curBusinessName }}</span> -->
 
     <!-- Sign in -->
-    <button mat-raised-button *ngIf="!curUser" routerLink="/sign-in">Sign In</button>
+    <!-- <button mat-raised-button *ngIf="!curUser" routerLink="/sign-in">Sign In</button> -->
 
-    <!-- Log out -->
-    <button mat-raised-button *ngIf="curUser" (click)="onLogout()">Logout</button>
+    <span>
+        <button mat-icon-button *ngIf="curUser" [matMenuTriggerFor]="menu">
+            <mat-icon>person</mat-icon>
+        </button>
+    </span>
+    <mat-menu #menu="matMenu">
+        <span id="business-name">{{ curBusinessName }}</span>
+        <!-- Settings -->
+        <button mat-menu-item routerLink="/settings">
+            <span>
+                <mat-icon>settings</mat-icon>
+                Settings
+            </span>
+        </button>
+
+        <!-- Log out -->
+        <button mat-menu-item (click)="onLogout()">
+            <span>
+                <mat-icon>logout</mat-icon>
+                Logout
+            </span>
+        </button>
+    </mat-menu>
 
 </mat-toolbar>

@@ -15,13 +15,14 @@ import { environment } from 'src/environments/environment';
 })
 export class NavBarComponent implements OnInit {
 
-  @Input() businessName: string = 'Life Reflexology'; // TODO: get it from query params in the current url
+  // @Input() businessName: string = 'Life Reflexology'; // TODO: get it from query params in the current url
 
   curUser: CognitoUser | null = null;
   authEventSubscription: Subscription | undefined;
   showNavBar: boolean = true;
   Role = Role;
   curRole: Role | undefined = undefined;
+  curBusinessName: string | undefined = undefined;
 
   constructor(
     protected authService: AuthService,
@@ -34,9 +35,11 @@ export class NavBarComponent implements OnInit {
       if (event == AuthEventType.SIGNED_IN || event == AuthEventType.ATTRIBUTE_UPDATED) {
         this.curUser = await this.authService.getCurUser();
         this.curRole = this.authService.getCurUserRole(true);
+        this.curBusinessName = await this.authService.getDefaultBusinessName();
       } else if (event == AuthEventType.SIGNED_OUT) {
         this.curUser = null;
         this.curRole = undefined;
+        this.curBusinessName = undefined;
       }
     });
     this.router.events.subscribe(event => {
@@ -55,6 +58,7 @@ export class NavBarComponent implements OnInit {
     try {
       this.curUser = await this.authService.getCurUser();
       this.curRole = this.authService.getCurUserRole(true);
+      this.curBusinessName = await this.authService.getDefaultBusinessName();
     } catch (err) {
       console.log('nav-bar onInit: User not logged in');
     }

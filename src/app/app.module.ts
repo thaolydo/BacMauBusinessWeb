@@ -27,6 +27,7 @@ import { AwsSigningInterceptor } from '@service/aws-signing.interceptor';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AttachBidInterceptor } from '@service/attach-bid.interceptor';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { AttachBidInterceptor } from '@service/attach-bid.interceptor';
     CheckInSuccessDialogComponent,
     ResetPasswordComponent,
     HomeComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,

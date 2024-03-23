@@ -18,6 +18,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
 // import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
@@ -42,6 +43,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatCheckboxModule,
     MatSlideToggleModule,
     MatTooltipModule,
+    MatMenuModule,
     // MatStepperModule,
   ],
   exports: [
@@ -63,6 +65,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatCheckboxModule,
     MatSlideToggleModule,
     MatTooltipModule,
+    MatMenuModule,
     // MatStepperModule,
   ]
 })
