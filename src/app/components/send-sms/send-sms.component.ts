@@ -16,15 +16,16 @@ export class SendSmsComponent implements OnInit {
   imageUrls: string[] = [];
   messageContent = 'Get 30% off today only.';
   description = 'Friday 30% OFF';
-  includeClickThroughLink = false;
+  includeClickThroughLink = true;
   selectedImage: string | undefined = undefined;
   isLoading = false;
   isSending: boolean = false;
   uploadingImage = false;
   customerCount: number | undefined;
   MAX_SMS_CHAR: number = 160;
-  CLICK_THROUGH_LINK_LENGTH: number = 38;
-  maxChar: number = this.MAX_SMS_CHAR;
+  OPT_OUT_MESSAGE_LENGTH: number = 17; // 15 text + 2 new line chars
+  CLICK_THROUGH_LINK_LENGTH: number = 38; // 1 new line + 37 text
+  businessName: string = '';
   pricePerSms: number | undefined;
 
   @ViewChild('imageUploadInput') imageUploadInput: ElementRef<HTMLInputElement> | undefined;
@@ -40,12 +41,17 @@ export class SendSmsComponent implements OnInit {
     this.isLoading = true;
     try {
       // this.imageUrls = await this.sendSmsService.getImageUrls();
+      this.businessName = await this.authService.getDefaultBusinessName();
       this.customerCount = await this.sendSmsService.getEstimatedCustomerCount();
       this.pricePerSms = await this.authService.getSmsCost();
       console.log('customerCount =', this.customerCount);
     } finally {
       this.isLoading = false;
     }
+  }
+
+  get maxChar() {
+    return this.MAX_SMS_CHAR - this.OPT_OUT_MESSAGE_LENGTH - (this.businessName.length + 2) - (this.includeClickThroughLink ? this.CLICK_THROUGH_LINK_LENGTH : 0);
   }
 
   onSelectImage(imageUrl: string) {
@@ -57,7 +63,9 @@ export class SendSmsComponent implements OnInit {
   }
 
   onIncludeClickThroughLinkChange(event: MatCheckboxChange) {
-    this.maxChar = event.checked ? this.MAX_SMS_CHAR - this.CLICK_THROUGH_LINK_LENGTH : this.MAX_SMS_CHAR;
+    if (event.checked && this.messageContent.length > this.maxChar) {
+      this.messageContent = this.messageContent.substring(0, this.maxChar);
+    }
   }
 
   async sendSms() {
@@ -69,20 +77,13 @@ export class SendSmsComponent implements OnInit {
     try {
       const res = await this.sendSmsService.sendSms(this.messageContent, this.description, this.includeClickThroughLink, this.selectedImage);
       // await new Promise(x => setTimeout(x, 1000));
-      // const res = { success: true };
-      // TODO: display error depending on the response
       if (res) {
         this.snackBar.open('Sent SMS successfully', undefined, { duration: 3000 });
-      } else {
-        alert('You can only send 1 SMS per day');
       }
 
       // Clear the form to avoid accidentally sending it twice
-      // this.messageContent = '';
-      // this.selectedImage = undefined;
-    } catch (e: any) {
-      // TODO: catch error here, eg. send sms too frequent
-      alert('Unable to send SMS');
+      this.messageContent = '';
+      this.selectedImage = undefined;
     } finally {
       this.isSending = false;
     }

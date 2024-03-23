@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AdEvent } from '@model/send-sms-event.model';
-import { firstValueFrom, map } from 'rxjs';
+import { Observable, catchError, firstValueFrom, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TimeUtil } from '../utils/time.util';
 import { CreateAdEventRequest } from '@model/public-interface/create-ad-event-request.model';
@@ -33,7 +33,16 @@ export class SendSmsService {
       includeClickThroughLink,
       redirectUrl,
     } as CreateAdEventRequest;
-    return firstValueFrom(this.http.post<any>(`${this.baseUrl}/sms/ad-event`, body));
+    return firstValueFrom(this.http.post<any>(`${this.baseUrl}/sms/ad-event`, body)
+      .pipe(
+        catchError((err: HttpErrorResponse, caught: any) => {
+          if (err.status == HttpStatusCode.BadRequest) {
+            alert(err.error.errMsg);
+            return of();
+          }
+          throw err;
+        }),
+      ));
   }
 
   async getImageUrls() {

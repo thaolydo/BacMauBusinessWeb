@@ -8,14 +8,16 @@
 <mat-form-field appearance="fill" class="message-content">
     <mat-label>Message Content</mat-label>
     <textarea matInput rows="10" [(ngModel)]="messageContent" required
-        placeholder="Ex. Get 30% off today only - Happy Tuesday!"></textarea>
+        placeholder="Ex. Get 30% off today only - Happy Tuesday!" [maxlength]="maxChar"></textarea>
     <mat-hint>{{ messageContent.length }} / {{ maxChar }}</mat-hint>
 </mat-form-field>
 
 <!-- Include Click-Through Link -->
-<mat-checkbox [(ngModel)]="includeClickThroughLink" (change)="onIncludeClickThroughLinkChange($event)"
+<mat-checkbox style="color: grey;" [(ngModel)]="includeClickThroughLink"
     matTooltip="Include the click-through link at the end of the sms to track if the customer has seen the ad"
-    matTooltipPosition="right">Include Click-Throught Link</mat-checkbox>
+    matTooltipPosition="right" (change)="onIncludeClickThroughLinkChange($event)">
+    Include Click-Through Link
+</mat-checkbox>
 
 <span id="customer-count-container" style="color: grey;">Estimated Customer Count:
     <ng-container *ngIf="isLoading">

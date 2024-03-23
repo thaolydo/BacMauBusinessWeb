@@ -288,6 +288,11 @@ export class AuthService {
     return userData.UserAttributes.find(attribute => attribute.Name === 'custom:bid')!.Value;
   }
 
+  async getDefaultBusinessName(): Promise<string> {
+    const userData = await this.getUserData();
+    return userData.UserAttributes.find(attribute => attribute.Name === 'custom:businessName')!.Value;
+  }
+
   async getSmsCost(): Promise<number> {
     const userData = await this.getUserData();
     return parseFloat(userData.UserAttributes.find(attribute => attribute.Name === 'custom:smsCost')!.Value);
