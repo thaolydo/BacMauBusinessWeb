@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserSession, UserData } from 'amazon-cognito-identity-js';
+import { AuthenticationDetails, CognitoRefreshToken, CognitoUser, CognitoUserPool, CognitoUserSession, ICognitoUserAttributeData, UserData } from 'amazon-cognito-identity-js';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthEventType } from 'src/app/models/auth-event-types.enum';
@@ -25,6 +25,8 @@ export class AuthService {
   private eventSubject: Subject<AuthEventType> = new Subject();
   private curUser: CognitoUser | null = null;
   private curAwsCreds: CognitoIdentityCredentials | undefined;
+
+  private refreshToken: CognitoRefreshToken | undefined = undefined;
 
   constructor(private router: Router) {
     this.userPool = new CognitoUserPool({
@@ -247,6 +249,26 @@ export class AuthService {
           resolve(null);
           return;
         }
+        this.refreshToken = session.getRefreshToken();
+        resolve(this.curUser);
+      });
+    });
+  }
+
+  async refreshUser() {
+    return new Promise((resolve, reject) => {
+      this.curUser?.refreshSession(this.refreshToken!, (err: any, session: CognitoUserSession) => {
+        if (err) {
+          console.log('getSession() error');
+          resolve(null);
+          return;
+        }
+        if (!session.isValid()) {
+          console.log('Invalid session');
+          resolve(null);
+          return;
+        }
+        this.refreshToken = session.getRefreshToken();
         resolve(this.curUser);
       });
     });
@@ -291,6 +313,17 @@ export class AuthService {
   async getDefaultBusinessName(): Promise<string> {
     const userData = await this.getUserData();
     return userData.UserAttributes.find(attribute => attribute.Name === 'custom:businessName')!.Value;
+  }
+
+  async getUserEmail(): Promise<string> {
+    const userData = await this.getUserData();
+    return userData.UserAttributes.find(attribute => attribute.Name === 'email')!.Value;
+  }
+
+  async emailVerified(): Promise<boolean> {
+    const userData = await this.getUserData();
+    console.log('userData =', userData);
+    return userData.UserAttributes.find(attribute => attribute.Name === 'email_verified')!.Value === 'true';
   }
 
   async getSmsCost(): Promise<number> {
@@ -447,7 +480,7 @@ export class AuthService {
       'x-amz-security-token:' + creds.sessionToken + '\n'; // TODO: extract from request.headers
     const signed_headers = 'host;x-amz-date;x-amz-security-token'; // TODO: extract from request.headers
     console.log('body =', request.body);
-    const hexEncodedHash = this.hash(request.body ? JSON.stringify(request.body) : '');
+    const hexEncodedHash = this._hash(request.body ? JSON.stringify(request.body) : '');
     console.log('hexEncodedHash =', hexEncodedHash);
     const canical_request = request.method + '\n' +
       canonical_uri + '\n' +
@@ -462,11 +495,11 @@ export class AuthService {
     const algorithm = 'AWS4-HMAC-SHA256';
     const datestamp = amzdate.split('T')[0];
     const credential_scope = datestamp + '/' + region + '/' + service + '/' + 'aws4_request'
-    const string_to_sign = algorithm + '\n' + amzdate + '\n' + credential_scope + '\n' + this.hash(canical_request);
+    const string_to_sign = algorithm + '\n' + amzdate + '\n' + credential_scope + '\n' + this._hash(canical_request);
 
     // Task 3: calcualte the signature
     const signing_key = this.getSignatureKey(creds.secretAccessKey, datestamp, region, service);
-    const signature = this.sign(signing_key, string_to_sign).toString();
+    const signature = this._sign(signing_key, string_to_sign).toString();
 
     // Task 4: add signature to the request
     const authorization_header = algorithm + ' ' + 'Credential=' + creds.accessKeyId + '/' + credential_scope + ', ' + 'SignedHeaders=' + signed_headers + ', ' + 'Signature=' + signature;
@@ -496,19 +529,54 @@ export class AuthService {
   }
 
   // private decoder = new TextDecoder();
-  private sign(key: CryptoJS.lib.WordArray, msg: string): CryptoJS.lib.WordArray {
+  private _sign(key: CryptoJS.lib.WordArray, msg: string): CryptoJS.lib.WordArray {
     return HmacSHA256(msg, key);
   }
 
   private getSignatureKey(key: string, date_stamp: string, regionName: string, serviceName: string) {
-    const kDate = this.sign(enc.Utf8.parse('AWS4' + key), date_stamp);
-    const kRegion = this.sign(kDate, regionName);
-    const kService = this.sign(kRegion, serviceName);
-    const kSigning = this.sign(kService, 'aws4_request');
+    const kDate = this._sign(enc.Utf8.parse('AWS4' + key), date_stamp);
+    const kRegion = this._sign(kDate, regionName);
+    const kService = this._sign(kRegion, serviceName);
+    const kSigning = this._sign(kService, 'aws4_request');
     return kSigning;
   }
 
-  private hash(msg: string) {
+  private _hash(msg: string) {
     return SHA256(msg).toString(enc.Hex);
+  }
+
+  async updateAttributes(attributes: ICognitoUserAttributeData[]) {
+    const curUser = await this.getCurUser();
+    return new Promise((resolve, reject) => {
+      curUser?.updateAttributes(attributes, (err, res) => {
+        if (err) {
+          alert(err.message || JSON.stringify(err));
+          reject(err.message);
+        }
+        console.log('updated user attributes:', res);
+        resolve(res);
+        this.eventSubject.next(AuthEventType.ATTRIBUTE_UPDATED);
+      });
+
+    });
+  }
+
+  async verifyEmail(verificationCode: string): Promise<string | Error> {
+    const curUser = await this.getCurUser();
+    return new Promise((resolve, reject) => {
+      curUser?.verifyAttribute('email', verificationCode, {
+        onFailure(err: Error) {
+          // alert(err.message || JSON.stringify(err));
+          console.log('err type:', typeof err);
+          console.log('err name:', err.name);
+          console.log('err message:', err.message);
+          reject(err);
+        },
+        onSuccess(success) {
+          resolve(success);
+        },
+      });
+
+    });
   }
 }

@@ -19,6 +19,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatRippleModule } from '@angular/material/core';
 // import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
@@ -44,6 +46,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatSlideToggleModule,
     MatTooltipModule,
     MatMenuModule,
+    MatDividerModule,
+    MatRippleModule,
     // MatStepperModule,
   ],
   exports: [
@@ -66,6 +70,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatSlideToggleModule,
     MatTooltipModule,
     MatMenuModule,
+    MatDividerModule,
+    MatRippleModule,
     // MatStepperModule,
   ]
 })

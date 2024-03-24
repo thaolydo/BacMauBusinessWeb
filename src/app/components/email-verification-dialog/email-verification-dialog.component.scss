@@ -1,0 +1,31 @@
+.title {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: row;
+    padding-inline: 1em;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+mat-form-field {
+    width: 100%;
+    height: 50%;
+}
+
+app-submit-button {
+    margin-left: 1em;
+}
+
+mat-error {
+    margin: 1em;
+    font-size: small;
+}
+
+#email-verified-message {
+    margin: 1em;
+    color: green;
+    font-size: small;
+}

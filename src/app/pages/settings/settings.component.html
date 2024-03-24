@@ -1,1 +1,32 @@
-<p>settings works!</p>
+<mat-spinner *ngIf="isLoading" diameter="50">
+</mat-spinner>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" #formDirective="ngForm">
+    <!-- Business Name -->
+    <mat-form-field appearance="fill">
+        <mat-label> Business Name </mat-label>
+        <input matInput formControlName="businessName" required>
+    </mat-form-field>
+
+    <!-- Email -->
+    <span>
+        <mat-form-field appearance="fill">
+            <mat-label> Email </mat-label>
+            <input matInput formControlName="email" required>
+        </mat-form-field>
+        <span id="email-verified" *ngIf="emailVerified">
+            Verified
+        </span>
+        <span id="email-not-verified" *ngIf="!emailVerified" matRipple (click)="onVerify()">Not verified</span>
+    </span>
+
+    <span id="action-section">
+        <!-- Reset Password -->
+        <a [href]="resetPasswordLink">Reset Password</a>
+
+        <!-- Submit -->
+        <app-submit-button id="submitButton" [diameter]="30" [disabled]="!form.valid || isSubmitting || form.pristine"
+            [isSubmitting]="isSubmitting">Submit
+        </app-submit-button>
+    </span>
+</form>

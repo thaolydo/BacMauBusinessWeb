@@ -1,0 +1,12 @@
+<h1 mat-dialog-title class="title">Verify Email</h1>
+<form [formGroup]="form" (ngSubmit)="onVerify()" #formDirective="ngForm">
+    <mat-form-field appearance="fill">
+        <mat-label> Verification Code </mat-label>
+        <input matInput formControlName="verificationCode" required>
+    </mat-form-field>
+
+    <app-submit-button id="submitButton" [diameter]="30" [disabled]="!form.valid || isSubmitting" [isSubmitting]="isSubmitting">Verify
+    </app-submit-button>
+</form>
+<span id="email-verified-message" *ngIf="codeMatch">Email has been verified successfully.</span>
+<mat-error *ngIf="codeMismatch">Incorrect Code. Please try again.</mat-error>

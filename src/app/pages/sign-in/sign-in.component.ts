@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -12,6 +13,7 @@ export class SignInComponent implements OnInit {
 
   form: FormGroup;
   isSubmitting = false;
+  landing_page: string = 'customers';
 
   constructor(
     private _fb: FormBuilder,
@@ -32,6 +34,9 @@ export class SignInComponent implements OnInit {
       console.log('Already signed in. Navigating to page /customers');
       this.router.navigate(['/customers']);
     }
+    const queryParams = await firstValueFrom(this.route.queryParams);
+    this.landing_page = queryParams['landing_page'] ? queryParams['landing_page'] : this.landing_page;
+
   }
 
   get username() {
@@ -52,7 +57,7 @@ export class SignInComponent implements OnInit {
     try {
       const res = await this.authService.signIn(this.username.toLowerCase(), this.password);
       console.log('res =', res);
-      this.router.navigate(['/customers']);
+      this.router.navigate([`/${this.landing_page}`]);
     } catch (e: any) {
       if (e.name == 'NotAuthorizedException') {
         alert('Incorrect username or password');

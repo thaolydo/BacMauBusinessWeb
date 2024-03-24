@@ -28,6 +28,7 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
 import { HomeComponent } from './pages/home/home.component';
 import { AttachBidInterceptor } from '@service/attach-bid.interceptor';
 import { SettingsComponent } from './pages/settings/settings.component';
+import { EmailVerificationDialogComponent } from './components/email-verification-dialog/email-verification-dialog.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
     ResetPasswordComponent,
     HomeComponent,
     SettingsComponent,
+    EmailVerificationDialogComponent,
   ],
   imports: [
     BrowserModule,

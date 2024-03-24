@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { AuthService } from 'src/app/services/auth.service';
+import { environment } from 'src/environments/environment';
 
 // Deprecated in favor of using Cognito hosted UI for the web app client
 @Component({
@@ -28,7 +29,7 @@ export class ResetPasswordComponent {
 
   async ngOnInit() {
     window.open(
-      'https://pham-sms.auth.us-east-1.amazoncognito.com/forgotPassword?client_id=1pi94tnfo5aasrpmb8tb498baa&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=http%3A%2F%2Flocalhost%3A4200%2Fcustomers',
+      `https://pham-sms.auth.us-east-1.amazoncognito.com/forgotPassword?client_id=${environment.userPoolClientId}&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=${encodeURIComponent(environment.callBackUrl)}`,
       '_blank');
     // await this.authService.forgotPassword();
     // if (await this.authService.getCurUser()) {

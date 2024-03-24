@@ -8,7 +8,7 @@ export const environment = {
   userPoolId: 'us-east-1_r98psFKFd',
   userPoolClientId: '46133nv30eboe2jbbedv969j9s',
   identityPoolId: 'us-east-1:3bf05e47-4681-4655-833e-d9e8ef7145a7',
-  callBackUrl: 'http://localhost:4200/customers',
+  callBackUrl: 'http://localhost:4200/settings',
   // ownerUserPoolId: 'us-east-1_L1qZaoWII',
   // ownerUserPoolClientId: '1pi94tnfo5aasrpmb8tb498baa',
   // ownerIdentityPoolId: 'us-east-1:f6fa4830-390f-4d4c-9daa-39f91c6d3c08',
