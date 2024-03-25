@@ -8,6 +8,8 @@ import { AuthService } from './services/auth.service';
 })
 export class AuthGuard implements CanActivate {
 
+  private REQUIRED_ATTRIBUTES = ['custom:bid', 'custom:businessName', 'custom:smsCost'];
+
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -26,13 +28,15 @@ export class AuthGuard implements CanActivate {
 
     // Check for required attributes
     const jwtPayload = curUser.getSignInUserSession()?.getIdToken().payload as any;
-    const bid = jwtPayload['custom:bid'];
-    const businessName = jwtPayload['custom:businessName'];
-    if (!bid || !businessName) {
-      alert('Business Name is not set. Please contact admin to add Business Name.');
-      await this.authService.signOut();
-      this.router.navigate(['/sign-in']);
-      return false;
+
+    for (const requiredAttribute of this.REQUIRED_ATTRIBUTES) {
+      const attributeValue = jwtPayload[requiredAttribute];
+      if (!attributeValue) {
+        alert(`${requiredAttribute} is not set. Please contact admin to add it.`);
+        await this.authService.signOut();
+        this.router.navigate(['/sign-in']);
+        return false;
+      }
     }
 
     // Check AuthZ

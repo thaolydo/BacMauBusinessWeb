@@ -1,14 +1,23 @@
 export const environment = {
-  production: true,
+  production: false,
   baseUrl: 'https://sms.hpham.net',
-  userPoolId: 'us-east-1_r98psFKFd',
-  userPoolClientId: '46133nv30eboe2jbbedv969j9s',
-  identityPoolId: 'us-east-1:3bf05e47-4681-4655-833e-d9e8ef7145a7',
-  callBackUrl: 'https://sms.hpham.net/settings',
-  // ownerUserPoolId: 'us-east-1_L1qZaoWII',
-  // ownerUserPoolClientId: '3u955lq05h5nb6ss83e2v9c7gs',
-  // ownerIdentityPoolId: 'us-east-1:592ba38e-cff5-405d-8a75-fa7eec25af8f',
-  // frontDeskUserPoolId: 'us-east-1_9pZ077M2x',
-  // frontDeskUserPoolClientId: '14u5t3684bkvkaud76a17f161u',
-  // frontDeskIdentityPoolId: 'us-east-1:73120d60-5216-4808-b833-add6a592db03',
+  callBackUrl: 'https://sms.hpham.net/sign-in?landing_page=settings',
+
+  // latest
+  userPoolId: 'us-east-1_BqZpu49f2',
+  userPoolClientId: '2vid113ou94rh28ol96ia6m64s',
+  identityPoolId: 'us-east-1:8cf01eba-efbc-4680-badc-64c52d548d5c',
+  cognitoDomain: 'pham-sms-v2',
+
+  // v2
+  userPoolId_v2: 'us-east-1_BqZpu49f2',
+  userPoolClientId_v2: '2vid113ou94rh28ol96ia6m64s',
+  identityPoolId_v2: 'us-east-1:8cf01eba-efbc-4680-badc-64c52d548d5c',
+  cognitoDomain_v2: 'pham-sms-v2',
+
+  // v0
+  userPoolId_v0: 'us-east-1_r98psFKFd',
+  userPoolClientId_v0: '46133nv30eboe2jbbedv969j9s',
+  identityPoolId_v0: 'us-east-1:3bf05e47-4681-4655-833e-d9e8ef7145a7',
+  cognitoDomain_v0: 'pham-sms',
 };

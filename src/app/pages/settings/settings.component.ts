@@ -18,7 +18,7 @@ export class SettingsComponent {
   isLoading: boolean = true;
   isSubmitting = false;
   initialEmail: string = '';
-  resetPasswordLink = `https://pham-sms.auth.us-east-1.amazoncognito.com/forgotPassword?client_id=${environment.userPoolClientId}&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=${encodeURIComponent(environment.callBackUrl)}`;
+  resetPasswordLink = this.authService.buildHostedUiForgotPasswordPage();
   emailVerified: boolean = false;
 
   constructor(

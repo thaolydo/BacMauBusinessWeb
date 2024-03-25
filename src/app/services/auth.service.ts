@@ -73,9 +73,8 @@ export class AuthService {
           // const newPassword = prompt('New Password')!;
           // user.completeNewPasswordChallenge(newPassword, userAttributes, this);
 
-          this.openHostedUi('You must change your password to continue. Redirecting to creating new password page.');
+          this.openHostedUiSignInPage('You must change your password to continue. Redirecting to creating new password page.');
           resolve(user);
-          console.log('success 1');
         },
         onFailure: (err) => {
           // Possible err.code:
@@ -85,9 +84,8 @@ export class AuthService {
           // UsernameExistsException: username exists
 
           if (err.code === 'PasswordResetRequiredException') {
-            this.openHostedUi('You must change your password to continue. Redirecting to password reset page.');
+            this.openHostedUiForgotPasswordPage('You must change your password to continue. Redirecting to password reset page.');
             resolve(user);
-            console.log('success 2');
             return;
           }
           console.error(`Failed to login with error:`, err);
@@ -97,11 +95,28 @@ export class AuthService {
     });
   }
 
-  openHostedUi(alertMessage?: string) {
+  buildHostedUiForgotPasswordPage() {
+    return `https://${environment.cognitoDomain}.auth.us-east-1.amazoncognito.com/forgotPassword?client_id=${environment.userPoolClientId}&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=${encodeURIComponent(environment.callBackUrl)}`;
+  }
+
+  openHostedUiForgotPasswordPage(alertMessage?: string) {
     if (alertMessage) {
       alert(alertMessage);
     }
-    const url = new URL(`https://pham-sms.auth.us-east-1.amazoncognito.com/oauth2/authorize?client_id=${environment.userPoolClientId}&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile`);
+    const url = new URL(this.buildHostedUiForgotPasswordPage());
+    url.searchParams.append('redirect_uri', environment.callBackUrl);
+    console.log('redirecting to url:', url.toString());
+    window.open(
+      url.toString(),
+      '_blank',
+    );
+  }
+
+  openHostedUiSignInPage(alertMessage?: string) {
+    if (alertMessage) {
+      alert(alertMessage);
+    }
+    const url = new URL(`https://${environment.cognitoDomain}.auth.us-east-1.amazoncognito.com/oauth2/authorize?client_id=${environment.userPoolClientId}&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile`);
     url.searchParams.append('redirect_uri', environment.callBackUrl);
     console.log('redirecting to url:', url.toString());
     window.open(
@@ -279,7 +294,7 @@ export class AuthService {
     if (!groups || groups.length == 0) {
       if (!ignoreError) {
         console.trace();
-        alert('Something went wrong. Please contact admin');
+        alert('Your account does not belong to a group. Please contact admin to fix it.');
       }
       return Role.OTHER;
     }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-sign-in',
@@ -14,6 +15,7 @@ export class SignInComponent implements OnInit {
   form: FormGroup;
   isSubmitting = false;
   landing_page: string = 'customers';
+  resetPasswordLink = this.authService.buildHostedUiForgotPasswordPage();
 
   constructor(
     private _fb: FormBuilder,
@@ -61,6 +63,9 @@ export class SignInComponent implements OnInit {
     } catch (e: any) {
       if (e.name == 'NotAuthorizedException') {
         alert('Incorrect username or password');
+      }
+      if (e.name == 'UserNotFoundException') {
+        alert(`User doesn't exist. Please try again`);
       }
     } finally {
       this.isSubmitting = false;

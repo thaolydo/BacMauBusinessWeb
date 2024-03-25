@@ -1,9 +1,23 @@
 :host {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 1em;
+}
+
+form {
+    width: 50%
+}
+
+#reset-password-container {
+    width: 50%;
+}
+
+a {
+    margin-left: 0.5em;
+    align-self: flex-start;
+    font-size: small;
 }
 
 mat-form-field {

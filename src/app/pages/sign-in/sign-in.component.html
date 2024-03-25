@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <!-- Username -->
     <mat-form-field appearance="fill">
-        <mat-label>Username</mat-label>
+        <mat-label>Username or Email</mat-label>
         <input matInput type="text" required formControlName="username" autofocus>
     </mat-form-field>
 
@@ -18,3 +18,7 @@
     <app-submit-button [disabled]="!form.valid || isSubmitting" [isSubmitting]="isSubmitting">Sign In
     </app-submit-button>
 </form>
+
+<div id="reset-password-container">
+    <a [href]="resetPasswordLink">Reset Password</a>
+</div>

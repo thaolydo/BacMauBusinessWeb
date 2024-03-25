@@ -29,7 +29,7 @@ export class ResetPasswordComponent {
 
   async ngOnInit() {
     window.open(
-      `https://pham-sms.auth.us-east-1.amazoncognito.com/forgotPassword?client_id=${environment.userPoolClientId}&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=${encodeURIComponent(environment.callBackUrl)}`,
+      `https://${environment.cognitoDomain}.auth.us-east-1.amazoncognito.com/forgotPassword?client_id=${environment.userPoolClientId}&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=${encodeURIComponent(environment.callBackUrl)}`,
       '_blank');
     // await this.authService.forgotPassword();
     // if (await this.authService.getCurUser()) {
