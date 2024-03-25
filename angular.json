@@ -93,10 +93,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "bac-mau-business-web:build:production"
+              "buildTarget": "bac-mau-business-web:build:production"
             },
             "development": {
-              "browserTarget": "bac-mau-business-web:build:development"
+              "buildTarget": "bac-mau-business-web:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -104,7 +104,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "bac-mau-business-web:build"
+            "buildTarget": "bac-mau-business-web:build"
           }
         },
         "test": {
