@@ -18,7 +18,7 @@ export class SendSmsService {
   ) { }
 
   async subscribeToMarketingSms(phone: string) {
-    return firstValueFrom(this.http.post(`${this.baseUrl}/subscribe-customer`, { phone }, {
+    return firstValueFrom(this.http.post(`${this.baseUrl}/subscribe`, { phone }, {
       params: {
         cid: phone
       },
@@ -33,7 +33,7 @@ export class SendSmsService {
       includeClickThroughLink,
       redirectUrl,
     } as CreateAdEventRequest;
-    return firstValueFrom(this.http.post<any>(`${this.baseUrl}/sms/ad-event`, body)
+    return firstValueFrom(this.http.post<any>(`${this.baseUrl}/ad-event`, body)
       .pipe(
         catchError((err: HttpErrorResponse, caught: any) => {
           if (err.status == HttpStatusCode.BadRequest) {
@@ -82,7 +82,7 @@ export class SendSmsService {
 
   async getSmsEvents(): Promise<AdEvent[]> {
     console.log('Getting sms events');
-    return firstValueFrom(this.http.get(`${this.baseUrl}/sms/ad-event`)
+    return firstValueFrom(this.http.get(`${this.baseUrl}/ad-event`)
       .pipe(
         map((res: any) => {
           const toReturn = [] as AdEvent[];
@@ -99,7 +99,7 @@ export class SendSmsService {
 
   async getEstimatedCustomerCount(): Promise<number> {
     console.log('Getting customer count');
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/sms/opt`).pipe(
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-estimated-customer-count`).pipe(
       map(res => res.estimatedCustomerCount as number)
     ));
   }

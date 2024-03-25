@@ -31,17 +31,11 @@ export class CustomersService {
       ));
   }
 
-  // Deprecated
-  async uploadCustomers(customers: CustomerInfo[]) {
-    return firstValueFrom(this.http.post(`${this.baseUrl}/customers`, { customers }));
-  }
-
   async checkIn(customer: CustomerInfo): Promise<any> {
-    return firstValueFrom(this.http.post(`${this.baseUrl}/customer/check-in`, { customer }));
+    return firstValueFrom(this.http.post(`${this.baseUrl}/check-in`, { customer }));
   }
 
   async getCheckInEventHistory(month: number, date?: Date): Promise<CheckInEvent[]> {
-    // TODO: fix hardcoding year
     const params = { month, year: new Date().getFullYear(), date: date?.toISOString() } as any;
     if (date) {
       const start = new Date(date);
@@ -51,8 +45,7 @@ export class CustomersService {
       params.start = start.getTime();
       params.end = end.getTime();
     }
-    console.log('params =', params);
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customer/check-in`, {
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/check-in`, {
       params,
     }).pipe(
       map(res => (res.paginatedItems.items as any[]).
