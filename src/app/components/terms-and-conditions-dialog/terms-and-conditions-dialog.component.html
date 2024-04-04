@@ -1,13 +1,13 @@
 <h1 mat-dialog-title>{{data.businessName}}</h1>
-<div mat-dialog-content>
-    <p>Sign up for receiving marketing SMS messages for coupons and birthday discount reminder. Message freqency varies.
+<mat-dialog-content>
+    <p>Subscribe to receive marketing SMS messages for coupons and birthday discount reminder. Message freqency varies.
     </p>
-    <p style="font-size: smaller;">By clicking "Subscribe", you agree that {{data.businessName}} may send SMS at the number on file with your
+    <p style="font-size: xx-small; line-height: 1;">By clicking "Subscribe", you agree that {{data.businessName}} may send SMS at the number on file with your
         check-in info. You understand that you are not required to provide this consent as a condition of purchasing any
         services.</p>
-</div>
-<div class="action-buttons" mat-dialog-actions>
-    <app-submit-button [diameter]="50" [disabled]="isSubmitting" [isSubmitting]="isSubmitting" (onClick)="onSubmit()">Subscribe
+</mat-dialog-content>
+<mat-dialog-actions class="action-buttons">
+    <app-submit-button [diameter]="50" [disabled]="isSubmitting" [isSubmitting]="isSubmitting" (onClick)="onSubmit()" buttonBorderRadius="1em">Subscribe
     </app-submit-button>
-    <span class="skip-button" mat-dialog-close>Skip</span>
-</div>
+    <button mat-button class="skip-button" mat-dialog-close color="primary">Skip</button>
+</mat-dialog-actions>

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthEventType } from '@model/auth-event-types.enum';
 import { Role } from '@model/role.model';
@@ -28,7 +29,8 @@ export class NavBarComponent implements OnInit {
     protected authService: AuthService,
     private snackBar: MatSnackBar,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private titleService: Title,
   ) {
     this.authEventSubscription = this.authService.getAuthEventUpdates().subscribe(async event => {
       console.log('NavBarComponent: auth event =', event);
@@ -36,10 +38,12 @@ export class NavBarComponent implements OnInit {
         this.curUser = await this.authService.getCurUser();
         this.curRole = this.authService.getCurUserRole(true);
         this.curBusinessName = await this.authService.getDefaultBusinessName();
+        this.titleService.setTitle(this.curBusinessName);
       } else if (event == AuthEventType.SIGNED_OUT) {
         this.curUser = null;
         this.curRole = undefined;
         this.curBusinessName = undefined;
+        this.titleService.setTitle('Pham SMS');
       }
     });
     this.router.events.subscribe(event => {
@@ -59,6 +63,7 @@ export class NavBarComponent implements OnInit {
       this.curUser = await this.authService.getCurUser();
       this.curRole = this.authService.getCurUserRole(true);
       this.curBusinessName = await this.authService.getDefaultBusinessName();
+      this.titleService.setTitle(this.curBusinessName);
     } catch (err) {
       console.log('nav-bar onInit: User not logged in');
     }

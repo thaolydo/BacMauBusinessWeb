@@ -27,7 +27,7 @@ export class AuthGuard  {
     }
 
     // Check for required attributes
-    const jwtPayload = curUser.getSignInUserSession()?.getIdToken().payload as any;
+    const jwtPayload = curUser!.getSignInUserSession()?.getIdToken().payload as any;
 
     for (const requiredAttribute of this.REQUIRED_ATTRIBUTES) {
       const attributeValue = jwtPayload[requiredAttribute];

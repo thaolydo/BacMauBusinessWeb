@@ -3,7 +3,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    height: 90vh;
+    height: 100%;
     font-size: xx-large;
 }
 
@@ -44,7 +44,7 @@ fieldset {
 }
 
 :host ::ng-deep button, button {
-    font-size: xx-large;
+    font-size: x-large;
     width: 5em;
     height: 2em;
     margin: 0.5em;

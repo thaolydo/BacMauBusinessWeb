@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '@service/auth.service';
 import { CustomersService } from '@service/customers.service';
 import { firstValueFrom } from 'rxjs';
 import { CheckInSuccessDialogComponent } from 'src/app/components/check-in-success-dialog/check-in-success-dialog.component';
@@ -38,6 +39,7 @@ export class CustomerCheckInComponent implements OnInit {
     private _fb: FormBuilder,
     private customersService: CustomersService,
     private dialog: MatDialog,
+    private authService: AuthService,
   ) {
     this.form = this._fb.group({
       name: ['', Validators.required],
@@ -63,7 +65,7 @@ export class CustomerCheckInComponent implements OnInit {
     this.form.get('phone')?.setValue(val);
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
   }
 
   onMonthSelected() {
@@ -80,20 +82,21 @@ export class CustomerCheckInComponent implements OnInit {
       console.log('customerInfo =', customerInfo);
 
       // Check-in
-      // await new Promise(resolve => setTimeout(resolve, 1000));
-      // const res = {} as any;
-      const res = await this.customersService.checkIn(customerInfo);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      const res = {} as any;
+      // const res = await this.customersService.checkIn(customerInfo);
       this.isSubmitting = false;
 
       const alreadySubsribed = res.subscribed;
 
       // Open subscribe dialog
       if (!alreadySubsribed) {
+        const businessName = await this.authService.getDefaultBusinessName();
         const dialogRef = this.dialog.open(TermsAndConditionsDialogComponent, {
           panelClass: 'dialog',
           data: {
             customerInfo,
-            businessName: 'Life Reflexology',
+            businessName,
           }
         });
         await firstValueFrom(dialogRef.afterClosed());
