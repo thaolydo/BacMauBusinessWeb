@@ -8,12 +8,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class CheckInSuccessDialogComponent implements OnInit {
 
-  constructor(private dialogRef: MatDialogRef<CheckInSuccessDialogComponent>) { }
+  constructor() { }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.dialogRef.close();
-    }, 3000);
   }
 
 }

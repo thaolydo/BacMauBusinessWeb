@@ -101,7 +101,12 @@ export class CustomerCheckInComponent implements OnInit {
         });
         await firstValueFrom(dialogRef.afterClosed());
       }
-      this.dialog.open(CheckInSuccessDialogComponent);
+
+      // Display successful checkin popup
+      const dialogRef = this.dialog.open(CheckInSuccessDialogComponent);
+      setTimeout(() => {
+        dialogRef.close();
+      }, 3000);
 
       this.resetForm();
     } catch (e: any) {
