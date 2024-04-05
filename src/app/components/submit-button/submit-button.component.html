@@ -1,4 +1,4 @@
-<button type="submit" #button mat-raised-button [disabled]="disabled" color="primary" (click)="onButtonClick()">
+<button type="submit" class="submit-button" #button mat-raised-button [disabled]="disabled" [color]="buttonColor" (click)="onButtonClick()">
     <ng-content></ng-content>
 
     <mat-spinner *ngIf="isSubmitting" [diameter]="diameter" [ngStyle]="{left: spinnerLeft, top: spinnerTop}">

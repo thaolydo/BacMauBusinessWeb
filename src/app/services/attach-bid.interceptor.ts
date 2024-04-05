@@ -26,7 +26,7 @@ export class AttachBidInterceptor implements HttpInterceptor {
           return request.clone({
             params: request.params.append('bid', bid),
           });
-        } else if (request.method == 'POST') {
+        } else if (request.method == 'POST' || request.method == 'PUT' ) {
           const businessName = userData.UserAttributes.find(attribute => attribute.Name === 'custom:businessName')!.Value;
           const body = request.body! as any;
           body.bid = bid;

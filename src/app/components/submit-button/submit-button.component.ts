@@ -10,9 +10,8 @@ export class SubmitButtonComponent implements OnInit, AfterViewInit {
 
   @Input('disabled') disabled: boolean | undefined;
   @Input('isSubmitting') isSubmitting: boolean | undefined;
+  @Input('buttonColor') buttonColor: string = 'primary';
   @Input('buttonType') buttonType: string = 'raised';
-  @Input('buttonText') buttonText: string | undefined;
-  @Input('buttonBorderRadius') buttonBorderRadius: string = '0em';
   @Input('diameter') diameter: number = 30;
   @Output() onClick = new EventEmitter<string>();
 
@@ -30,7 +29,6 @@ export class SubmitButtonComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     setTimeout(() => {
       const button = this.button?._elementRef.nativeElement as HTMLButtonElement;
-      this.renderer.setStyle(button, 'border-radius', this.buttonBorderRadius);
       const parent = button.children.item(1) as HTMLElement;
       // const spinnerLeft = button.clientWidth / 2 - this.diameter / 2;
       // this.spinnerLeft = `${spinnerLeft}px`;

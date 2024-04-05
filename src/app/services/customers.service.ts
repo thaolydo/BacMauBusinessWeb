@@ -58,6 +58,12 @@ export class CustomersService {
     ));
   }
 
+  async optOutCustomer(cid: string): Promise<any> {
+    return firstValueFrom(this.http.put(`${this.baseUrl}/opt-out`, {
+      cid,
+    }));
+  }
+
   // Deprecated in favor of get-estimated-customer-count
   // async getCustomerCount(): Promise<number> {
   //   console.log('Getting customer count');

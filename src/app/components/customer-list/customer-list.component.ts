@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatTableDataSource } from '@angular/material/table';
-import { CustomerInfo } from 'src/app/models/customer-info.model';
+import { CustomerInfo, OptStatus } from 'src/app/models/customer-info.model';
 import { CustomersService } from 'src/app/services/customers.service';
 
 @Component({
@@ -10,6 +11,7 @@ import { CustomersService } from 'src/app/services/customers.service';
 })
 export class CustomerListComponent implements OnInit {
 
+  OptStatus: any = OptStatus;
   isLoading = false;
   displayedColumns: string[] = ['phone', 'name', 'optStatus'];
   dataSource: MatTableDataSource<CustomerInfo> | undefined;
@@ -25,11 +27,29 @@ export class CustomerListComponent implements OnInit {
     try {
       const customers = await this.customersService.getCustomers();
       console.log('customers =', customers);
+      // (customers as any[]).forEach(customer => customer.checked = customer.latestOptStatus == OptStatus.IN);
       this.dataSource = new MatTableDataSource<CustomerInfo>(customers);
     } catch (e: any) {
       throw e;
     } finally {
       this.isLoading = false;
+    }
+  }
+
+  async optOutCustomer(element: any, toggle: MatSlideToggle) {
+    console.log(`Opting out customer: ${element.phone}`);
+    element.isSubmitting = true;
+    try {
+      element.latestOptStatus = OptStatus.OUT;
+      await this.customersService.optOutCustomer(element.phone!);
+      // await new Promise(x => setTimeout(x, 1000));
+      // throw new Error();
+    } catch (e: any) {
+      alert('Unable to update the opt status');
+      element.latestOptStatus = OptStatus.IN;
+      toggle.checked = true;
+    } finally {
+      element.isSubmitting = false;
     }
   }
 

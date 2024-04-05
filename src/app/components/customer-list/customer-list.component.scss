@@ -10,3 +10,24 @@
 table {
     width: 100%;
 }
+
+// ::ng-deep .submit-button {
+//     font-size: xx-small !important;
+//     min-width: auto !important;
+//     width: 5em !important;
+//     height: 2em !important;
+//     border-radius: 1em !important;
+//     padding: 0 !important;
+//     margin-left: 1em;
+//     color: white;
+// }
+
+.opt-cell {
+    display: flex;
+    flex-direction: row;
+}
+
+.opt-spinner {
+    position: relative;
+    margin-left: 0.5em;
+}

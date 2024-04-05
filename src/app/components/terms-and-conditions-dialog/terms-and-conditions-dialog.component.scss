@@ -33,3 +33,7 @@ h1 {
         width: auto;
     }
 }
+
+::ng-deep .submit-button {
+    border-radius: 1em !important;
+}
