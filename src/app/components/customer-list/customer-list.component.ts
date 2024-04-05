@@ -45,6 +45,7 @@ export class CustomerListComponent implements OnInit {
       // await new Promise(x => setTimeout(x, 1000));
       // throw new Error();
     } catch (e: any) {
+      // TODO: notify admin
       alert('Unable to update the opt status');
       element.latestOptStatus = OptStatus.IN;
       toggle.checked = true;

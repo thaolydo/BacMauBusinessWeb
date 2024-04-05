@@ -31,6 +31,7 @@ export class AttachBidInterceptor implements HttpInterceptor {
           const body = request.body! as any;
           body.bid = bid;
           body.businessName = businessName;
+          console.debug('body =', body);
           return request.clone({
             body
           });

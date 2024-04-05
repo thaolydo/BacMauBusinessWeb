@@ -32,6 +32,7 @@ export class TermsAndConditionsDialogComponent implements OnInit {
       const res = await this.sendSmsService.subscribeToMarketingSms(this.customerInfo.phone);
       console.log('res =', res);
     } catch (e: any) {
+      // TODO: notify admin
       alert('Unable to subscribe');
     } finally {
       this.isSubmitting = true;

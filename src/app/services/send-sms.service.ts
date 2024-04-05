@@ -37,6 +37,7 @@ export class SendSmsService {
       .pipe(
         catchError((err: HttpErrorResponse, caught: any) => {
           if (err.status == HttpStatusCode.BadRequest) {
+            // TODO: notify admin
             alert(err.error.errMsg);
             return of();
           }

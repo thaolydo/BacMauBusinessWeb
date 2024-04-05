@@ -32,7 +32,7 @@ export class CustomersService {
   }
 
   async checkIn(customer: CustomerInfo): Promise<any> {
-    return firstValueFrom(this.http.post(`${this.baseUrl}/check-in`, { customer }));
+    return firstValueFrom(this.http.post(`${this.baseUrl}/check-in`, { ...customer }));
   }
 
   async getCheckInEventHistory(month: number, date?: Date): Promise<CheckInEvent[]> {

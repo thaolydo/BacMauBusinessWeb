@@ -294,6 +294,7 @@ export class AuthService {
     if (!groups || groups.length == 0) {
       if (!ignoreError) {
         console.trace();
+        // TODO: notify admin
         alert('Your account does not belong to a group. Please contact admin to fix it.');
       }
       return Role.OTHER;
@@ -305,6 +306,7 @@ export class AuthService {
       return Role.OWNER;
     } else {
       if (!ignoreError) {
+        // TODO: notify admin
         alert('Invalid user role. Please contact admin');
       }
       return Role.OTHER;
@@ -565,6 +567,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       curUser?.updateAttributes(attributes, (err, res) => {
         if (err) {
+          // TODO: notify admin
           alert(err.message || JSON.stringify(err));
           reject(err.message);
         }
