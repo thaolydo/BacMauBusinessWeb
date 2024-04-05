@@ -3,9 +3,9 @@
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" #formDirective="ngForm">
     <!-- Business Name -->
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" matTooltip="Contact Admin to Edit this value" matTooltipPosition="right">
         <mat-label> Business Name </mat-label>
-        <input matInput formControlName="businessName" required>
+        <input matInput formControlName="businessName" [disabled]="true">
     </mat-form-field>
 
     <!-- Email -->

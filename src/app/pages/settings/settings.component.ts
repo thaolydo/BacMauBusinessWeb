@@ -5,7 +5,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '@service/auth.service';
 import { ICognitoUserAttributeData } from 'amazon-cognito-identity-js';
 import { EmailVerificationDialogComponent } from 'src/app/components/email-verification-dialog/email-verification-dialog.component';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-settings',
@@ -28,10 +27,9 @@ export class SettingsComponent {
     private snackBar: MatSnackBar,
   ) {
     this.form = this._fb.group({
-      businessName: ['', Validators.required],
+      businessName: [{ value: '', disabled: true}],
       email: ['', Validators.required],
     });
-    this.form.disable();
   }
 
   async ngOnInit() {
@@ -41,14 +39,12 @@ export class SettingsComponent {
       const email = await this.authService.getUserEmail();
       this.emailVerified = await this.authService.emailVerified();
       this.initialEmail = email;
-      console.log
       this.form.setValue({
         businessName,
         email,
       })
     } finally {
       this.isLoading = false;
-      this.form.enable();
     }
   }
 
