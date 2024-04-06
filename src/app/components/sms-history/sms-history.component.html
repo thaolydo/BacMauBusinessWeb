@@ -1,55 +1,55 @@
-<table *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort matSortActive="createdAt"
+<mat-table *ngIf="dataSource" [dataSource]="dataSource" class="mat-elevation-z8" matSort matSortActive="createdAt"
     matSortDirection="desc">
 
     <!-- Timestamp Column -->
     <ng-container matColumnDef="createdAt">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </th>
-        <td mat-cell *matCellDef="let element"> {{element.createdAt | date : 'medium'}} </td>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Timestamp </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.createdAt | date : 'medium'}} </mat-cell>
     </ng-container>
 
     <!-- Message Content Column -->
     <ng-container matColumnDef="content">
-        <th mat-header-cell *matHeaderCellDef> Content </th>
-        <td mat-cell *matCellDef="let element"> {{element.content}} </td>
+        <mat-header-cell *matHeaderCellDef> Content </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.content}} </mat-cell>
     </ng-container>
 
     <!-- Message Description Column -->
     <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef> Description </th>
-        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+        <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
     </ng-container>
 
     <!-- Estimated Audience Size Column -->
     <ng-container matColumnDef="estimatedAudienceSize">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Estimated number of customers that will receive the ad"
-            matTooltipPosition="right"> Estimated </th>
-        <td mat-cell *matCellDef="let element"> {{element.estimatedAudienceSize}} </td>
+        <mat-header-cell *matHeaderCellDef matTooltip="Estimated number of customers that will receive the ad"
+            matTooltipPosition="right"> Estimated </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.estimatedAudienceSize}} </mat-cell>
     </ng-container>
 
     <!-- Message Received Count Column -->
     <ng-container matColumnDef="receivedCount">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Number of customers that have received the ad"
-            matTooltipPosition="right"> Received </th>
-        <td mat-cell *matCellDef="let element"> {{element.successfulMessageCount}} </td>
+        <mat-header-cell *matHeaderCellDef matTooltip="Number of customers that have received the ad"
+            matTooltipPosition="right"> Received </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.successfulMessageCount}} </mat-cell>
     </ng-container>
 
     <!-- Cost Column -->
     <ng-container matColumnDef="cost">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Number of customers that have received the ad"
-            matTooltipPosition="right"> Cost </th>
-        <td mat-cell *matCellDef="let element">
+        <mat-header-cell *matHeaderCellDef matTooltip="Number of customers that have received the ad"
+            matTooltipPosition="right"> Cost </mat-header-cell>
+        <mat-cell *matCellDef="let element">
             <ng-container *ngIf="pricePerSms"> {{element.successfulMessageCount * pricePerSms | currency}} </ng-container>
-        </td>
+        </mat-cell>
     </ng-container>
 
     <!-- Not needed currently -->
     <!-- Image Column -->
     <!-- <ng-container matColumnDef="imageUrl">
-        <th mat-header-cell *matHeaderCellDef> Image </th>
-        <td mat-cell *matCellDef="let element"> {{element.imageUrl}} </td>
+        <mat-header-cell *matHeaderCellDef> Image </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.imageUrl}} </mat-cell>
     </ng-container> -->
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
 <mat-spinner *ngIf="isLoading" diameter="30"></mat-spinner>
