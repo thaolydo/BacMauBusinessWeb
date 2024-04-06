@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-sign-in',
@@ -26,7 +25,6 @@ export class SignInComponent implements OnInit {
     this.form = this._fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
-      // asOwner: true
     });
   }
 
@@ -48,11 +46,6 @@ export class SignInComponent implements OnInit {
   get password() {
     return this.form.get('password')?.value as string;
   }
-
-  // Deprecated
-  // get asOwner() {
-  //   return this.form.get('asOwner')?.value as boolean;
-  // }
 
   async onSubmit() {
     this.isSubmitting = true;

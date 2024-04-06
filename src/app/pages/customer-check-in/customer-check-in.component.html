@@ -1,6 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" #formDirective="ngForm">
     <!-- Name -->
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" class="name-field">
         <mat-label>Name</mat-label>
         <input matInput formControlName="name" required autofocus>
         <button type="button" *ngIf="name" matSuffix mat-icon-button aria-label="Clear" tabindex="-1" (click)="name=''">
@@ -9,9 +9,9 @@
     </mat-form-field>
 
     <!-- Phone -->
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" class="phone-field">
         <mat-label>Phone</mat-label>
-        <input #phoneInput mask="(000) 000-0000" matInput placeholder="(xxx) xxx-xxxx" formControlName="phone" required>
+        <input #phoneInput mask="(000) 000-0000" matInput placeholder="(xxx) xxx-xxxx" formControlName="phone" required inputmode="numeric">
         <button type="button" *ngIf="phone" matSuffix mat-icon-button aria-label="Clear" tabindex="-1" (click)="phone=''">
             <mat-icon style="width: auto;">close</mat-icon>
         </button>

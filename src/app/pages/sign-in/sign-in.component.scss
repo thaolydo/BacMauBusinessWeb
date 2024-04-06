@@ -9,29 +9,28 @@
 form {
     display: flex;
     flex-direction: row;
-    width: 70%;
+    width: 90%;
     position: relative;
     align-items: center;
+}
+
+mat-form-field {
+    margin-block: 0.5em;
+}
+
+app-submit-button {
+    align-self: flex-end;
 }
 
 #reset-password-container {
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: 1em;
 }
 
 a {
-    margin-left: 0.5em;
     align-self: flex-start;
     font-size: small;
-}
-
-mat-form-field {
-    margin: 0.5em;
-}
-
-mat-slide-toggle {
-    margin: 1em;
 }
 
 @media only screen and (max-width: 900px) {
@@ -41,9 +40,4 @@ mat-slide-toggle {
         align-items: initial;
     }
 
-    #reset-password-container {
-        bottom: 0;
-        left: auto;
-        right: 0;
-    }
 }

@@ -5,6 +5,7 @@
     align-items: center;
     height: 100%;
     font-size: xx-large;
+    padding: 1em;
 }
 
 :host ::ng-deep button {
@@ -14,6 +15,14 @@
 mat-form-field {
     margin: 0.5em;
     width: 40vw;
+}
+
+.name-field {
+    height: 5em;
+}
+
+.phone-field {
+    height: 5em;
 }
 
 .birth-month-field {
@@ -51,6 +60,7 @@ fieldset {
 }
 
 @media only screen and (min-width: 1000px) {
+    // Desktop
     mat-form-field {
         margin: 0.5em;
         width: 30vw;
