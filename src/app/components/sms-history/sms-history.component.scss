@@ -11,6 +11,22 @@
     width: 15em;
 }
 
+.mat-column-conversionCount {
+    justify-content: center;
+}
+
+.update-button-section {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1em;
+    .update-button {
+        // width: 1em;
+        .mat-icon {
+            width: 1em;
+        }
+    }
+}
+
 @media only screen and (max-width: 900px) {
     // Mobile and tablets
     :host {

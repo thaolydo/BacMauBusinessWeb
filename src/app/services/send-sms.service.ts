@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AdEvent } from '@model/send-sms-event.model';
+import { AdEvent, ConversionCountUpdateType } from '@model/send-sms-event.model';
 import { Observable, catchError, firstValueFrom, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TimeUtil } from '../utils/time.util';
@@ -96,6 +96,14 @@ export class SendSmsService {
           return toReturn;
         })
       ));
+  }
+
+  async updateConversionCount(createdAt: string, updateType: ConversionCountUpdateType) {
+    console.log(`Updating conversion count for ${createdAt} with type ${updateType}`);
+    return firstValueFrom(this.http.put(`${this.baseUrl}/update-conversion`, {
+      createdAt,
+      updateType,
+    }));
   }
 
   async getEstimatedCustomerCount(): Promise<number> {

@@ -13,4 +13,11 @@ export interface AdEvent {
     estimatedAudienceSize?: number, // estimated number of customers that will receive the
     successfulMessageCount?: number, // number of messages that were sent successfully
     clickCount?: number, // total click count
+    conversionCount?: number, // conversion count,
+    isSubmitting?: boolean, // only used in frontend
+}
+
+export enum ConversionCountUpdateType {
+    INC = 'INC',
+    DEC = 'DEC',
 }

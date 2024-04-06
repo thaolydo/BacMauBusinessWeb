@@ -26,6 +26,23 @@
         <mat-cell *matCellDef="let element"> {{element.estimatedAudienceSize}} </mat-cell>
     </ng-container>
 
+    <!-- Message Conversion Count Column -->
+    <ng-container matColumnDef="conversionCount">
+        <mat-header-cell *matHeaderCellDef matTooltip="Number of customers that have been converted to sale by the ad"
+            matTooltipPosition="right"> Conversion </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            {{element.conversionCount}}
+            <div class="update-button-section">
+                <button class="update-button" mat-icon-button (click)="updateConversionCount(element, ConversionCountUpdateType.INC)" [disabled]="element.isSubmitting">
+                    <mat-icon>arrow_drop_up</mat-icon>
+                </button>
+                <button class="update-button" mat-icon-button (click)="updateConversionCount(element, ConversionCountUpdateType.DEC)" [disabled]="element.isSubmitting">
+                    <mat-icon>arrow_drop_down</mat-icon>
+                </button>
+            </div>
+        </mat-cell>
+    </ng-container>
+
     <!-- Message Received Count Column -->
     <ng-container matColumnDef="receivedCount">
         <mat-header-cell *matHeaderCellDef matTooltip="Number of customers that have received the ad"

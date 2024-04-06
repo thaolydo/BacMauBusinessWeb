@@ -3,7 +3,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from '@service/auth.service';
 import { SendSmsService } from '@service/send-sms.service';
-import { AdEvent } from 'src/app/models/send-sms-event.model';
+import { AdEvent, ConversionCountUpdateType } from 'src/app/models/send-sms-event.model';
 
 @Component({
   selector: 'app-sms-history',
@@ -12,9 +12,10 @@ import { AdEvent } from 'src/app/models/send-sms-event.model';
 })
 export class SmsHistoryComponent implements OnInit {
 
+  ConversionCountUpdateType = ConversionCountUpdateType;
   pricePerSms: number | undefined;
   isLoading = false;
-  displayedColumns: string[] = ['createdAt', 'description', 'content', 'receivedCount', 'estimatedAudienceSize', 'cost'];
+  displayedColumns: string[] = ['createdAt', 'description', 'content', 'conversionCount', 'receivedCount', 'estimatedAudienceSize', 'cost'];
 
   dataSource: MatTableDataSource<AdEvent> | undefined;
   private sortHodler: MatSort | undefined;
@@ -50,6 +51,24 @@ export class SmsHistoryComponent implements OnInit {
       throw e;
     } finally {
       this.isLoading = false;
+    }
+  }
+
+  async updateConversionCount(element: AdEvent, updateType: ConversionCountUpdateType) {
+    console.log('Updating conversion count');
+    element.isSubmitting = true;
+    try {
+      await this.sendSmsService.updateConversionCount(element.createdAt, updateType);
+      if (updateType == ConversionCountUpdateType.INC) {
+        element.conversionCount!++;
+      } else {
+        element.conversionCount!--;
+      }
+    } catch(e: any) {
+      // TODO: notify admin
+      alert(e.message);
+    } finally {
+      element.isSubmitting = false;
     }
   }
 
