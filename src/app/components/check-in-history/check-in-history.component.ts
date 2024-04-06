@@ -11,7 +11,7 @@ import { CustomersService } from 'src/app/services/customers.service';
 })
 export class CheckInHistoryComponent implements OnInit {
 
-  groupBy = 'day';
+  groupBy = 'date';
   selectedDate = new Date();
   selectedMonth = new Date().getMonth();
   monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -38,7 +38,7 @@ export class CheckInHistoryComponent implements OnInit {
     this.isLoading = true;
     try {
       const curMonth = new Date().getMonth() + 1;
-      const checkInEvents = await this.customersService.getCheckInEventHistory(this.selectedMonth + 1, this.groupBy == 'day' ? this.selectedDate : undefined);
+      const checkInEvents = await this.customersService.getCheckInEventHistory(this.selectedMonth + 1, this.groupBy == 'date' ? this.selectedDate : undefined);
       console.log('checkInEvents =', checkInEvents);
       this.dataSource = new MatTableDataSource<CheckInEvent>(checkInEvents);
     } catch (e: any) {

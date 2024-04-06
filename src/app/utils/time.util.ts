@@ -19,6 +19,10 @@ export class TimeUtil {
         return DateTime.fromISO(timeString, { zone: TimeUtil.TIME_ZONE_STRING });
     }
 
+    public static parseTimeMillis(millis: number): DateTime {
+        return DateTime.fromMillis(millis, { zone: TimeUtil.TIME_ZONE_STRING });
+    }
+
     public static toString(dateTime: DateTime): string {
         return dateTime.toISO()!;
     }

@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { CustomerInfo } from 'src/app/models/customer-info.model';
 import { CheckInEvent } from 'src/app/models/check-in-event.model';
 import { TimeUtil } from '../utils/time.util';
+import { DateTime } from 'luxon';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,8 @@ export class CustomersService {
   }
 
   async getCheckInEventHistory(month: number, date?: Date): Promise<CheckInEvent[]> {
+    console.log('date =', date);
+    console.log('month =', month);
     const params = { month, year: new Date().getFullYear(), date: date?.toISOString() } as any;
     if (date) {
       const start = new Date(date);
