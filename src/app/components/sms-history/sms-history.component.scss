@@ -4,9 +4,24 @@
     justify-content: center;
     align-items: center;
     margin: 1em;
-    width: 80vw;
+    width: 70vw;
 }
 
 table {
     width: 100%;
+}
+
+.mat-column-createdAt {
+    width: 15em;
+}
+
+@media only screen and (max-width: 900px) {
+    // Mobile and tablets
+    :host {
+        width: 90vw;
+    }
+
+    .mat-column-createdAt {
+        width: initial;
+    }
 }

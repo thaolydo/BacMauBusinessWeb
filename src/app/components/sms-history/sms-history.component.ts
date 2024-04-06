@@ -44,6 +44,9 @@ export class SmsHistoryComponent implements OnInit {
       console.log('adEvents = ', adEvents);
       this.dataSource = new MatTableDataSource<AdEvent>(adEvents);
     } catch (e: any) {
+      // TODO: notify admin
+      this.dataSource = new MatTableDataSource<AdEvent>();
+      alert(e.message);
       throw e;
     } finally {
       this.isLoading = false;

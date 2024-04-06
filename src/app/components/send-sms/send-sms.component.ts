@@ -45,6 +45,10 @@ export class SendSmsComponent implements OnInit {
       this.customerCount = await this.sendSmsService.getEstimatedCustomerCount();
       this.pricePerSms = await this.authService.getSmsCost();
       console.log('customerCount =', this.customerCount);
+    } catch (e: any) {
+      // TODO: notify admin
+      alert(e.message);
+      throw e;
     } finally {
       this.isLoading = false;
     }
