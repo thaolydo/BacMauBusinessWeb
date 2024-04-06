@@ -42,6 +42,9 @@ export class CheckInHistoryComponent implements OnInit {
       console.log('checkInEvents =', checkInEvents);
       this.dataSource = new MatTableDataSource<CheckInEvent>(checkInEvents);
     } catch (e: any) {
+      // TODO: notify admin
+      this.dataSource = new MatTableDataSource<CheckInEvent>();
+      alert(e.message);
       throw e;
     } finally {
       this.isLoading = false;

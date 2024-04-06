@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   browserWidth: number | undefined = window.innerWidth || document.documentElement.clientWidth;
+  browserHeight: number | undefined = window.innerHeight || document.documentElement.clientHeight;
 }

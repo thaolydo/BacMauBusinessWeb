@@ -30,6 +30,9 @@ export class CustomerListComponent implements OnInit {
       // (customers as any[]).forEach(customer => customer.checked = customer.latestOptStatus == OptStatus.IN);
       this.dataSource = new MatTableDataSource<CustomerInfo>(customers);
     } catch (e: any) {
+      // TODO: notify admin
+      this.dataSource = new MatTableDataSource<CustomerInfo>();
+      alert(e.message);
       throw e;
     } finally {
       this.isLoading = false;
