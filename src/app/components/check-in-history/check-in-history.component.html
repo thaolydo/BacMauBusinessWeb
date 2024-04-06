@@ -15,9 +15,9 @@
     </mat-form-field>
 
     <!-- Month selection -->
-    <mat-form-field *ngIf="groupBy == 'month'" class="birth-month-field" appearance="fill">
+    <mat-form-field *ngIf="groupBy == 'month'" class="month-field" appearance="fill">
         <mat-select [(ngModel)]="selectedMonth" (selectionChange)="onMonthSelected()">
-            <mat-option class="birth-month-option" [value]="i" *ngFor="let monthName of monthNames; let i = index">
+            <mat-option class="month-option" [value]="i" *ngFor="let monthName of monthNames; let i = index">
                 {{i + 1}} - {{monthName}}</mat-option>
         </mat-select>
     </mat-form-field>
