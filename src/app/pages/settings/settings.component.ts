@@ -43,6 +43,10 @@ export class SettingsComponent {
         businessName,
         email,
       })
+    } catch (e: any) {
+      // TODO: notify admin
+      alert(e.message);
+      throw e;
     } finally {
       this.isLoading = false;
     }

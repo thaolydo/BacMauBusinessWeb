@@ -1,21 +1,54 @@
 :host {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    padding: 1em 1em;
     justify-content: center;
     align-items: center;
-    margin: 1em;
-    width: 80vw;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
+    position: relative;
+    width: 50%;
 }
 
 mat-form-field {
     margin: 0.5em;
-    width: 30vw;
+    width: 100%;
+}
+
+.email-section {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    position: relative;
+}
+
+#email-verified {
+    position: absolute;
+    right: 1em;
+    bottom: 5em;
+    background: green;
+    font-size: 0.5em;
+    border-radius: 10px;
+    padding-inline: 0.5em;
+    color: white;
+    margin-top: 6em;
+}
+
+#email-not-verified {
+    position: absolute;
+    right: 1em;
+    bottom: 5em;
+    background: gray;
+    font-size: 0.5em;
+    border-radius: 10px;
+    padding-inline: 0.5em;
+    color: white;
+    margin-top: 6em;
+    cursor: pointer;
 }
 
 app-submit-button {
@@ -33,24 +66,13 @@ a {
     margin-left: 0.5em;
 }
 
-#email-verified {
-    position: absolute;
-    background: green;
-    font-size: 0.5em;
-    border-radius: 10px;
-    padding-inline: 0.5em;
-    color: white;
-    margin-top: 6em;
-}
+@media only screen and (max-width: 900px) {
+    // Mobile and tablets
+    form {
+        width: 70vw;
+    }
 
-
-#email-not-verified {
-    position: absolute;
-    background: gray;
-    font-size: 0.5em;
-    border-radius: 10px;
-    padding-inline: 0.5em;
-    color: white;
-    margin-top: 6em;
-    cursor: pointer;
+    mat-form-field {
+        width: 100%;
+    }
 }

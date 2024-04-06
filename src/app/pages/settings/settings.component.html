@@ -9,7 +9,7 @@
     </mat-form-field>
 
     <!-- Email -->
-    <span>
+    <div class="email-section">
         <mat-form-field appearance="fill">
             <mat-label> Email </mat-label>
             <input matInput formControlName="email" required>
@@ -18,7 +18,7 @@
             Verified
         </span>
         <span id="email-not-verified" *ngIf="!emailVerified" matRipple (click)="onVerify()">Not verified</span>
-    </span>
+    </div>
 
     <span id="action-section">
         <!-- Reset Password -->
