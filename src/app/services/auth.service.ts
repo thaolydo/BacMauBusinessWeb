@@ -296,6 +296,8 @@ export class AuthService {
         console.trace();
         // TODO: notify admin
         alert('Your account does not belong to a group. Please contact admin to fix it.');
+        this.signOut();
+        this.router.navigate(['/sign-in']);
       }
       return Role.OTHER;
     }
