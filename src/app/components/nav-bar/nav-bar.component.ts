@@ -7,7 +7,6 @@ import { Role } from '@model/role.model';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-nav-bar',
@@ -15,8 +14,6 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent implements OnInit {
-
-  // @Input() businessName: string = 'Life Reflexology'; // TODO: get it from query params in the current url
 
   curUser: CognitoUser | null = null;
   authEventSubscription: Subscription | undefined;
@@ -65,7 +62,7 @@ export class NavBarComponent implements OnInit {
       this.curBusinessName = await this.authService.getDefaultBusinessName();
       this.titleService.setTitle(this.curBusinessName);
     } catch (err) {
-      console.log('nav-bar onInit: User not logged in');
+      console.log('nav-bar onInit: User not logged in', err);
     }
   }
 

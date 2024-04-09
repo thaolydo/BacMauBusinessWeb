@@ -64,8 +64,8 @@ import { EmailVerificationDialogComponent } from './components/email-verificatio
     HttpClientModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AwsSigningInterceptor, multi: true, },
     { provide: HTTP_INTERCEPTORS, useClass: AttachBidInterceptor, multi: true, },
+    { provide: HTTP_INTERCEPTORS, useClass: AwsSigningInterceptor, multi: true, }, // this must be at the end so that the request is finalized before signing; otherwise the signature won't match, and we get 403 error
   ],
   bootstrap: [AppComponent]
 })

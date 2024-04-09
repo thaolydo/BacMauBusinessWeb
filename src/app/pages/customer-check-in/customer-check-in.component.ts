@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '@service/auth.service';
 import { CustomersService } from '@service/customers.service';
+import { HuyService } from '@service/huy.service';
 import { firstValueFrom } from 'rxjs';
 import { CheckInSuccessDialogComponent } from 'src/app/components/check-in-success-dialog/check-in-success-dialog.component';
 import { TermsAndConditionsDialogComponent } from 'src/app/components/terms-and-conditions-dialog/terms-and-conditions-dialog.component';
@@ -40,6 +41,7 @@ export class CustomerCheckInComponent implements OnInit {
     private customersService: CustomersService,
     private dialog: MatDialog,
     private authService: AuthService,
+    private huyService: HuyService,
   ) {
     this.form = this._fb.group({
       name: ['', Validators.required],
@@ -66,6 +68,8 @@ export class CustomerCheckInComponent implements OnInit {
   }
 
   async ngOnInit() {
+    // const res = await this.huyService.getHuy();
+    // console.log('res =', res);
   }
 
   onMonthSelected() {

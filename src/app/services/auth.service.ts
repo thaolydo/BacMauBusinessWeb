@@ -435,7 +435,7 @@ export class AuthService {
    */
   async signRequestWithSignatureV4(request: HttpRequest<unknown>, creds: CognitoIdentityCredentials): Promise<HttpRequest<unknown>> {
     console.log('signRequestWithSignatureV4');
-    console.log('creds =', creds); // TODO: remove in prod
+    console.debug('creds =', creds); // TODO: remove in prod
     const signer = new AwsV4Signer({
       url: request.urlWithParams,                // required, the AWS endpoint to sign
       accessKeyId: creds.accessKeyId,        // required, akin to AWS_ACCESS_KEY_ID

@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   baseUrl: 'https://sms.hpham.net',
+  huyBaseUrl: 'https://jb5dvuizm2.execute-api.us-east-1.amazonaws.com',
   callBackUrl: 'http://localhost:4200/sign-in?landing_page=settings',
   identityPoolId: 'us-east-1:e551d89a-fbfc-4004-839e-f3e6f9b97024',
 
