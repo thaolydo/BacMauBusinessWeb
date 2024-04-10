@@ -1,6 +1,8 @@
-<mat-tab-group selectedIndex="0">
+<mat-tab-group #tabGroup [selectedIndex]="selectedIndex" (selectedTabChange)="onSelectedTabChange($event)">
     <mat-tab label="Check-in">
-        <app-check-in-history></app-check-in-history>
+        <ng-template matTabContent>
+            <app-check-in-history></app-check-in-history>
+        </ng-template>
     </mat-tab>
     <mat-tab label="Customer List">
         <ng-template matTabContent>

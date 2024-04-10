@@ -34,7 +34,7 @@ export class SignInComponent implements OnInit {
       console.log('Already signed in. Navigating to page /customers');
       this.router.navigate(['/customers']);
     }
-    const queryParams = await firstValueFrom(this.route.queryParams);
+    const queryParams = this.route.snapshot.queryParams;
     this.landing_page = queryParams['landing_page'] ? queryParams['landing_page'] : this.landing_page;
 
   }

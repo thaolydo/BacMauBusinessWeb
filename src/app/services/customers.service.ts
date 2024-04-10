@@ -37,8 +37,8 @@ export class CustomersService {
   }
 
   async getCheckInEventHistory(month: number, date?: Date): Promise<CheckInEvent[]> {
-    console.log('date =', date);
-    console.log('month =', month);
+    // console.log('date =', date);
+    // console.log('month =', month);
     const params = { month, year: new Date().getFullYear(), date: date?.toISOString() } as any;
     if (date) {
       const start = new Date(date);

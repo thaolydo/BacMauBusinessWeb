@@ -18,7 +18,7 @@ export class ClaimedPromotionComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const queryParams = await firstValueFrom(this.route.queryParams);
+    const queryParams = this.route.snapshot.queryParams;
     this.id = queryParams['id'];
     if (!this.id) {
       alert('Invalid url');

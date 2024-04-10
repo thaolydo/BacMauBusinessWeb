@@ -1,13 +1,13 @@
-<mat-tab-group selectedIndex="1">
-    <!-- Send SMS -->
-    <mat-tab label="Send SMS" *ngIf="authService.getCurUserRole() == Role.OWNER">
-        <app-send-sms></app-send-sms>
-    </mat-tab>
-
+<mat-tab-group #tabGroup [selectedIndex]="selectedIndex" (selectedTabChange)="onSelectedTabChange($event)">
     <!-- History -->
     <mat-tab label="History">
         <ng-template matTabContent>
             <app-sms-history></app-sms-history>
         </ng-template>
+    </mat-tab>
+
+    <!-- Send SMS -->
+    <mat-tab label="Send SMS" *ngIf="authService.getCurUserRole() == Role.OWNER">
+        <app-send-sms></app-send-sms>
     </mat-tab>
 </mat-tab-group>

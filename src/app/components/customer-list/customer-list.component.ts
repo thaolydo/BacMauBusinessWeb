@@ -19,6 +19,7 @@ export class CustomerListComponent implements OnInit {
   constructor(private customersService: CustomersService) { }
 
   async ngOnInit() {
+    console.log('customer-list: init');
     await this.loadTableDataSource();
   }
 

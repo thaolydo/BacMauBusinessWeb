@@ -43,7 +43,7 @@ export class NavBarComponent implements OnInit {
         this.titleService.setTitle('Pham SMS');
       }
     });
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd) {
         console.log('current url =', event.url);
         const saveClickThroughCountLinkRegex = /^\/c\?id=.*/;

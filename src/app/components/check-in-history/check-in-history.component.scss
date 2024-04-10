@@ -18,12 +18,12 @@
         margin: 1em 1em 1em 0;
     }
 
-    mat-radio-button {
-        margin: 0;
+    mat-radio-group {
+        margin-inline: 1em;
     }
 
     .month-field {
-        width: 7em;
+        width: 8em;
     }
 }
 
@@ -43,5 +43,12 @@ table {
     // Mobile
     :host {
         width: 90vw;
+    }
+
+    .search-container {
+        mat-radio-group {
+            display: flex;
+            flex-direction: column;
+        }
     }
 }
