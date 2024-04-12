@@ -18,6 +18,11 @@ export class AttachBidInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     console.debug(`AttachBidInterceptor: intercepting http requests`);
+    const interceptHeader = request.headers.get('X-Intercept');
+    if (interceptHeader === 'false') {
+      console.log('Skipping AttachBidInterceptor');
+      next.handle(request);
+    }
     const res = from(this.authService.getUserData().then(
       userData => {
         const bid = userData.UserAttributes.find(attribute => attribute.Name === 'custom:bid')!.Value;

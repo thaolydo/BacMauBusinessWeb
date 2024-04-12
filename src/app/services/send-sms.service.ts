@@ -116,10 +116,10 @@ export class SendSmsService {
 
   async saveClickThroughCount(id: string) {
     console.log(`Saving click through count for id ${id}`);
-    if (true) return new Promise((resolve, reject) => {
-      resolve(0);
-    });
-    return firstValueFrom(this.http.put(`${this.baseUrl}/c`, {
+    return firstValueFrom(this.http.put(`${this.baseUrl}/c`, {}, {
+      headers: {
+        'X-Intercept': 'false'
+      },
       params: {
         id,
       },
