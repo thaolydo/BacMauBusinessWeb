@@ -18,9 +18,6 @@ export class AuthGuard  {
   async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean> {
-
-      if (true) return true;
-
     // Check AuthN
     const curUser = await this.authService.getCurUser();
     if (!curUser) {

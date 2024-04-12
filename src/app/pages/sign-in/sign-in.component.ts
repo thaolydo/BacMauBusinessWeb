@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 
 @Component({
   selector: 'app-sign-in',
@@ -21,6 +23,7 @@ export class SignInComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
+    private dialog: MatDialog,
   ) {
     this.form = this._fb.group({
       username: ['', Validators.required],
@@ -29,6 +32,7 @@ export class SignInComponent implements OnInit {
   }
 
   async ngOnInit() {
+    // this.dialog.open(ResetPasswordComponent);
     const curUser = await this.authService.getCurUser();
     if (curUser) {
       console.log('Already signed in. Navigating to page /customers');

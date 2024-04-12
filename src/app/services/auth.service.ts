@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationDetails, CognitoRefreshToken, CognitoUser, CognitoUserPool, CognitoUserSession, ICognitoUserAttributeData, UserData } from 'amazon-cognito-identity-js';
-import { Subject } from 'rxjs';
+import { Subject, firstValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthEventType } from 'src/app/models/auth-event-types.enum';
 import { Role, UserGroup } from '@model/role.model';
@@ -12,6 +12,8 @@ import { CognitoIdentityCredentials } from 'aws-sdk/global';
 import { HttpRequest } from '@angular/common/http';
 import { AwsV4Signer } from 'aws4fetch';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ResetPasswordComponent } from '../pages/reset-password/reset-password.component';
 
 // Documentation: https://www.npmjs.com/package/amazon-cognito-identity-js
 @Injectable({
@@ -28,7 +30,10 @@ export class AuthService {
 
   private refreshToken: CognitoRefreshToken | undefined = undefined;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private dialog: MatDialog,
+  ) {
     this.userPool = new CognitoUserPool({
       ClientId: environment.userPoolClientId,
       UserPoolId: environment.userPoolId,
@@ -56,7 +61,7 @@ export class AuthService {
           this.eventSubject.next(AuthEventType.SIGNED_IN);
           resolve(user);
         },
-        newPasswordRequired: (userAttributes, requiredAttributes) => {
+        newPasswordRequired: async (userAttributes, requiredAttributes) => {
           // https://stackoverflow.com/questions/40287012/how-to-change-user-status-force-change-password
 
           // User was signed up by an admin and must provide new
@@ -73,8 +78,27 @@ export class AuthService {
           // const newPassword = prompt('New Password')!;
           // user.completeNewPasswordChallenge(newPassword, userAttributes, this);
 
-          this.openHostedUiSignInPage('You must change your password to continue. Redirecting to creating new password page.');
-          resolve(user);
+          // this.openHostedUiSignInPage('New Password Required: You must change your password to continue. Redirecting to creating new password page.');
+          alert('New Password Required');
+          const dialogRef = this.dialog.open(ResetPasswordComponent);
+          const newPassword = await firstValueFrom(dialogRef.afterClosed());
+          console.log('newPassword =', newPassword);
+          if (newPassword) {
+            // the api doesn't accept this field back
+            delete userAttributes.email_verified;
+            user.completeNewPasswordChallenge(newPassword, {}, {
+              onSuccess: async () => {
+                console.log('success');
+                await this.router.navigate(['/customers']);
+                resolve(user);
+              },
+              onFailure: (err) => {
+                alert(`Failed to reset password`);
+                console.error(`Failed to reset password with error:`, err);
+                reject(err);
+              }
+            });
+          }
         },
         onFailure: (err) => {
           // Possible err.code:
@@ -84,7 +108,7 @@ export class AuthService {
           // UsernameExistsException: username exists
 
           if (err.code === 'PasswordResetRequiredException') {
-            this.openHostedUiForgotPasswordPage('You must change your password to continue. Redirecting to password reset page.');
+            this.openHostedUiForgotPasswordPage('Password Reset Required: You must change your password to continue. Redirecting to password reset page.');
             resolve(user);
             return;
           }
@@ -342,7 +366,7 @@ export class AuthService {
   async emailVerified(): Promise<boolean> {
     const userData = await this.getUserData();
     console.log('userData =', userData);
-    return userData.UserAttributes.find(attribute => attribute.Name === 'email_verified')!.Value === 'true';
+    return userData.UserAttributes.find(attribute => attribute.Name === 'email_verified')?.Value === 'true';
   }
 
   async getSmsCost(): Promise<number> {

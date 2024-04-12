@@ -27,6 +27,7 @@ export class SendSmsService {
 
   async sendSms(content: string, description: string, includeClickThroughLink?: boolean, redirectUrl?: string) {
     console.log('Sending sms:', content, description, redirectUrl);
+    // return new Promise(x => setTimeout(x, 1000));
     const body = {
       content,
       description,

@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
   { path: 'home', component: HomeComponent },
   { path: 'customer-check-in', component: CustomerCheckInComponent, canActivate: [], data: { roles: [Role.FRONT_DESK] } },
-  // { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'customers', component: CustomersComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
   { path: 'sms', component: SmsComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
