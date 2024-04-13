@@ -4,9 +4,9 @@
 
     <!-- Tabs -->
     <span class="tabs">
-        <span routerLink="/customer-check-in" class="tab" *ngIf="curRole == Role.FRONT_DESK">Customer Check In</span>
-        <span [routerLinkActive]="'selected'" routerLink="/customers" class="tab">Customers</span>
-        <span [routerLinkActive]="'selected'" routerLink="/sms" class="tab">SMS</span>
+        <span routerLink="/customer-check-in" class="tab" *ngIf="curRole == Role.CHECK_IN">Customer Check In</span>
+        <span [routerLinkActive]="'selected'" routerLink="/customers" class="tab" *ngIf="curRole !== Role.CHECK_IN">Customers</span>
+        <span [routerLinkActive]="'selected'" routerLink="/sms" class="tab" *ngIf="curRole !== Role.CHECK_IN">SMS</span>
         <!-- <span [routerLinkActive]="'selected'" routerLink="/coupon" class="tab">Coupon</span> -->
     </span>
 
@@ -22,9 +22,9 @@
         </button>
     </span>
     <mat-menu #menu="matMenu">
-        <span id="business-name">{{ curBusinessName }}</span>
+        <span id="business-name" *ngIf="curRole !== Role.CHECK_IN">{{ curBusinessName }}</span>
         <!-- Settings -->
-        <button mat-menu-item routerLink="/settings">
+        <button mat-menu-item routerLink="/settings" *ngIf="curRole !== Role.CHECK_IN">
             <span>
                 <mat-icon>settings</mat-icon>
                 Settings

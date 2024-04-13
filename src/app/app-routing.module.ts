@@ -15,7 +15,7 @@ import { ClaimedPromotionComponent } from './pages/claimed-promotion/claimed-pro
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
   { path: 'home', component: HomeComponent },
-  { path: 'customer-check-in', component: CustomerCheckInComponent, canActivate: [], data: { roles: [Role.FRONT_DESK] } },
+  { path: 'customer-check-in', component: CustomerCheckInComponent, canActivate: [AuthGuard], data: { roles: [Role.CHECK_IN, Role.FRONT_DESK] } },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'customers', component: CustomersComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },

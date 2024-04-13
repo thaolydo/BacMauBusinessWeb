@@ -56,7 +56,7 @@ export class AuthService {
         Password: password,
       }), {
         onSuccess: (session: CognitoUserSession) => {
-          console.log(`Successfull signed in with username '${username}' and session '${JSON.stringify(session)}'`);
+          console.log(`Successfull signed in with username '${username}' and session`, session);
           this.curUser = user;
           this.eventSubject.next(AuthEventType.SIGNED_IN);
           resolve(user);
@@ -330,6 +330,8 @@ export class AuthService {
       return Role.FRONT_DESK;
     } else if (group === UserGroup.OWNER_GROUP) {
       return Role.OWNER;
+    } else if (group === UserGroup.CHECK_IN_GROUP) {
+      return Role.CHECK_IN;
     } else {
       if (!ignoreError) {
         // TODO: notify admin

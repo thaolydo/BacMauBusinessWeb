@@ -20,7 +20,7 @@ export class AwsSigningInterceptor implements HttpInterceptor {
     const interceptHeader = request.headers.get('X-Intercept');
     if (interceptHeader === 'false') {
       console.log('Skipping AttachBidInterceptor');
-      next.handle(request);
+      return next.handle(request);
     }
     const res = from(this.authService.getAwsCredentials().then(
       creds => this.authService.signRequestWithSignatureV4(request, creds!)
