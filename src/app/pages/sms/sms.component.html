@@ -7,7 +7,7 @@
     </mat-tab>
 
     <!-- Send SMS -->
-    <mat-tab label="Send SMS" *ngIf="authService.getCurUserRole() == Role.OWNER">
+    <mat-tab label="Send SMS" *ngIf="showSendSmsTab">
         <app-send-sms></app-send-sms>
     </mat-tab>
 </mat-tab-group>

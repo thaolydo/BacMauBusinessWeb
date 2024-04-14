@@ -33,7 +33,7 @@ export class NavBarComponent implements OnInit {
       console.log('NavBarComponent: auth event =', event);
       if (event == AuthEventType.SIGNED_IN || event == AuthEventType.ATTRIBUTE_UPDATED) {
         this.curUser = await this.authService.getCurUser();
-        this.curRole = this.authService.getCurUserRole(true);
+        this.curRole = await this.authService.getCurUserRole(true);
         this.curBusinessName = await this.authService.getDefaultBusinessName();
         this.titleService.setTitle(this.curBusinessName);
       } else if (event == AuthEventType.SIGNED_OUT) {
@@ -45,7 +45,7 @@ export class NavBarComponent implements OnInit {
     });
     this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd) {
-        console.log('current url =', event.url);
+        console.log('nav bar: current url =', event.url);
         const saveClickThroughCountLinkRegex = /^\/c\?id=.*/;
         if (event.url == '/' || event.url.startsWith('/customer-check-in') || event.url.startsWith('/sign-in') || saveClickThroughCountLinkRegex.test(event.url)) {
           this.showNavBar = false;
@@ -59,7 +59,7 @@ export class NavBarComponent implements OnInit {
   async ngOnInit() {
     try {
       this.curUser = await this.authService.getCurUser();
-      this.curRole = this.authService.getCurUserRole(true);
+      this.curRole = await this.authService.getCurUserRole(true);
       this.curBusinessName = await this.authService.getDefaultBusinessName();
       this.titleService.setTitle(this.curBusinessName);
     } catch (err) {

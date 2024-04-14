@@ -21,7 +21,13 @@ export class AuthGuard  {
     // Check AuthN
     const curUser = await this.authService.getCurUser();
     if (!curUser) {
-      this.router.navigate(['/sign-in']);
+      console.log('auth guard: url =', route.url);
+      await this.router.navigate(['/sign-in'], {
+        queryParams: {
+          landing_page: route.url[0].path
+        },
+        queryParamsHandling: 'merge'
+      });
       return false;
     }
 
@@ -33,16 +39,18 @@ export class AuthGuard  {
       if (!attributeValue) {
         alert(`${requiredAttribute} is not set. Please contact admin to add it.`);
         await this.authService.signOut();
-        this.router.navigate(['/sign-in']);
+        await this.router.navigate(['/sign-in']);
         return false;
       }
     }
 
     // Check AuthZ
+    console.log('auth guard: current url =', this.router.url);
+    console.log('route =', route.url);
     const roles = route?.data['roles'] as Role[];
     if (roles) {
       let hasRole = false;
-      const curRole = this.authService.getCurUserRole();
+      const curRole = await this.authService.getCurUserRole();
       for (const role of roles) {
         if (role === curRole) {
           hasRole = true;
@@ -51,6 +59,7 @@ export class AuthGuard  {
       }
 
       if (!hasRole) {
+        console.log('current url =', this.router.url);
         alert('You are not authorized to view this page');
         return false;
       }

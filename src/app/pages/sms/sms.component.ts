@@ -16,6 +16,8 @@ export class SmsComponent implements OnInit {
   selectedIndex: number;
   Role = Role;
 
+  showSendSmsTab: boolean = false;
+
   constructor(
     protected authService: AuthService,
     private router: Router,
@@ -33,7 +35,9 @@ export class SmsComponent implements OnInit {
     const queryParams = this.route.snapshot.queryParams;
     const tab = queryParams['tab'];
     const defaultTab = 'sms-history';
-    this.router.navigate([], {
+    const curRole = await this.authService.getCurUserRole();
+    this.showSendSmsTab = curRole == Role.OWNER;
+    await this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
         tab: tab ? tab : defaultTab,

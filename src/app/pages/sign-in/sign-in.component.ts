@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
+import { Role } from '@model/role.model';
 
 @Component({
   selector: 'app-sign-in',
@@ -15,7 +16,7 @@ export class SignInComponent implements OnInit {
 
   form: FormGroup;
   isSubmitting = false;
-  landing_page: string = 'customers';
+  landingPage: string | undefined = undefined;
   resetPasswordLink = this.authService.buildHostedUiForgotPasswordPage();
 
   constructor(
@@ -36,11 +37,13 @@ export class SignInComponent implements OnInit {
     const curUser = await this.authService.getCurUser();
     if (curUser) {
       console.log('Already signed in. Navigating to page /customers');
-      this.router.navigate(['/customers']);
+      const role = await this.authService.getCurUserRole();
+      const landingPage = role == Role.CHECK_IN ? 'customer-check-in' : 'customers';
+      await this.router.navigate([`/${landingPage}`]);
     }
     const queryParams = this.route.snapshot.queryParams;
-    this.landing_page = queryParams['landing_page'] ? queryParams['landing_page'] : this.landing_page;
-
+    this.landingPage = queryParams['landing_page'] ? queryParams['landing_page'] : this.landingPage;
+    console.log('landing page:', this.landingPage);
   }
 
   get username() {
@@ -55,8 +58,12 @@ export class SignInComponent implements OnInit {
     this.isSubmitting = true;
     try {
       const res = await this.authService.signIn(this.username.toLowerCase(), this.password);
+      const role = await this.authService.getCurUserRole();
+      const landingPage = this.landingPage ? this.landingPage :
+        role == Role.CHECK_IN ? 'customer-check-in' : 'customers';
+
       console.log('res =', res);
-      this.router.navigate([`/${this.landing_page}`]);
+      await this.router.navigate([`/${landingPage}`]);
     } catch (e: any) {
       if (e.name == 'NotAuthorizedException') {
         alert('Incorrect username or password');

@@ -89,7 +89,7 @@ export class AuthService {
             user.completeNewPasswordChallenge(newPassword, {}, {
               onSuccess: async () => {
                 console.log('success');
-                await this.router.navigate(['/customers']);
+                this.curUser = user;
                 resolve(user);
               },
               onFailure: (err) => {
@@ -249,6 +249,7 @@ export class AuthService {
   }
 
   signOut(): Promise<string> {
+    console.log('signing out');
     return new Promise(async (resolve, reject) => {
       const curUser = await this.getCurUser();
       if (!curUser) {
@@ -313,15 +314,15 @@ export class AuthService {
     });
   }
 
-  getCurUserRole(ignoreError: boolean = false): Role {
+  async getCurUserRole(ignoreError: boolean = false): Promise<Role> {
     const groups = this.curUser?.getSignInUserSession()?.getIdToken().payload['cognito:groups'] as UserGroup[];
     if (!groups || groups.length == 0) {
       if (!ignoreError) {
         console.trace();
         // TODO: notify admin
         alert('Your account does not belong to a group. Please contact admin to fix it.');
-        this.signOut();
-        this.router.navigate(['/sign-in']);
+        await this.signOut();
+        await this.router.navigate(['/sign-in']);
       }
       return Role.OTHER;
     }

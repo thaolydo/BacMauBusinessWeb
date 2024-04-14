@@ -1,6 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" #formDirective="ngForm">
     <!-- Name -->
-    <mat-form-field appearance="fill" class="name-field">
+    <mat-form-field appearance="fill" class="input-field">
         <mat-label>Name</mat-label>
         <input matInput formControlName="name" required autofocus>
         <button type="button" *ngIf="name" matSuffix mat-icon-button aria-label="Clear" tabindex="-1" (click)="name=''">
@@ -9,10 +9,12 @@
     </mat-form-field>
 
     <!-- Phone -->
-    <mat-form-field appearance="fill" class="phone-field">
+    <mat-form-field appearance="fill" class="input-field phone-field">
         <mat-label>Phone</mat-label>
-        <input #phoneInput mask="(000) 000-0000" matInput placeholder="(xxx) xxx-xxxx" formControlName="phone" required inputmode="numeric">
-        <button type="button" *ngIf="phone" matSuffix mat-icon-button aria-label="Clear" tabindex="-1" (click)="phone=''">
+        <input #phoneInput mask="(000) 000-0000" matInput placeholder="(xxx) xxx-xxxx" formControlName="phone" required
+            inputmode="numeric">
+        <button type="button" *ngIf="phone" matSuffix mat-icon-button aria-label="Clear" tabindex="-1"
+            (click)="phone=''">
             <mat-icon style="width: auto;">close</mat-icon>
         </button>
     </mat-form-field>
@@ -23,7 +25,7 @@
         <mat-form-field class="birth-month-field" appearance="fill">
             <mat-select formControlName="birthMonth" (selectionChange)="onMonthSelected()">
                 <mat-option class="birth-month-option" [value]="i + 1"
-                    *ngFor="let monthName of monthNames; let i = index">{{i + 1}} - {{monthName}}</mat-option>
+                    *ngFor="let monthName of monthNames; let i = index">{{monthName}}</mat-option>
             </mat-select>
             <mat-hint>Month</mat-hint>
         </mat-form-field>

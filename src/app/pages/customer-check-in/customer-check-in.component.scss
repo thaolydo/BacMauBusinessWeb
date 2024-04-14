@@ -4,42 +4,70 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-    font-size: xx-large;
-    padding: 1em;
+    font-size: xx-large !important;
+    // padding: 1em;
 }
 
 :host ::ng-deep button {
-    font-size: xx-large;
+    font-size: xx-large !important;
+    border-radius: 1em !important;
 }
 
-mat-form-field {
-    margin: 0.5em;
+// ::ng-deep .submit-button, button {
+//     // font-size: xx-large !important;
+// }
+
+// mat-form-field {
+    // margin: 0.5em;
+    // width: 40vw;
+    // // height: 3em !important;
+    // font-size: 1.5em !important;
+// }
+
+.input-field {
+    // margin: 0.5em;
     width: 40vw;
+    // height: 3em !important;
+    font-size: 1.4em !important;
+    height: auto; // This is so that when typing, the box doesn't get bigger
 }
 
-.name-field {
-    height: 5em;
-}
-
+// .name-field {
+//     height: 2.5em; // This is so that when typing, the box doesn't get bigger
+// }
 .phone-field {
-    height: 5em;
+    margin-left: 1em;
+    // height: 2.5em; // This is so that when typing, the box doesn't get bigger
 }
 
 .birth-month-field {
-    width: 7em;
+    width: 2em;
+    font-size: 1.5em !important;
+    height: auto;
+    mat-select {
+        font-size: 0.5em !important;
+    }
 }
 
-// .birth-month-option {
-//     width: 4em;
-// }
+.birth-month-option {
+    font-size: 1.5em !important;
+    // width: 4em;
+}
 
 .birth-day-field {
-    width: 4em;
+    width: 1.7em;
+    margin-left: 0.5em;
+    font-size: 1.5em !important;
+    height: auto;
+    mat-select {
+        font-size: 0.5em !important;
+    }
 }
 
-// .birth-day-option {
-//     width: 3em;
-// }
+.birth-day-option {
+    // width: 3em;
+    font-size: 1.5em;
+}
 
 .mat-option-text {
     text-align: center !important;
@@ -59,10 +87,10 @@ fieldset {
     margin: 0.5em;
 }
 
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 1200px) {
     // Desktop
     mat-form-field {
         margin: 0.5em;
-        width: 30vw;
+        // width: 30vw;
     }
 }

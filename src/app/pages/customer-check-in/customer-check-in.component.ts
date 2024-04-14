@@ -68,6 +68,13 @@ export class CustomerCheckInComponent implements OnInit {
   }
 
   async ngOnInit() {
+    // const dialogRef = this.dialog.open(TermsAndConditionsDialogComponent, {
+    //   panelClass: 'dialog',
+    //   data: {
+    //     customerInfo: {},
+    //     businessName: '',
+    //   }
+    // });
     // const res = await this.huyService.getHuy();
     // console.log('res =', res);
   }

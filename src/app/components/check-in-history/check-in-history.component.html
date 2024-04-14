@@ -7,7 +7,7 @@
     </mat-radio-group>
 
     <!-- Date selection -->
-    <mat-form-field *ngIf="groupBy == 'date'"  appearance="fill">
+    <mat-form-field *ngIf="groupBy == 'date'" appearance="fill">
         <mat-label>Choose a date</mat-label>
         <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="onDateSelected()">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -18,13 +18,14 @@
     <mat-form-field *ngIf="groupBy == 'month'" class="month-field" appearance="fill">
         <mat-select [(ngModel)]="selectedMonth" (selectionChange)="onMonthSelected()">
             <mat-option class="month-option" [value]="i" *ngFor="let monthName of monthNames; let i = index">
-                {{i + 1}} - {{monthName}}</mat-option>
+                {{monthName}}</mat-option>
         </mat-select>
     </mat-form-field>
 
 </div>
 
-<table *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort matSortActive="createdAt" matSortDirection="desc">
+<table *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort matSortActive="createdAt"
+    matSortDirection="desc">
 
     <!-- Phone Column -->
     <ng-container matColumnDef="phone">

@@ -11,6 +11,7 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
 import { HomeComponent } from './pages/home/home.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { ClaimedPromotionComponent } from './pages/claimed-promotion/claimed-promotion.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'customer-check-in', component: CustomerCheckInComponent, canActivate: [AuthGuard], data: { roles: [Role.CHECK_IN, Role.FRONT_DESK] } },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'sign-in', component: SignInComponent },
+  { path: 'logout', component: LogoutComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER, Role.CHECK_IN] } },
   { path: 'customers', component: CustomersComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
   { path: 'sms', component: SmsComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
   { path: 'coupon', component: CouponComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },

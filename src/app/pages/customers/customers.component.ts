@@ -29,7 +29,7 @@ export class CustomersComponent implements OnInit {
     const queryParams = this.route.snapshot.queryParams;
     const tab = queryParams['tab'];
     const defaultTab = 'check-in';
-    this.router.navigate([], {
+    await this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
         tab: tab ? tab : defaultTab,
