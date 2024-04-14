@@ -39,15 +39,22 @@ export class CustomersService {
   async getCheckInEventHistory(month: number, date?: Date): Promise<CheckInEvent[]> {
     // console.log('date =', date);
     // console.log('month =', month);
-    const params = { month, year: new Date().getFullYear(), date: date?.toISOString() } as any;
+    const params = { } as any;
     if (date) {
+      // date selected
       const start = new Date(date);
       start.setHours(0, 0, 0, 0);
       const end = new Date(date);
       end.setHours(23, 59, 59, 999);
       params.start = start.getTime();
       params.end = end.getTime();
+    } else {
+      // month selected
+      params.start = TimeUtil.getBeginOfMonth(month).toMillis();
+      params.end = TimeUtil.getEndOfMonth(month).toMillis();
     }
+    console.log('start =', params.start);
+    console.log('end =', params.end);
     return firstValueFrom(this.http.get<any>(`${this.baseUrl}/check-in`, {
       params,
     }).pipe(

@@ -30,4 +30,22 @@ export class TimeUtil {
     public static getEpochZeroTime(): DateTime {
         return DateTime.fromMillis(0, { zone: TimeUtil.TIME_ZONE_STRING });
     }
+
+    public static clone(dateTime: DateTime): DateTime {
+        return DateTime.fromISO(dateTime.toISO()!, { zone: TimeUtil.TIME_ZONE_STRING });
+    }
+
+    public static getBeginOfMonth(month: number): DateTime {
+        // Get current time, but set the month to be given month.
+        // TODO: get the year from input instead
+        const now = TimeUtil.getCurrentTime();
+        return TimeUtil.clone(now).set({ month }).startOf('month');
+    }
+
+    public static getEndOfMonth(month: number): DateTime {
+        // Get current time, but set the month to be given month.
+        // TODO: get the year from input instead
+        const now = TimeUtil.getCurrentTime();
+        return TimeUtil.clone(now).set({ month }).endOf('month');
+    }
 }
