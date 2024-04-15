@@ -100,6 +100,12 @@ export class CustomerCheckInComponent implements OnInit {
 
       const alreadySubsribed = res.subscribed;
 
+      // If phone is invalid
+      if (res.isCidInvalid) {
+        alert(res.invalidMessage);
+        return;
+      }
+
       // Open subscribe dialog
       if (!alreadySubsribed) {
         const businessName = await this.authService.getDefaultBusinessName();
