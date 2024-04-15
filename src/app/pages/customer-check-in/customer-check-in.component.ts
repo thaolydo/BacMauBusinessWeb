@@ -88,8 +88,7 @@ export class CustomerCheckInComponent implements OnInit {
     this.isSubmitting = true;
     try {
       const customerInfo = this.form.value as CustomerInfo;
-      customerInfo.phone = `+1${customerInfo.phone}`;
-      customerInfo.cid = customerInfo.phone;
+      customerInfo.cid = `+1${customerInfo.phone}`;
       console.log('customerInfo =', customerInfo);
 
       // Check-in
@@ -101,10 +100,10 @@ export class CustomerCheckInComponent implements OnInit {
       const alreadySubsribed = res.subscribed;
 
       // If phone is invalid
-      if (res.isCidInvalid) {
-        alert(res.invalidMessage);
-        return;
-      }
+      // if (res.isCidInvalid) {
+      //   alert(res.invalidMessage);
+      //   return;
+      // }
 
       // Open subscribe dialog
       if (!alreadySubsribed) {
