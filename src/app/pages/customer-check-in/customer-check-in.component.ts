@@ -100,13 +100,10 @@ export class CustomerCheckInComponent implements OnInit {
       const alreadySubsribed = res.subscribed;
 
       // If phone is invalid
-      // if (res.isCidInvalid) {
-      //   alert(res.invalidMessage);
-      //   return;
-      // }
-
-      // Open subscribe dialog
-      if (!alreadySubsribed) {
+      if (res.isCidInvalid) {
+        alert(res.invalidMessage);
+      } else if (!alreadySubsribed) {
+        // Open subscribe dialog
         const businessName = await this.authService.getDefaultBusinessName();
         const dialogRef = this.dialog.open(TermsAndConditionsDialogComponent, {
           panelClass: 'dialog',
@@ -128,7 +125,7 @@ export class CustomerCheckInComponent implements OnInit {
     } catch (e: any) {
       // TODO: notify admin
       console.log(e);
-      alert(`onSubmit: ${e.error.errMsg}`);
+      alert(`onSubmit: ${e.error.errMsg}. If this persists, please contact admin.`);
     } finally {
       this.isSubmitting = false;
     }
