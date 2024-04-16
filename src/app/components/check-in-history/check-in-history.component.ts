@@ -79,7 +79,7 @@ export class CheckInHistoryComponent implements OnInit, AfterViewInit {
     } catch (e: any) {
       // TODO: notify admin
       this.dataSource = new MatTableDataSource<CheckInEvent>();
-      alert(e.message);
+      alert(`loadTableDataSource: ${e.message}`);
       throw e;
     } finally {
       this.isLoading = false;

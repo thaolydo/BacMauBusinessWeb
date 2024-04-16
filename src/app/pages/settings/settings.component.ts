@@ -45,7 +45,7 @@ export class SettingsComponent {
       })
     } catch (e: any) {
       // TODO: notify admin
-      alert(e.message);
+      alert(`OnInit: ${e.message}`);
       throw e;
     } finally {
       this.isLoading = false;

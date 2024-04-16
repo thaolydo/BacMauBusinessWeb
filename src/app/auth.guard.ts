@@ -37,7 +37,7 @@ export class AuthGuard  {
     for (const requiredAttribute of this.REQUIRED_ATTRIBUTES) {
       const attributeValue = jwtPayload[requiredAttribute];
       if (!attributeValue) {
-        alert(`${requiredAttribute} is not set. Please contact admin to add it.`);
+        alert(`AuthGuard: ${requiredAttribute} is not set. Please contact admin to add it.`);
         await this.authService.signOut();
         await this.router.navigate(['/sign-in']);
         return false;
@@ -60,7 +60,7 @@ export class AuthGuard  {
 
       if (!hasRole) {
         console.log('current url =', this.router.url);
-        alert('You are not authorized to view this page');
+        alert('AuthGuard: You are not authorized to view this page');
         return false;
       }
     }

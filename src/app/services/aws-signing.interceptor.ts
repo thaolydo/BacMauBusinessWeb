@@ -8,13 +8,17 @@ import {
   HttpParams,
   HttpParamsOptions
 } from '@angular/common/http';
-import { from, map, mergeMap, Observable, switchMap, tap } from 'rxjs';
+import { catchError, from, map, mergeMap, Observable, switchMap, tap } from 'rxjs';
 import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AwsSigningInterceptor implements HttpInterceptor {
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const interceptHeader = request.headers.get('X-Intercept');
@@ -25,6 +29,11 @@ export class AwsSigningInterceptor implements HttpInterceptor {
     const res = from(this.authService.getAwsCredentials().then(
       creds => this.authService.signRequestWithSignatureV4(request, creds!)
     )).pipe(
+      catchError(async err => {
+        console.error(`AwsSigningInterceptor pipe:`, err);
+        await this.router.navigate(['/sign-in']);
+        throw new Error(`AwsSigningInterceptor pipe: unable to sign request: ${err.message}`);
+      }),
       switchMap(signedRequest => {
         // console.log('signedRequest =', signedRequest);
         return next.handle(signedRequest);

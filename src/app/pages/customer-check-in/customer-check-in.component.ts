@@ -128,7 +128,7 @@ export class CustomerCheckInComponent implements OnInit {
     } catch (e: any) {
       // TODO: notify admin
       console.log(e);
-      alert(e.error.errMsg);
+      alert(`onSubmit: ${e.error.errMsg}`);
     } finally {
       this.isSubmitting = false;
     }

@@ -35,7 +35,7 @@ export class TermsAndConditionsDialogComponent implements OnInit {
       // TODO: notify admin
       // alert('Unable to subscribe');
       console.log(e);
-      alert(e.error.errMsg);
+      alert(`onSubmit: ${e.error.errMsg}`);
     } finally {
       this.isSubmitting = true;
       this.dialogRef.close();

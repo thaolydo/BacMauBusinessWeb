@@ -47,7 +47,7 @@ export class SmsHistoryComponent implements OnInit {
     } catch (e: any) {
       // TODO: notify admin
       this.dataSource = new MatTableDataSource<AdEvent>();
-      alert(e.message);
+      alert(`loadTableDataSource: ${e.message}`);
       throw e;
     } finally {
       this.isLoading = false;
@@ -66,7 +66,7 @@ export class SmsHistoryComponent implements OnInit {
       }
     } catch(e: any) {
       // TODO: notify admin
-      alert(e.message);
+      alert(`updateConversionCount: ${e.message}`);
     } finally {
       element.isSubmitting = false;
     }

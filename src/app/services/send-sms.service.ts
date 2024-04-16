@@ -39,7 +39,7 @@ export class SendSmsService {
         catchError((err: HttpErrorResponse, caught: any) => {
           if (err.status == HttpStatusCode.BadRequest) {
             // TODO: notify admin
-            alert(err.error.errMsg);
+            alert(`SendSmsService: sendSms: ${err.error.errMsg}`);
             return of();
           }
           throw err;

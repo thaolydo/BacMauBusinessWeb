@@ -33,7 +33,7 @@ export class CustomerListComponent implements OnInit {
     } catch (e: any) {
       // TODO: notify admin
       this.dataSource = new MatTableDataSource<CustomerInfo>();
-      alert(e.message);
+      alert(`loadTableDataSource: ${e.message}`);
       throw e;
     } finally {
       this.isLoading = false;
@@ -50,7 +50,7 @@ export class CustomerListComponent implements OnInit {
       // throw new Error();
     } catch (e: any) {
       // TODO: notify admin
-      alert('Unable to update the opt status');
+      alert('optOutCustomer: Unable to update the opt status');
       element.latestOptStatus = OptStatus.IN;
       toggle.checked = true;
     } finally {

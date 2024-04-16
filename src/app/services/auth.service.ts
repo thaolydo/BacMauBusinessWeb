@@ -14,6 +14,7 @@ import { AwsV4Signer } from 'aws4fetch';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ResetPasswordComponent } from '../pages/reset-password/reset-password.component';
+import { Location } from '@angular/common';
 
 // Documentation: https://www.npmjs.com/package/amazon-cognito-identity-js
 @Injectable({
@@ -396,6 +397,7 @@ export class AuthService {
     return this.eventSubject.asObservable();
   }
 
+  // https://github.com/amazon-archives/aws-cognito-angular-quickstart/blob/master/src/app/service/cognito.service.ts#L79
   async getAwsCredentials(): Promise<AWS.CognitoIdentityCredentials | undefined> {
     if (!this.curUser) {
       throw new Error('user not logged in');
@@ -416,7 +418,15 @@ export class AuthService {
         // Using cached creds
         if (this.curAwsCreds.needsRefresh()) {
           console.log('refreshing aws creds');
-          await this.curAwsCreds.refreshPromise();
+          try {
+            await this.curAwsCreds.refreshPromise();
+            // throw new Error();
+          } catch(e: any) {
+            alert(`refreshPromise: ${e.message}. Please login again`);
+            await this.signOut();
+            await this.router.navigate(['/sign-in']);
+            return undefined;
+          }
         }
 
         return this.curAwsCreds!;
@@ -424,10 +434,11 @@ export class AuthService {
     }
 
     // Building new aws creds
-    if (!this.curUser?.getSignInUserSession()?.getIdToken()?.getJwtToken()) {
-      console.log('cur user does not have active session');
-      await this.getCurUser();
-    }
+    // if (!this.curUser?.getSignInUserSession()?.getIdToken()?.getJwtToken()) {
+    //   console.log('cur user does not have active session');
+    //   await this.getCurUser();
+    // }
+    await this.getCurUser(); // always refresh the session to get latest jwt token
 
     console.log('getAwsCredentials: user =', this.curUser);
 
@@ -443,12 +454,15 @@ export class AuthService {
       Logins,
       DurationSeconds: 3600,
       // RoleArn: idToken.payload['cognito:roles'][0],
-    });
+    }, {});
     try {
+      // throw new Error();
       await this.curAwsCreds.getPromise();
     } catch (err) {
       console.log('Logins =', JSON.stringify(Logins));
       console.error(err);
+      // TODO: debug this
+      location.reload();
     }
     return this.curAwsCreds;
   }
@@ -462,7 +476,7 @@ export class AuthService {
    */
   async signRequestWithSignatureV4(request: HttpRequest<unknown>, creds: CognitoIdentityCredentials): Promise<HttpRequest<unknown>> {
     console.log('signRequestWithSignatureV4');
-    console.debug('creds =', creds); // TODO: remove in prod
+    console.log('creds =', creds); // TODO: remove in prod
     const signer = new AwsV4Signer({
       url: request.urlWithParams,                // required, the AWS endpoint to sign
       accessKeyId: creds.accessKeyId,        // required, akin to AWS_ACCESS_KEY_ID
@@ -597,7 +611,7 @@ export class AuthService {
       curUser?.updateAttributes(attributes, (err, res) => {
         if (err) {
           // TODO: notify admin
-          alert(err.message || JSON.stringify(err));
+          alert(`updateAttributes: ${err.message || JSON.stringify(err)}`);
           reject(err.message);
         }
         console.log('updated user attributes:', res);
