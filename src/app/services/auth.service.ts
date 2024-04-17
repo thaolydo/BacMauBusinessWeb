@@ -404,6 +404,7 @@ export class AuthService {
     }
 
     // TODO: cache aws creds to local storage instead of this.curAwsCreds
+    await this.getCurUser();
     if (this.curAwsCreds && this.curUser?.getSignInUserSession()?.getIdToken()) {
       const curJwtToken = this.curUser?.getSignInUserSession()?.getIdToken().getJwtToken();
       if (!await this.getCurUser()) {
