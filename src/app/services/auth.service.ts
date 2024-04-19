@@ -91,6 +91,7 @@ export class AuthService {
               onSuccess: async () => {
                 console.log('success');
                 this.curUser = user;
+                this.eventSubject.next(AuthEventType.SIGNED_IN);
                 resolve(user);
               },
               onFailure: (err) => {
