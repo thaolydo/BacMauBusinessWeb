@@ -40,7 +40,7 @@ export class NavBarComponent implements OnInit {
         this.curUser = null;
         this.curRole = undefined;
         this.curBusinessName = undefined;
-        this.titleService.setTitle('Pham SMS');
+        this.titleService.setTitle('TicTex');
       }
     });
     this.router.events.subscribe(async (event) => {
