@@ -47,7 +47,8 @@ export class NavBarComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         console.log('nav bar: current url =', event.url);
         const saveClickThroughCountLinkRegex = /^\/c\?id=.*/;
-        if (event.url == '/' || event.url.startsWith('/customer-check-in') || event.url.startsWith('/sign-in') || saveClickThroughCountLinkRegex.test(event.url)) {
+        // if (event.url == '/' || event.url.startsWith('/customer-check-in') || event.url.startsWith('/sign-in') || saveClickThroughCountLinkRegex.test(event.url)) {
+        if (event.url == '/' || event.url.startsWith('/sign-in') || saveClickThroughCountLinkRegex.test(event.url)) {
           this.showNavBar = false;
         } else {
           this.showNavBar = true;
