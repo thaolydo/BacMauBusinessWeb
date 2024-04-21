@@ -29,7 +29,7 @@ export class TermsAndConditionsDialogComponent implements OnInit {
     try {
       this.isSubmitting = true;
       // await new Promise(resolve => setTimeout(resolve, 1000));
-      const res = await this.sendSmsService.subscribeToMarketingSms(this.customerInfo.phone);
+      const res = await this.sendSmsService.subscribeToMarketingSms(this.customerInfo.cid!);
       console.log('res =', res);
     } catch (e: any) {
       // TODO: notify admin
