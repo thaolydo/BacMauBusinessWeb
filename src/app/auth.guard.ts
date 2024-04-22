@@ -61,6 +61,11 @@ export class AuthGuard  {
       if (!hasRole) {
         console.log('current url =', this.router.url);
         alert('AuthGuard: You are not authorized to view this page');
+        if (curRole == Role.CHECK_IN) {
+          await this.router.navigate(['/customer-check-in']);
+        } else {
+          await this.router.navigate(['/customers']);
+        }
         return false;
       }
     }

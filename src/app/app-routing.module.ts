@@ -14,7 +14,7 @@ import { ClaimedPromotionComponent } from './pages/claimed-promotion/claimed-pro
 import { LogoutComponent } from './components/logout/logout.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/home' },
+  { path: '', pathMatch: 'full', redirectTo: '/customers' },
   { path: 'home', component: HomeComponent },
   { path: 'customer-check-in', component: CustomerCheckInComponent, canActivate: [AuthGuard], data: { roles: [Role.CHECK_IN, Role.FRONT_DESK] } },
   { path: 'reset-password', component: ResetPasswordComponent },
