@@ -11,6 +11,7 @@ import { firstValueFrom } from 'rxjs';
 export class ClaimedPromotionComponent implements OnInit {
 
   id: string | undefined;
+  b: boolean = false;
 
   constructor(private sendSmsService: SendSmsService,
     private route: ActivatedRoute,
@@ -21,7 +22,7 @@ export class ClaimedPromotionComponent implements OnInit {
     const queryParams = this.route.snapshot.queryParams;
     this.id = queryParams['id'];
     if (!this.id) {
-      alert('Invalid url');
+      alert('Invalid Promo Code');
       return;
     }
     await this.sendSmsService.saveClickThroughCount(this.id);

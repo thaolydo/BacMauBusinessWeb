@@ -4,6 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthEventType } from '@model/auth-event-types.enum';
 import { Role } from '@model/role.model';
+import { NavBarEventType, NavBarService } from '@service/nav-bar.service';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
@@ -28,6 +29,7 @@ export class NavBarComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private titleService: Title,
+    private navBarService: NavBarService,
   ) {
     this.authEventSubscription = this.authService.getAuthEventUpdates().subscribe(async event => {
       console.log('NavBarComponent: auth event =', event);
@@ -46,13 +48,20 @@ export class NavBarComponent implements OnInit {
     this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd) {
         console.log('nav bar: current url =', event.url);
-        const saveClickThroughCountLinkRegex = /^\/c\?id=.*/;
-        // if (event.url == '/' || event.url.startsWith('/customer-check-in') || event.url.startsWith('/sign-in') || saveClickThroughCountLinkRegex.test(event.url)) {
-        if (event.url == '/' || event.url.startsWith('/sign-in') || event.url.startsWith('/claimed-promotion') || saveClickThroughCountLinkRegex.test(event.url)) {
+        if (event.url == '/' || event.url.startsWith('/sign-in') || event.url.startsWith('/claimed-promotion') ) {
           this.showNavBar = false;
         } else {
           this.showNavBar = true;
         }
+      }
+    });
+
+    this.navBarService.getNavBarEventSubject().subscribe(event => {
+      console.log('NavBar: nav bar event', event);
+      if (event == NavBarEventType.HIDE_NAV_BAR) {
+        this.showNavBar = false;
+      } else if (event == NavBarEventType.SHOW_NAV_BAR) {
+        this.showNavBar = true;
       }
     });
   }

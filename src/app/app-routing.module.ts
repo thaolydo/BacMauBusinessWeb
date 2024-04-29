@@ -12,6 +12,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { ClaimedPromotionComponent } from './pages/claimed-promotion/claimed-promotion.component';
 import { LogoutComponent } from './components/logout/logout.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/customers' },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'coupon', component: CouponComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
   { path: 'claimed-promotion', component: ClaimedPromotionComponent },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
