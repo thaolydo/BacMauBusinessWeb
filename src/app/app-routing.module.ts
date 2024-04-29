@@ -24,7 +24,7 @@ const routes: Routes = [
   { path: 'sms', component: SmsComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
   { path: 'coupon', component: CouponComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
-  { path: 'c', component: ClaimedPromotionComponent },
+  { path: 'claimed-promotion', component: ClaimedPromotionComponent },
 ];
 
 @NgModule({
