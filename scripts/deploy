@@ -1,10 +1,10 @@
 #!/bin/bash
 PROFILE=bac-mau-business
 # BUCKET=s3://venusspa.net
-# BUCKET=s3://life-reflexology.com
-BUCKET=s3://tictex.io
 # DISTRIBUTION_ID=E360ORER2635Z7 # venusspa.net
+# BUCKET=s3://life-reflexology.com
 # DISTRIBUTION_ID=E129VLBXO9IILY # life-reflexology.com
+BUCKET=s3://tictex.io
 DISTRIBUTION_ID=E11PZY8Q4GECJV # tictex.io
 
 # # Remove all existing files in the bucket
