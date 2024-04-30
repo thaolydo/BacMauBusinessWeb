@@ -13,11 +13,14 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { ClaimedPromotionComponent } from './pages/claimed-promotion/claimed-promotion.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { TermsOfUseDialogComponent } from './pages/terms-of-use-dialog/terms-of-use-dialog.component';
+import { PrivacyPolicyDialogComponent } from './pages/privacy-policy-dialog/privacy-policy-dialog.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/customers' },
   { path: 'home', component: HomeComponent },
   { path: 'customer-check-in', component: CustomerCheckInComponent, canActivate: [AuthGuard], data: { roles: [Role.CHECK_IN, Role.FRONT_DESK] } },
+  // { path: 'customer-check-in', component: CustomerCheckInComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'logout', component: LogoutComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER, Role.CHECK_IN] } },
@@ -26,6 +29,8 @@ const routes: Routes = [
   { path: 'coupon', component: CouponComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard], data: { roles: [Role.FRONT_DESK, Role.OWNER] } },
   { path: 'claimed-promotion', component: ClaimedPromotionComponent },
+  { path: 'terms-of-use', component: TermsOfUseDialogComponent },
+  { path: 'privacy-policy', component: PrivacyPolicyDialogComponent },
   { path: '**', component: PageNotFoundComponent },
 ];
 

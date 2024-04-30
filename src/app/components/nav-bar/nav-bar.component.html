@@ -5,8 +5,8 @@
     <!-- Tabs -->
     <span class="tabs">
         <span routerLink="/customer-check-in" class="tab" *ngIf="curRole == Role.CHECK_IN">Customer Check In</span>
-        <span [routerLinkActive]="'selected'" routerLink="/customers" class="tab" *ngIf="curRole !== Role.CHECK_IN">Customers</span>
-        <span [routerLinkActive]="'selected'" routerLink="/sms" class="tab" *ngIf="curRole !== Role.CHECK_IN">SMS</span>
+        <span [routerLinkActive]="'selected'" routerLink="/customers" class="tab" *ngIf="curRole != Role.OTHER && curRole !== Role.CHECK_IN">Customers</span>
+        <span [routerLinkActive]="'selected'" routerLink="/sms" class="tab" *ngIf="curRole != Role.OTHER && curRole !== Role.CHECK_IN">SMS</span>
         <!-- <span [routerLinkActive]="'selected'" routerLink="/coupon" class="tab">Coupon</span> -->
     </span>
 

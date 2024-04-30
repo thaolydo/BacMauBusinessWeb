@@ -17,6 +17,12 @@ h1 {
     font-size: xx-large;
 }
 
+.link {
+    color: #007bff;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .action-buttons {
     display: flex;
     flex-direction: row;

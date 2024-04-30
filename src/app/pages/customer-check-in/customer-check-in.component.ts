@@ -6,7 +6,7 @@ import { CustomersService } from '@service/customers.service';
 import { HuyService } from '@service/huy.service';
 import { firstValueFrom } from 'rxjs';
 import { CheckInSuccessDialogComponent } from 'src/app/components/check-in-success-dialog/check-in-success-dialog.component';
-import { TermsAndConditionsDialogComponent } from 'src/app/components/terms-and-conditions-dialog/terms-and-conditions-dialog.component';
+import { SubscribeDialogComponent } from 'src/app/components/subscribe-dialog/subscribe-dialog.component';
 import { CustomerInfo } from 'src/app/models/customer-info.model';
 
 @Component({
@@ -68,7 +68,7 @@ export class CustomerCheckInComponent implements OnInit {
   }
 
   async ngOnInit() {
-    // const dialogRef = this.dialog.open(TermsAndConditionsDialogComponent, {
+    // const dialogRef = this.dialog.open(SubscribeDialogComponent, {
     //   panelClass: 'dialog',
     //   data: {
     //     customerInfo: {},
@@ -104,8 +104,9 @@ export class CustomerCheckInComponent implements OnInit {
         alert(res.invalidMessage);
       } else if (!alreadySubsribed) {
         // Open subscribe dialog
+        // const businessName = 'Venus Spa'; //await this.authService.getDefaultBusinessName();
         const businessName = await this.authService.getDefaultBusinessName();
-        const dialogRef = this.dialog.open(TermsAndConditionsDialogComponent, {
+        const dialogRef = this.dialog.open(SubscribeDialogComponent, {
           panelClass: 'dialog',
           data: {
             customerInfo,

@@ -14,7 +14,7 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { UsernamePipe } from './username.pipe';
 import { CustomersComponent } from './pages/customers/customers.component';
 import { SendSmsComponent } from './components/send-sms/send-sms.component';
-import { TermsAndConditionsDialogComponent } from './components/terms-and-conditions-dialog/terms-and-conditions-dialog.component';
+import { SubscribeDialogComponent } from './components/subscribe-dialog/subscribe-dialog.component';
 import { SubmitButtonComponent } from './components/submit-button/submit-button.component';
 import { CheckInHistoryComponent } from './components/check-in-history/check-in-history.component';
 import { CustomerListComponent } from './components/customer-list/customer-list.component';
@@ -29,6 +29,8 @@ import { HomeComponent } from './pages/home/home.component';
 import { AttachBidInterceptor } from '@service/attach-bid.interceptor';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { EmailVerificationDialogComponent } from './components/email-verification-dialog/email-verification-dialog.component';
+import { TermsOfUseDialogComponent } from './pages/terms-of-use-dialog/terms-of-use-dialog.component';
+import { PrivacyPolicyDialogComponent } from './pages/privacy-policy-dialog/privacy-policy-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { EmailVerificationDialogComponent } from './components/email-verificatio
     UsernamePipe,
     CustomersComponent,
     SmsComponent,
-    TermsAndConditionsDialogComponent,
+    SubscribeDialogComponent,
+    TermsOfUseDialogComponent,
+    PrivacyPolicyDialogComponent,
     SubmitButtonComponent,
     CheckInHistoryComponent,
     CustomerListComponent,
