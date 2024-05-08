@@ -1,29 +1,38 @@
-<table *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8" (matSortChange)="announceSortChange($event)">
 
     <!-- Phone Column -->
     <ng-container matColumnDef="phone">
-        <th mat-header-cell *matHeaderCellDef> Phone </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone </th>
         <td mat-cell *matCellDef="let element"> {{element.phone | phone}} </td>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
     </ng-container>
 
-    <!-- Timestamp Column -->
-    <ng-container matColumnDef="timestamp">
-        <th mat-header-cell *matHeaderCellDef> Timestamp </th>
+    <!-- Created At Column -->
+    <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Created Timestamp </th>
         <td mat-cell *matCellDef="let element"> {{element.createdAt | date : 'medium'}} </td>
     </ng-container>
 
+    <!-- Created At Column -->
+    <ng-container matColumnDef="lastUpdatedAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Updated Timestamp </th>
+        <td mat-cell *matCellDef="let element"> {{element.lastUpdatedAt | date : 'medium'}} </td>
+    </ng-container>
+
     <!-- Opt Status Column -->
-    <ng-container matColumnDef="optStatus">
-        <th mat-header-cell *matHeaderCellDef> Opt Status </th>
+    <ng-container matColumnDef="latestOptStatus">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Opt Status </th>
         <td mat-cell *matCellDef="let element">
             <div class="opt-cell">
-                <mat-slide-toggle #toggle [checked]="element.latestOptStatus == OptStatus.IN" [disabled]="element.isSubmitting || element.latestOptStatus !== OptStatus.IN" (toggleChange)="optOutCustomer(element, toggle)">{{element.latestOptStatus}}</mat-slide-toggle>
+                <mat-slide-toggle #toggle [checked]="element.latestOptStatus == OptStatus.IN"
+                    [disabled]="element.isSubmitting || element.latestOptStatus !== OptStatus.IN"
+                    (toggleChange)="optOutCustomer(element, toggle)">{{element.latestOptStatus}}
+                </mat-slide-toggle>
                 <mat-spinner *ngIf="element.isSubmitting" diameter="20"></mat-spinner>
             </div>
         </td>
