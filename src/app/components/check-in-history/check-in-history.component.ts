@@ -21,14 +21,9 @@ export class CheckInHistoryComponent implements OnInit, AfterViewInit {
   isLoading = false;
   displayedColumns: string[] = ['phone', 'name', 'createdAt'];
 
-  dataSource: MatTableDataSource<CheckInEvent> | undefined;
+  dataSource: MatTableDataSource<CheckInEvent> = new MatTableDataSource<CheckInEvent>();;
   private sortHodler: MatSort | undefined;
-  @ViewChild(MatSort) set sort(sort: MatSort) {
-    if (sort) {
-      this.sortHodler = sort;
-      this.dataSource!.sort = this.sortHodler;
-    }
-  }
+  @ViewChild(MatSort) sort: MatSort | undefined;
 
   constructor(
     private customersService: CustomersService,
@@ -76,6 +71,8 @@ export class CheckInHistoryComponent implements OnInit, AfterViewInit {
       const checkInEvents = await this.customersService.getCheckInEventHistory(this.selectedMonth + 1, this.groupBy == 'date' ? this.selectedDate : undefined);
       console.log('checkInEvents =', checkInEvents);
       this.dataSource = new MatTableDataSource<CheckInEvent>(checkInEvents);
+      this.dataSource.sort = this.sort ? this.sort : null;
+      console.log('sort =', this.sort);
     } catch (e: any) {
       // TODO: notify admin
       this.dataSource = new MatTableDataSource<CheckInEvent>();
