@@ -1,3 +1,6 @@
+<button mat-icon-button class="refresh-button" (click)="refresh()"  matTooltip="Refresh">
+    <mat-icon>refresh</mat-icon>
+</button>
 <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8" (matSortChange)="announceSortChange($event)">
 
     <!-- Phone Column -->
@@ -42,3 +45,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 <mat-spinner *ngIf="isLoading" diameter="30"></mat-spinner>
+<button mat-icon-button *ngIf="!noMoreItem" (click)="getMoreData()" matTooltip="Load more">
+    <mat-icon>arrow_downward</mat-icon>
+</button>
+<p *ngIf="noMoreItem && !isLoading" class="no-more-item-text">No more item</p>

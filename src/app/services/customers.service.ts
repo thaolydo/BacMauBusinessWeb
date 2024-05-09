@@ -6,6 +6,7 @@ import { CustomerInfo } from 'src/app/models/customer-info.model';
 import { CheckInEvent } from 'src/app/models/check-in-event.model';
 import { TimeUtil } from '../utils/time.util';
 import { DateTime } from 'luxon';
+import { PaginatedResult } from '@model/public-interface/paginated-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,16 +19,29 @@ export class CustomersService {
     private http: HttpClient,
   ) { }
 
-  async getCustomers(): Promise<CustomerInfo[]> {
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customer`)
+  async getCustomers(ExclusiveStartKey?: string, limit?: number): Promise<PaginatedResult<CustomerInfo>> {
+    const queryParams: any = {
+      ascending: false,
+    };
+    if (ExclusiveStartKey) {
+      queryParams.ExclusiveStartKey = ExclusiveStartKey;
+    }
+    if (limit) {
+      queryParams.limit = limit;
+    }
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customer`, {
+      params: queryParams,
+    })
       .pipe(
         map(res => {
-          const customers = Object.values(res.customers) as any[];
+          console.log('res =', res);
+          const paginatedItems = res.paginatedItems as PaginatedResult<CustomerInfo>;
+          const customers = paginatedItems.items;
           for (const customer of customers) {
-            customer.phone = customer.cid;
+            customer.phone = customer.cid!;
             delete customer.cid;
           }
-          return customers;
+          return paginatedItems;
         })
       ));
   }

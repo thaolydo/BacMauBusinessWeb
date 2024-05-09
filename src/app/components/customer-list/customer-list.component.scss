@@ -7,6 +7,11 @@
     width: 70vw;
 }
 
+.refresh-button {
+    margin-bottom: 1em;
+    align-self: end;
+}
+
 table {
     width: 100%;
     margin-bottom: 1em;
@@ -31,6 +36,11 @@ table {
 .opt-spinner {
     position: relative;
     margin-left: 0.5em;
+}
+
+.no-more-item-text {
+    margin-top: 1em;
+    align-self: end;
 }
 
 @media only screen and (max-width: 900px) {
