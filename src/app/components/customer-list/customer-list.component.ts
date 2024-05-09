@@ -17,6 +17,7 @@ export class CustomerListComponent implements OnInit, AfterViewInit {
   isLoading = false;
   displayedColumns: string[] = ['phone', 'createdAt', 'lastUpdatedAt', 'name', 'latestOptStatus'];
   dataSource: MatTableDataSource<CustomerInfo> = new MatTableDataSource<CustomerInfo>();
+  totalCount: number | undefined;
 
   @ViewChild(MatSort) sort: MatSort | undefined;
 
@@ -39,7 +40,11 @@ export class CustomerListComponent implements OnInit, AfterViewInit {
   async loadTableDataSource() {
     this.isLoading = true;
     try {
-      const paginatedItems = await this.customersService.getCustomers(undefined, 10);
+      // Get total count
+      this.totalCount = await this.customersService.getTotalCustomerCount();
+
+      // Get items
+      const paginatedItems = await this.customersService.getCustomers(undefined, 30);
       this.LastEvaluatedKey = paginatedItems.LastEvaluatedKey;
       console.log('customers =', paginatedItems);
       (paginatedItems.items as any[]).forEach(customer => customer.checked = customer.latestOptStatus == OptStatus.IN);
@@ -125,6 +130,7 @@ export class CustomerListComponent implements OnInit, AfterViewInit {
 
   async refresh() {
     this.dataSource = new MatTableDataSource<CustomerInfo>();
+    this.totalCount = undefined;
     await this.loadTableDataSource();
   }
 

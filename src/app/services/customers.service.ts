@@ -46,6 +46,13 @@ export class CustomersService {
       ));
   }
 
+  async getTotalCustomerCount(): Promise<number> {
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/get-customer-count`)
+      .pipe(
+        map(res => res.count)
+      ));
+  }
+
   async checkIn(customer: CustomerInfo): Promise<any> {
     return firstValueFrom(this.http.post(`${this.baseUrl}/check-in`, { ...customer }));
   }

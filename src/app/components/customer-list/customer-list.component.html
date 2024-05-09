@@ -1,7 +1,9 @@
-<button mat-icon-button class="refresh-button" (click)="refresh()"  matTooltip="Refresh">
+<button mat-mini-fab class="refresh-button" (click)="refresh()" matTooltip="Refresh" color="primary">
     <mat-icon>refresh</mat-icon>
 </button>
-<table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8" (matSortChange)="announceSortChange($event)">
+<p class="total-count">Total Count: {{ totalCount }}</p>
+<table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8"
+    (matSortChange)="announceSortChange($event)">
 
     <!-- Phone Column -->
     <ng-container matColumnDef="phone">
