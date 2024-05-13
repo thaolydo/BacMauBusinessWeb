@@ -19,9 +19,9 @@
         </button>
     </mat-form-field>
 
+    <!-- Birth date -->
     <fieldset>
         <legend>Birthday</legend>
-        <!-- Birth Month -->
         <mat-form-field class="birth-month-field" appearance="fill">
             <mat-select formControlName="birthMonth" (selectionChange)="onMonthSelected()">
                 <mat-option class="birth-month-option" [value]="i + 1"
@@ -30,7 +30,6 @@
             <mat-hint>Month</mat-hint>
         </mat-form-field>
 
-        <!-- Birth Day -->
         <mat-form-field class="birth-day-field" appearance="fill">
             <mat-select formControlName="birthDay" [disabled]="!form.get('birthMonth')?.value">
                 <mat-option class="birth-day-option" [value]="day" *ngFor="let day of days">{{day}}</mat-option>

@@ -15,7 +15,7 @@ export class CustomerListComponent implements OnInit, AfterViewInit {
 
   OptStatus: any = OptStatus;
   isLoading = false;
-  displayedColumns: string[] = ['phone', 'createdAt', 'lastUpdatedAt', 'name', 'latestOptStatus'];
+  displayedColumns: string[] = ['phone', 'createdAt', 'lastUpdatedAt', 'name', 'latestOptStatus', 'notes'];
   dataSource: MatTableDataSource<CustomerInfo> = new MatTableDataSource<CustomerInfo>();
   totalCount: number | undefined;
 
@@ -44,7 +44,7 @@ export class CustomerListComponent implements OnInit, AfterViewInit {
       this.totalCount = await this.customersService.getTotalCustomerCount();
 
       // Get items
-      const paginatedItems = await this.customersService.getCustomers(undefined, 30);
+      const paginatedItems = await this.customersService.getCustomers(undefined, 10);
       this.LastEvaluatedKey = paginatedItems.LastEvaluatedKey;
       console.log('customers =', paginatedItems);
       (paginatedItems.items as any[]).forEach(customer => customer.checked = customer.latestOptStatus == OptStatus.IN);
@@ -118,10 +118,21 @@ export class CustomerListComponent implements OnInit, AfterViewInit {
       console.log('no more items');
       return;
     }
-    const paginatedItems = await this.customersService.getCustomers(JSON.stringify(this.LastEvaluatedKey));
-    this.LastEvaluatedKey = paginatedItems.LastEvaluatedKey;
-    this.dataSource.data.push(...paginatedItems.items);
-    this.dataSource._updateChangeSubscription();
+
+    this.isLoading = true;
+    try {
+      const paginatedItems = await this.customersService.getCustomers(JSON.stringify(this.LastEvaluatedKey));
+      this.LastEvaluatedKey = paginatedItems.LastEvaluatedKey;
+      this.dataSource.data.push(...paginatedItems.items);
+      this.dataSource._updateChangeSubscription();
+    } catch (e: any) {
+      // TODO: notify admin
+      this.dataSource = new MatTableDataSource<CustomerInfo>();
+      alert(`getMoreData: ${e.message}`);
+      throw e;
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   get noMoreItem(): boolean {
