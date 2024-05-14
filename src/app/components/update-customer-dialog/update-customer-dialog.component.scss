@@ -1,0 +1,17 @@
+:host {
+    padding: 1em;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cancel-button {
+    margin-right: 1em;
+}

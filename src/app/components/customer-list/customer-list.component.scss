@@ -37,6 +37,12 @@ table {
     flex-direction: row;
 }
 
+.notes-cell {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+}
+
 .opt-spinner {
     position: relative;
     margin-left: 0.5em;
@@ -45,6 +51,11 @@ table {
 .no-more-item-text {
     margin-top: 1em;
     // align-self: end;
+}
+
+.action-button {
+    border-radius: 1em;
+    cursor: pointer;
 }
 
 @media only screen and (max-width: 900px) {

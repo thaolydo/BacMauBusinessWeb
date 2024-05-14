@@ -1,10 +1,12 @@
 import { DataSource } from '@angular/cdk/collections';
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { CustomerInfo, OptStatus } from 'src/app/models/customer-info.model';
 import { CustomersService } from 'src/app/services/customers.service';
+import { UpdateCustomerDialogComponent } from '../update-customer-dialog/update-customer-dialog.component';
 
 @Component({
   selector: 'app-customer-list',
@@ -23,7 +25,10 @@ export class CustomerListComponent implements OnInit, AfterViewInit {
 
   private LastEvaluatedKey: any = undefined;
 
-  constructor(private customersService: CustomersService) { }
+  constructor(
+    private customersService: CustomersService,
+    private dialog: MatDialog,
+  ) { }
 
   async ngOnInit() {
     console.log('customer-list: init');
@@ -143,6 +148,36 @@ export class CustomerListComponent implements OnInit, AfterViewInit {
     this.dataSource = new MatTableDataSource<CustomerInfo>();
     this.totalCount = undefined;
     await this.loadTableDataSource();
+  }
+
+  async updateCustomer(customerInfo: CustomerInfo) {
+    console.log('updating customer:', customerInfo);
+    // this.dialog.open(UpdateCustomerDialogComponent, {
+    //   data: {
+    //     customerInfo,
+    //   }
+    // })
+    customerInfo.isSubmitting = true;
+    try {
+      await new Promise(x => setTimeout(x, 1000));
+      const updatedCustomerInfo = { ...customerInfo } as any;
+      delete updatedCustomerInfo.isSubmitting;
+      delete updatedCustomerInfo.editMode;
+      delete updatedCustomerInfo.phone;
+      delete updatedCustomerInfo.checked;
+      updatedCustomerInfo.cid = customerInfo.phone;
+      await this.customersService.updateCustomer(updatedCustomerInfo);
+    } catch (e: any) {
+      // TODO: notify admin
+      alert('updateCustomer: Unable to update customer');
+    } finally {
+      customerInfo.isSubmitting = false;
+    }
+  }
+
+  setEditMode(element: any, value: boolean) {
+    console.log('setEditMode:', value);
+    element.editMode = value;
   }
 
 }

@@ -33,9 +33,7 @@ export class CustomersService {
       params: queryParams,
     })
       .pipe(
-        map(res => {
-          console.log('res =', res);
-          const paginatedItems = res.paginatedItems as PaginatedResult<CustomerInfo>;
+        map((paginatedItems: PaginatedResult<CustomerInfo>) => {
           const customers = paginatedItems.items;
           for (const customer of customers) {
             customer.phone = customer.cid!;
@@ -60,7 +58,7 @@ export class CustomersService {
   async getCheckInEventHistory(month: number, date?: Date): Promise<CheckInEvent[]> {
     // console.log('date =', date);
     // console.log('month =', month);
-    const params = { } as any;
+    const params = {} as any;
     if (date) {
       // date selected
       const start = new Date(date);
@@ -92,6 +90,13 @@ export class CustomersService {
   async optOutCustomer(cid: string): Promise<any> {
     return firstValueFrom(this.http.put(`${this.baseUrl}/opt-out`, {
       cid,
+    }));
+  }
+
+  async updateCustomer(customerInfo: CustomerInfo): Promise<any> {
+    console.log('CustomersService: updating customer', customerInfo);
+    return firstValueFrom(this.http.put(`${this.baseUrl}/customer`, {
+      updatedCustomer: customerInfo,
     }));
   }
 

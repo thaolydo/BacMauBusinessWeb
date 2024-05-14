@@ -31,6 +31,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { EmailVerificationDialogComponent } from './components/email-verification-dialog/email-verification-dialog.component';
 import { TermsOfUseDialogComponent } from './pages/terms-of-use-dialog/terms-of-use-dialog.component';
 import { PrivacyPolicyDialogComponent } from './pages/privacy-policy-dialog/privacy-policy-dialog.component';
+import { UpdateCustomerDialogComponent } from './components/update-customer-dialog/update-customer-dialog.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { PrivacyPolicyDialogComponent } from './pages/privacy-policy-dialog/priv
     HomeComponent,
     SettingsComponent,
     EmailVerificationDialogComponent,
+    UpdateCustomerDialogComponent,
   ],
   imports: [
     BrowserModule,
