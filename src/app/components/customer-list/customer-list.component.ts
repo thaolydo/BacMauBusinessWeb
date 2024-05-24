@@ -123,6 +123,10 @@ export class CustomerListComponent implements OnInit, AfterViewInit {
       console.log('no more items');
       return;
     }
+    if (this.isLoading) {
+      console.log('loading, skipping getting more data');
+      return;
+    }
 
     this.isLoading = true;
     try {
