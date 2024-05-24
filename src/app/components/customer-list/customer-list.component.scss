@@ -58,6 +58,10 @@ table {
     cursor: pointer;
 }
 
+mat-table {
+    margin-bottom: 1em;
+}
+
 @media only screen and (max-width: 900px) {
     // Mobile and tablets
     :host {
