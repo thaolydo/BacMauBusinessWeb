@@ -4,11 +4,8 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpHeaders,
-  HttpParams,
-  HttpParamsOptions
 } from '@angular/common/http';
-import { catchError, from, map, mergeMap, Observable, switchMap, tap } from 'rxjs';
+import { catchError, from, map, mergeMap, Observable, retry, switchMap, tap } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 
@@ -26,18 +23,21 @@ export class AwsSigningInterceptor implements HttpInterceptor {
       console.log('Skipping AttachBidInterceptor');
       return next.handle(request);
     }
-    const res = from(this.authService.getAwsCredentials().then(
-      creds => this.authService.signRequestWithSignatureV4(request, creds!)
-    )).pipe(
-      catchError(async err => {
-        console.error(`AwsSigningInterceptor pipe:`, err);
-        await this.router.navigate(['/sign-in']);
-        throw new Error(`AwsSigningInterceptor pipe: unable to sign request: ${err.message}`);
-      }),
+    const res = from(this.authService.getAwsCredentials()).pipe(
+      retry(3),
+      mergeMap(
+        creds => this.authService.signRequestWithSignatureV4(request, creds!)
+      ),
       switchMap(signedRequest => {
         // console.log('signedRequest =', signedRequest);
         return next.handle(signedRequest);
-      })
+      }),
+      catchError(async err => {
+        console.error(`AwsSigningInterceptor pipe:`, err);
+        location.reload();
+        // await this.router.navigate(['/sign-in']);
+        throw new Error(`AwsSigningInterceptor pipe: unable to sign request: ${err.message}`);
+      }),
     );
 
     return res;

@@ -400,6 +400,7 @@ export class AuthService {
 
   // https://github.com/amazon-archives/aws-cognito-angular-quickstart/blob/master/src/app/service/cognito.service.ts#L79
   async getAwsCredentials(): Promise<AWS.CognitoIdentityCredentials | undefined> {
+    console.log('getAwsCredentials');
     if (!this.curUser) {
       throw new Error('user not logged in');
     }
@@ -457,8 +458,8 @@ export class AuthService {
       DurationSeconds: 3600,
       // RoleArn: idToken.payload['cognito:roles'][0],
     }, {});
+    // throw new Error('getAwsCredentials: huy error');
     try {
-      // throw new Error();
       await this.curAwsCreds.getPromise();
     } catch (err) {
       console.log('Logins =', JSON.stringify(Logins));
@@ -509,6 +510,7 @@ export class AuthService {
       .append('x-amz-date', signed.headers.get('x-amz-date')!)
       .append('x-amz-security-token', signed.headers.get('x-amz-security-token')!)
       .append('jwt-token', jwtToken);
+    console.log('signRequestWithSignatureV4: success');
     return request.clone({
       headers: headers,
     });

@@ -23,6 +23,7 @@ export class CustomersComponent implements OnInit {
       'customer-list': 1,
     } as any;
     this.selectedIndex = tab ? tabToIndex[tab] : 0;
+    console.log('selectedIndex =', this.selectedIndex);
   }
 
   async ngOnInit() {

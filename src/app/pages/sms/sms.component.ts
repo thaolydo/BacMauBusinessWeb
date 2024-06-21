@@ -29,12 +29,14 @@ export class SmsComponent implements OnInit {
       'send-sms': 1,
     } as any;
     this.selectedIndex = tab ? tabToIndex[tab] : 0;
+    console.log('selectedIndex =', this.selectedIndex);
   }
 
   async ngOnInit() {
     const queryParams = this.route.snapshot.queryParams;
     const tab = queryParams['tab'];
     const defaultTab = 'sms-history';
+    // const defaultTab = 'send-sms';
     const curRole = await this.authService.getCurUserRole();
     this.showSendSmsTab = curRole == Role.OWNER;
     await this.router.navigate([], {
