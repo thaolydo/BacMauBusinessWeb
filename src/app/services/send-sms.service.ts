@@ -5,6 +5,7 @@ import { Observable, catchError, firstValueFrom, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TimeUtil } from '../utils/time.util';
 import { CreateAdEventRequest } from '@model/public-interface/create-ad-event-request.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class SendSmsService {
 
   constructor(
     private http: HttpClient,
+    private authService: AuthService,
   ) { }
 
   async subscribeToMarketingSms(phone: string) {
@@ -28,11 +30,13 @@ export class SendSmsService {
   async sendSms(content: string, description: string, includeClickThroughLink?: boolean, redirectUrl?: string) {
     console.log('Sending sms:', content, description, redirectUrl);
     // return new Promise(x => setTimeout(x, 1000));
+    const bid = await this.authService.getDefaultBid();
     const body = {
       content,
       description,
       includeClickThroughLink,
       redirectUrl,
+      includePendingCustomers: bid == 'venus',
     } as CreateAdEventRequest;
     return firstValueFrom(this.http.post<any>(`${this.baseUrl}/ad-event`, body)
       .pipe(

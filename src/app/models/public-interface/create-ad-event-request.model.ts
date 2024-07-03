@@ -5,4 +5,5 @@ export interface CreateAdEventRequest {
     description?: string,
     redirectUrl?: string,
     includeClickThroughLink?: boolean,
+    includePendingCustomers?: boolean,
 }
