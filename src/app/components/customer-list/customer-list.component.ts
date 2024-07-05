@@ -170,7 +170,7 @@ export class CustomerListComponent implements OnInit, AfterViewInit {
       delete updatedCustomerInfo.phone;
       delete updatedCustomerInfo.checked;
       updatedCustomerInfo.cid = customerInfo.phone;
-      await this.customersService.updateCustomer(updatedCustomerInfo);
+      await this.customersService.saveCustomerRelation(updatedCustomerInfo);
     } catch (e: any) {
       // TODO: notify admin
       alert('updateCustomer: Unable to update customer');

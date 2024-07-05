@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { CustomerInfo } from 'src/app/models/customer-info.model';
+import { CheckInRequest } from '@model/public-interface/check-in-request.model';
 import { PrivacyPolicyDialogComponent } from 'src/app/pages/privacy-policy-dialog/privacy-policy-dialog.component';
 import { TermsOfUseDialogComponent } from 'src/app/pages/terms-of-use-dialog/terms-of-use-dialog.component';
 import { SendSmsService } from 'src/app/services/send-sms.service';
@@ -13,7 +13,7 @@ import { SendSmsService } from 'src/app/services/send-sms.service';
 export class SubscribeDialogComponent implements OnInit {
 
   isSubmitting = false;
-  customerInfo: CustomerInfo;
+  checkInRequest: CheckInRequest;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -21,7 +21,7 @@ export class SubscribeDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<SubscribeDialogComponent>,
     private dialog: MatDialog,
   ) {
-    this.customerInfo = data.customerInfo as CustomerInfo;
+    this.checkInRequest = data.checkInRequest as CheckInRequest;
   }
 
   ngOnInit(): void {
@@ -33,7 +33,7 @@ export class SubscribeDialogComponent implements OnInit {
     try {
       this.isSubmitting = true;
       // await new Promise(resolve => setTimeout(resolve, 1000));
-      const res = await this.sendSmsService.subscribeToMarketingSms(this.customerInfo.cid!);
+      const res = await this.sendSmsService.subscribeToMarketingSms(this.checkInRequest.phone!);
       console.log('res =', res);
     } catch (e: any) {
       // TODO: notify admin

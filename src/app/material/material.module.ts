@@ -21,8 +21,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatRippleModule } from '@angular/material/core';
-
-// import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
   declarations: [],
@@ -49,7 +48,7 @@ import { MatRippleModule } from '@angular/material/core';
     MatMenuModule,
     MatDividerModule,
     MatRippleModule,
-    // MatStepperModule,
+    MatStepperModule,
   ],
   exports: [
     MatInputModule,
@@ -73,7 +72,7 @@ import { MatRippleModule } from '@angular/material/core';
     MatMenuModule,
     MatDividerModule,
     MatRippleModule,
-    // MatStepperModule,
+    MatStepperModule,
   ]
 })
 export class MaterialModule { }

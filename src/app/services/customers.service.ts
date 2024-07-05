@@ -7,6 +7,7 @@ import { CheckInEvent } from 'src/app/models/check-in-event.model';
 import { TimeUtil } from '../utils/time.util';
 import { DateTime } from 'luxon';
 import { PaginatedResult } from '@model/public-interface/paginated-result.model';
+import { CheckInRequest } from '@model/public-interface/check-in-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class CustomersService {
     if (limit) {
       queryParams.limit = limit;
     }
-    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customer`, {
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customers`, {
       params: queryParams,
     })
       .pipe(
@@ -51,8 +52,15 @@ export class CustomersService {
       ));
   }
 
-  async checkIn(customer: CustomerInfo): Promise<any> {
-    return firstValueFrom(this.http.post(`${this.baseUrl}/check-in`, { ...customer }));
+  async getCustomerProfile(phone: string): Promise<CustomerInfo | undefined> {
+    return firstValueFrom(this.http.get<any>(`${this.baseUrl}/customers/${phone}`)
+      .pipe(
+        map(res => res.customerProfile)
+      ));
+  }
+
+  async checkIn(checkInRequest: CheckInRequest): Promise<any> {
+    return firstValueFrom(this.http.post(`${this.baseUrl}/check-in`, checkInRequest));
   }
 
   async getCheckInEventHistory(month: number, date?: Date): Promise<CheckInEvent[]> {
@@ -93,10 +101,18 @@ export class CustomersService {
     }));
   }
 
-  async updateCustomer(customerInfo: CustomerInfo): Promise<any> {
-    console.log('CustomersService: updating customer', customerInfo);
-    return firstValueFrom(this.http.put(`${this.baseUrl}/customer`, {
+  async saveCustomerRelation(customerInfo: CustomerInfo): Promise<any> {
+    console.log('CustomersService: updating customer relation', customerInfo);
+    return firstValueFrom(this.http.put(`${this.baseUrl}/relations`, {
       updatedCustomer: customerInfo,
+    }));
+  }
+
+  // Currently not in used
+  async saveCustomerProfile(customerInfo: CustomerInfo): Promise<any> {
+    console.log('CustomersService: updating customer profile', customerInfo);
+    return firstValueFrom(this.http.put(`${this.baseUrl}/customers`, {
+      customerInfo,
     }));
   }
 

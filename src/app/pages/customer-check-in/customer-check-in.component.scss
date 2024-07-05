@@ -2,15 +2,18 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center;
+    // align-items: center;
     height: 100%;
-    font-size: xx-large !important;
     // padding: 1em;
 }
 
-:host ::ng-deep button {
+// :host ::ng-deep button {
+//     font-size: xx-large !important;
+//     border-radius: 1em !important;
+// }
+
+form {
     font-size: xx-large !important;
-    border-radius: 1em !important;
 }
 
 // ::ng-deep .submit-button, button {
@@ -82,9 +85,10 @@ fieldset {
 
 :host ::ng-deep button, button {
     font-size: x-large;
-    width: 5em;
+    width: 6em;
     height: 2em;
     margin: 0.5em;
+    border-radius: 1em !important;
 }
 
 @media only screen and (min-width: 1200px) {

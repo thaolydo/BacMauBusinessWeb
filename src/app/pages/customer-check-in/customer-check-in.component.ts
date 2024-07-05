@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatStepper } from '@angular/material/stepper';
+import { CheckInRequest } from '@model/public-interface/check-in-request.model';
 import { AuthService } from '@service/auth.service';
 import { CustomersService } from '@service/customers.service';
 import { HuyService } from '@service/huy.service';
@@ -15,9 +17,12 @@ import { CustomerInfo } from 'src/app/models/customer-info.model';
   styleUrls: ['./customer-check-in.component.scss'],
 })
 export class CustomerCheckInComponent implements OnInit {
-  @ViewChild('formDirective', { static: false }) formDirective: NgForm | undefined;
+  @ViewChild('firstFormDirective', { static: false }) firstFormDirective: NgForm | undefined;
+  @ViewChild('secondFormDirective', { static: false }) secondFormDirective: NgForm | undefined;
+  @ViewChild('stepper', { static: false }) stepper: MatStepper | undefined;
 
-  form: FormGroup;
+  firstForm: FormGroup;
+  secondForm: FormGroup;
   monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   dayCountInMonth: { [monthName: string]: number } = {
     1: 31,
@@ -34,6 +39,7 @@ export class CustomerCheckInComponent implements OnInit {
     12: 31
   };
   days: number[] = [];
+  customerProfile: CustomerInfo | undefined = undefined;
   isSubmitting = false;
 
   constructor(
@@ -43,28 +49,47 @@ export class CustomerCheckInComponent implements OnInit {
     private authService: AuthService,
     private huyService: HuyService,
   ) {
-    this.form = this._fb.group({
-      name: ['', Validators.required],
+    this.firstForm = this._fb.group({
       phone: ['', Validators.required],
+    });
+    this.secondForm = this._fb.group({
+      name: ['', Validators.required],
       birthMonth: [null],
-      birthDay: {value: null},
+      birthDay: [null],
     });
   }
 
   get name() {
-    return this.form.get('name')?.value;
+    return this.secondForm.get('name')?.value;
   }
 
   set name(val: string) {
-    this.form.get('name')?.setValue(val);
+    this.secondForm.get('name')?.setValue(val);
   }
 
   get phone() {
-    return this.form.get('phone')?.value;
+    return this.firstForm.get('phone')?.value;
   }
 
   set phone(val: string) {
-    this.form.get('phone')?.setValue(val);
+    this.firstForm.get('phone')?.setValue(val);
+  }
+
+  get birthDay() {
+    return this.secondForm.get('birthDay')?.value;
+  }
+
+  set birthDay(val: number) {
+    this.secondForm.get('birthDay')?.setValue(val);
+  }
+
+  get birthMonth() {
+    return this.secondForm.get('birthMonth')?.value;
+  }
+
+  set birthMonth(val: number) {
+    this.secondForm.get('birthMonth')?.setValue(val);
+    this.onMonthSelected();
   }
 
   async ngOnInit() {
@@ -80,21 +105,48 @@ export class CustomerCheckInComponent implements OnInit {
   }
 
   onMonthSelected() {
-    const dayCountInSelectedMonth = this.dayCountInMonth[this.form.get('birthMonth')!.value];
-    this.days = Array.from({length: dayCountInSelectedMonth}, (_, i) => i + 1);
+    const dayCountInSelectedMonth = this.dayCountInMonth[this.secondForm.get('birthMonth')!.value];
+    this.days = Array.from({ length: dayCountInSelectedMonth }, (_, i) => i + 1);
   }
 
   async onSubmit() {
     this.isSubmitting = true;
     try {
-      const customerInfo = this.form.value as CustomerInfo;
-      customerInfo.cid = `+1${customerInfo.phone}`;
-      console.log('customerInfo =', customerInfo);
+      this.customerProfile = await this.customersService.getCustomerProfile(`+1${this.phone}`);
+      this.stepper?.next();
+      console.log('customerProfile =', this.customerProfile);
+      if (this.customerProfile) {
+        this.name = this.customerProfile.name;
+        this.birthMonth = this.customerProfile.birthMonth;
+        this.birthDay = this.customerProfile.birthDay;
+      }
+
+    } catch (e: any) {
+      // TODO: notify admin
+      console.log(e);
+      alert(`onSubmit: ${e.error.errMsg}. If this persists, please contact admin.`);
+    } finally {
+      this.isSubmitting = false;
+    }
+  }
+
+  async onCheckIn() {
+    this.isSubmitting = true;
+    try {
+      const checkInRequest = { phone: `+1${this.phone}` } as CheckInRequest;
+      checkInRequest.name = this.name;
+      if (!this.secondForm.pristine) {
+        checkInRequest.updateInfo = true;
+        checkInRequest.birthDay = this.birthDay;
+        checkInRequest.birthMonth = this.birthMonth;
+        checkInRequest.newCustomer = this.customerProfile ? false : true;
+      }
+      console.log('checkInRequest =', checkInRequest);
 
       // Check-in
       // await new Promise(resolve => setTimeout(resolve, 1000));
       // const res = {} as any;
-      const res = await this.customersService.checkIn(customerInfo);
+      const res = await this.customersService.checkIn(checkInRequest);
       this.isSubmitting = false;
 
       const alreadySubsribed = res.subscribed;
@@ -109,7 +161,7 @@ export class CustomerCheckInComponent implements OnInit {
         const dialogRef = this.dialog.open(SubscribeDialogComponent, {
           panelClass: 'dialog',
           data: {
-            customerInfo,
+            checkInRequest,
             businessName,
           }
         });
@@ -126,7 +178,7 @@ export class CustomerCheckInComponent implements OnInit {
     } catch (e: any) {
       // TODO: notify admin
       console.log(e);
-      alert(`onSubmit: ${e.error.errMsg}. If this persists, please contact admin.`);
+      alert(`onCheckIn: ${e.error.errMsg}. If this persists, please contact admin.`);
     } finally {
       this.isSubmitting = false;
     }
@@ -134,8 +186,11 @@ export class CustomerCheckInComponent implements OnInit {
   }
 
   resetForm() {
-    this.form.reset();
-    this.formDirective?.resetForm();
+    this.customerProfile = undefined;
+    this.firstForm.reset();
+    this.secondForm.reset();
+    this.firstFormDirective?.resetForm();
+    this.stepper?.reset();
   }
 
 }

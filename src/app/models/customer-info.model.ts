@@ -2,8 +2,8 @@ export interface CustomerInfo {
     name: string,
     phone: string,
     latestOptStatus: OptStatus,
-    birthMonth: string,
-    birthDay: string,
+    birthMonth: number,
+    birthDay: number,
     cid?: string, // This is only for send request to backend
     birthday?: Date, // This is only available for response from backend
     notes?: string,

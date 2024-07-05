@@ -28,15 +28,15 @@ export class AwsSigningInterceptor implements HttpInterceptor {
       mergeMap(
         creds => this.authService.signRequestWithSignatureV4(request, creds!)
       ),
+      catchError(async err => {
+        console.error(`AwsSigningInterceptor pipe:`, err);
+        // location.reload();
+        // await this.router.navigate(['/sign-in']);
+        throw new Error(`AwsSigningInterceptor pipe: unable to sign request: ${err.message}`);
+      }),
       switchMap(signedRequest => {
         // console.log('signedRequest =', signedRequest);
         return next.handle(signedRequest);
-      }),
-      catchError(async err => {
-        console.error(`AwsSigningInterceptor pipe:`, err);
-        location.reload();
-        // await this.router.navigate(['/sign-in']);
-        throw new Error(`AwsSigningInterceptor pipe: unable to sign request: ${err.message}`);
       }),
     );
 
